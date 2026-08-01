@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Cari chord dan lirik lagu favoritmu dengan mudah. Fitur transpose dan auto scroll untuk latihan bermain gitar.">
+  <title>ChordPlayer - Cari Chord & Lirik Lagu</title>
+  <link rel="icon" href="asset/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="logo">ChordPlayer</div>
+      <ul>
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode">🌙</button></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="search-section">
+      <h2>Cari Chord Lagu</h2>
+      <div class="search-box">
+        <input 
+          type="text" 
+          id="searchInput" 
+          placeholder="Cari judul lagu atau nama artis..." 
+          oninput="handleSearch()"
+        />
+      </div>
+    </section>
+
+    <section class="song-section">
+      <div class="section-header">
+        <h3>Daftar Lagu</h3>
+        <span id="songCount" class="badge">0 lagu</span>
+      </div>
+      
+      <div id="songList" class="song-list"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2026 ChordPlayer App — Portofolio Learning Project</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

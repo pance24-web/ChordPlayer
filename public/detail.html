@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Lihat chord dan lirik lengkap. Transpose nada dan gunakan auto scroll saat bermain gitar.">
+  <title>ChordPlayer - Detail Lagu</title>
+  <link rel="icon" href="asset/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<header>
+  <nav>
+    <div class="logo">ChordPlayer</div>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode">🌙</button></li>
+    </ul>
+  </nav>
+</header>
+  <main class="container">
+
+  <!-- ✅ Tombol kembali -->
+  <a href="index.html" class="btn-back">← Kembali</a>
+
+  <!-- Info lagu -->
+  <section class="meta-data">
+    <h2 id="songTitle">-</h2>
+    <p class="song-artist" id="songArtist">-</p>
+  </section>
+
+  <!-- Tombol kontrol -->
+<section class="control-panel">
+  <button class="btn-control" id="btnTransposeUp">▲ Transpose Up</button>
+  <span id="transposeDisplay" class="transpose-display">Transpose: 0</span>
+  <button class="btn-control" id="btnTransposeDown">▼ Transpose Down</button>
+  <button class="btn-control btn-scroll" id="btnAutoScroll">▶ Auto Scroll</button>
+</section>
+  <!-- Area chord & lirik -->
+  <pre id="lyricsArea" class="lyrics-area">Memuat chord...</pre>
+
+</main>
+  <footer>© 2026 ChordPlayer App</footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

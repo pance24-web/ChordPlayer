@@ -1,0 +1,340 @@
+/* ─── CSS VARIABLES (Light & Dark Mode) ─── */
+:root {
+  /* Light Mode Colors */
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --text-muted: #94a3b8;
+  --border-color: #e2e8f0;
+  --accent-color: #2563eb;
+  --accent-hover: #1d4ed8;
+  --green-accent: #16a34a;
+  --badge-bg: #e2e8f0;
+  --badge-color: #475569;
+  --header-bg: #2563eb;
+  --header-text: #e0e7ff;
+  --control-bg: #f1f5f9;
+}
+
+/* Dark Mode */
+body.dark-mode {
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --text-primary: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --text-muted: #64748b;
+  --border-color: #334155;
+  --accent-color: #3b82f6;
+  --accent-hover: #60a5fa;
+  --green-accent: #22c55e;
+  --badge-bg: #334155;
+  --badge-color: #cbd5e1;
+  --header-bg: #1e293b;
+  --header-text: #cbd5e1;
+  --control-bg: #334155;
+}
+
+/* ─── RESET & BASE STYLES ─── */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ─── HEADER & NAV ─── */
+header {
+  background-color: var(--header-bg);
+  color: white;
+  padding: 1rem 0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  transition: background-color 0.3s ease;
+}
+
+header nav {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 0.5rem;
+}
+
+nav ul li a {
+  color: var(--header-text);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+nav ul li a:hover,
+nav ul li a.active {
+  color: #ffffff;
+}
+
+/* ─── LAYOUT CONTAINER ─── */
+.container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+}
+
+/* ─── SEARCH SECTION ─── */
+.search-section {
+  margin-bottom: 2rem;
+}
+
+.search-section h2 {
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.3s ease, color 0.3s ease;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.search-box input:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* ─── SONG LIST ─── */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.badge {
+  background-color: var(--badge-bg);
+  color: var(--badge-color);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.song-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.song-card {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: transform 0.15s, border-color 0.2s, box-shadow 0.2s, background-color 0.3s ease;
+}
+
+.song-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent-color);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.08);
+}
+
+.song-info .title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.song-info .artist {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  background-color: var(--bg-secondary);
+  border-radius: 8px;
+  border: 1px dashed var(--border-color);
+  color: var(--text-secondary);
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+/* Panah di kartu lagu */
+.arrow {
+  color: var(--accent-color);
+  font-weight: bold;
+  font-size: 1.1rem;
+  transition: color 0.3s ease;
+}
+
+/* ─── FOOTER ─── */
+footer {
+  text-align: center;
+  padding: 2rem 0;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  margin-top: 4rem;
+  transition: color 0.3s ease;
+}
+
+/* ─── DETAIL PAGE ─── */
+
+/* Tombol kembali */
+.btn-back {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: var(--accent-color);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: color 0.2s;
+}
+
+.btn-back:hover {
+  color: var(--accent-hover);
+}
+
+/* Info lagu (judul & artis) */
+.meta-data {
+  margin-bottom: 1.5rem;
+}
+
+.meta-data h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+  transition: color 0.3s ease;
+}
+
+.song-artist {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  transition: color 0.3s ease;
+}
+
+/* Panel kontrol transpose & scroll */
+.control-panel {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Tombol kontrol */
+.btn-control {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: 2px solid var(--accent-color);
+  border-radius: 6px;
+  background-color: transparent;
+  color: var(--accent-color);
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s, border-color 0.3s ease;
+}
+
+.btn-control:hover {
+  background-color: var(--accent-color);
+  color: #ffffff;
+}
+
+/* Tombol scroll — warna berbeda agar mudah dibedakan */
+.btn-scroll {
+  border-color: var(--green-accent);
+  color: var(--green-accent);
+  margin-left: auto; /* dorong ke kanan */
+}
+
+.btn-scroll:hover {
+  background-color: var(--green-accent);
+  color: #ffffff;
+}
+
+/* Tampilan nilai transpose */
+.transpose-display {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--badge-color);
+  background-color: var(--control-bg);
+  padding: 0.4rem 0.75rem;
+  border-radius: 6px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Area chord & lirik */
+.lyrics-area {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.5rem;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: var(--text-primary);
+  white-space: pre-wrap;   /* agar teks tidak keluar layar */
+  word-break: break-word;
+  min-height: 200px;
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: transparent;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.theme-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  transform: scale(1.1);
+}
