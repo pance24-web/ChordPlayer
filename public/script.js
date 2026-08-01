@@ -281,8 +281,6 @@ function transposeChord(chord, step) {
 // Menampilkan ulang chord ke layar setelah nilai transpose berubah
 function updateChordDisplay() {
   const lyrics = document.getElementById("lyricsArea");
-  if (!lyrics) return;
-
   lyrics.textContent = transposeChord(currentChord, transposeValue);
 }
 function transposeUp() {
