@@ -2,11 +2,10 @@
   "name": "chordplayer",
   "version": "1.0.0",
   "description": "Aplikasi pencari chord dan lirik lagu dengan fitur transpose, auto scroll, dan dark mode.",
-  "main": "server.js",
+
   "type": "commonjs",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js",
+    "dev": "echo 'No dev script'",
     "build": "echo 'No build step required for static deployment'"
   },
   "dependencies": {
