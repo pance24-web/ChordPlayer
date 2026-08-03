@@ -1,4 +1,4 @@
-export default function handler(req, res) {
+module.exports = (req, res) => {
   const songs = [
     { id: "1", title: "Laskar Pelangi", artist: "Nidji" },
     { id: "2", title: "Akad", artist: "Payung Teduh" },
@@ -6,4 +6,4 @@ export default function handler(req, res) {
   ];
 
   res.status(200).json({ success: true, data: songs });
-}
+};

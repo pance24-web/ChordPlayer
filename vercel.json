@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "rewrites": [
+    { "source": "/api/songs", "destination": "/api/songs/index.js" },
+    { "source": "/api/songs/:id", "destination": "/api/songs/[id].js" }
+  ]
+}

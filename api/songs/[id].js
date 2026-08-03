@@ -1,4 +1,4 @@
-export default function handler(req, res) {
+module.exports = (req, res) => {
   const { id } = req.query;
 
   // Data lengkap termasuk chord
@@ -24,4 +24,4 @@ export default function handler(req, res) {
   } else {
     res.status(404).json({ success: false, message: "Lagu tidak ditemukan" });
   }
-}
+};
