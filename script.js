@@ -37,7 +37,7 @@ function updateThemeToggle(isDark) {
 
 // ─── STATE APLIKASI ───────────────────────────────────────────
 let allSongs = [];
-const API_BASE_URL = 'https://chordplayer-1.onrender.com/api/songs';
+const API_BASE_URL = '/api/songs';
 
 // ─── DETAIL CONTROL STATE ─────────────────────────────────────
 let currentChord = "";
