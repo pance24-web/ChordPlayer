@@ -35,9 +35,24 @@ function updateThemeToggle(isDark) {
   }
 }
 
+// ─── DEBOUNCE UTILITY ─────────────────────────────────────────
+// Fungsi ini menundakan eksekusi function sampai user berhenti ngetik
+// Misal: kalau ngetik 3 huruf berturut-turut (3 oninput events),
+// function hanya dijalankan 1x setelah 300ms user berhenti
+function debounce(func, delay = 300) {
+  let timeoutId;
+  return function (...args) {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => func(...args), delay);
+  };
+}
+
 // ─── STATE APLIKASI ───────────────────────────────────────────
 let allSongs = [];
 const API_BASE_URL = '/api/songs';
+
+// Buat debounced version dari handleSearch
+const debouncedSearch = debounce(handleSearch, 300);
 
 // ─── DETAIL CONTROL STATE ─────────────────────────────────────
 let currentChord = "";
@@ -349,6 +364,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const themeToggle = document.getElementById('themeToggle');
   if (themeToggle) {
     themeToggle.addEventListener('click', toggleDarkMode);
+  }
+
+  // Setup search input dengan debounce
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput) {
+    searchInput.addEventListener('input', debouncedSearch);
   }
 
   loadSongs();        // Untuk halaman utama (index.html)

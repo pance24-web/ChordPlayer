@@ -1,57 +1,192 @@
-# 🚀 Roadmap & To-Do List Project ChordPlayer
+# 📋 ChordPlayer Improvement Todo List
 
-## 🟢 Fase 1 & 2: Frontend Base
+> Last Updated: August 2026
 
-- [x] Setup VS Code
-- [x] Browser + DevTools
-- [x] Live Server Extension
-- [x] UI & Layout Responsive (HTML/CSS)
-- [x] Search Bar Real-time
-- [x] Fetch Data Async/Await (songs.json)
-- [x] Transpose Chord + Flat Conversion
-- [x] Auto Scroll & Controls
-- [x] Dark Mode + LocalStorage
+## 🎯 Goal
+
+Meningkatkan kualitas ChordPlayer dari sisi **User Experience**, **Performance**, **Code Quality**, dan **Scalability** tanpa mengubah konsep utama sebagai aplikasi pencarian chord dan lirik lagu.
 
 ---
 
-## 🟡 Fase 3: Backend & Database (Current Target)
+# 🚀 Version 1.1 — User Experience
 
-### 🛠️ Instalan Software
+## Search
 
-- [x] Install Node.js (LTS Version) completed:2026-08-01
-- [ ] Install Postman / Thunder Client Extension
-- [x] Install MySQL + MySQL Workbench (atau XAMPP / Laragon) completed:2026-08-01
-- [ ] Install TablePlus (GUI Database)
+- [ ] Tambahkan debounce pada pencarian
+- [ ] Tampilkan loading saat mengambil data
+- [ ] Tampilkan empty state jika lagu tidak ditemukan
+- [ ] Tampilkan pesan error jika API gagal
+- [ ] Tambahkan tombol clear search
+- [ ] Tambahkan pencarian berdasarkan artis
 
-### 💻 Setup Server & Database
+## Song Detail
 
-- [x] Setup folder `chordplayer-backend` & `npm init -y`
-- [x] Install Package: `express`, `mysql2`, `dotenv`, `cors`, `nodemon` completed:2026-08-01
-- [x] Buat struktur folder Backend (config, routes, controllers) completed:2026-08-01
-- [x] Setup Database MySQL & Tabel `songs` via TablePlus completed:2026-08-01
-- [x] Buat REST API Endpoint (GET, POST, PUT, DELETE) completed:2026-08-01
-- [x] Hubungkan Frontend ke Backend API (ganti `songs.json` ke URL API) completed:2026-08-01
+- [ ] Tambahkan tombol copy chord
+- [ ] Tambahkan tombol share lagu
+- [ ] Tambahkan tombol print chord
+- [ ] Tambahkan tombol kembali ke daftar lagu
+- [ ] Simpan posisi auto scroll terakhir
 
----
+## Interface
 
-## 🔵 Fase 4: Deployment & Cloud
-
-### ☁️ Akun Cloud
-
-- [ ] Buat / Login Akun GitHub
-- [ ] Buat / Login Akun Vercel (Login via GitHub)
-- [ ] Buat / Login Akun Railway (Login via GitHub)
-
-### 🚀 Go Live
-
-- [ ] Push repository Frontend & Backend ke GitHub
-- [ ] Deploy Frontend ke Vercel
-- [ ] Deploy Backend + MySQL Database ke Railway
-- [ ] Tulis README.md yang rapi untuk Portofolio GitHub
+- [ ] Perhalus animasi transisi
+- [ ] Tambahkan skeleton loading
+- [ ] Tambahkan toast notification
+- [ ] Perbaiki konsistensi spacing
+- [ ] Tingkatkan responsive layout
 
 ---
 
-## 📚 Skill Paralel (Pelajari Sambil Jalan)
+# 🚀 Version 1.2 — Guitar Features
 
-- [ ] **Git & GitHub**: `git init`, `add`, `commit`, `push`, `branch`
-- [ ] **Terminal/CLI**: Navigasi folder, jalankan script NPM
+- [ ] Tingkatkan fitur transpose chord
+- [ ] Pengaturan kecepatan auto scroll
+- [ ] Tambahkan fullscreen mode
+- [ ] Highlight chord aktif
+- [ ] Tambahkan chord diagram gitar
+- [ ] Tambahkan rekomendasi capo
+
+---
+
+# 🚀 Version 1.3 — Data Management
+
+## Database
+
+- [ ] Optimasi query database
+- [ ] Pisahkan data artis ke tabel tersendiri
+- [ ] Tambahkan tabel kategori lagu
+- [ ] Tambahkan indeks pada kolom pencarian
+- [ ] Tambahkan validasi data sebelum disimpan
+
+## API
+
+- [ ] Validasi parameter request
+- [ ] Standarisasi format response JSON
+- [ ] Tambahkan HTTP status code yang sesuai
+- [ ] Perbaiki error handling API
+
+---
+
+# 🚀 Version 1.4 — Admin Panel
+
+- [ ] Login Admin
+- [ ] Dashboard Admin
+- [ ] CRUD Lagu
+- [ ] CRUD Artis
+- [ ] CRUD Kategori
+- [ ] Upload lagu baru
+- [ ] Edit chord dan lirik
+- [ ] Hapus lagu
+- [ ] Dashboard statistik sederhana
+
+---
+
+# 🚀 Version 1.5 — User Features
+
+- [ ] Login pengguna
+- [ ] Registrasi akun
+- [ ] Profil pengguna
+- [ ] Favorite lagu
+- [ ] Recently Viewed
+- [ ] Riwayat pencarian
+
+---
+
+# 🚀 Version 1.6 — Performance
+
+- [ ] Optimasi JavaScript
+- [ ] Optimasi CSS
+- [ ] Lazy loading
+- [ ] Cache API
+- [ ] Minify asset
+- [ ] Optimasi gambar
+- [ ] Audit performa dengan Lighthouse
+
+---
+
+# 🚀 Version 1.7 — SEO
+
+- [ ] Dynamic meta title
+- [ ] Dynamic meta description
+- [ ] Open Graph
+- [ ] Twitter Card
+- [ ] Sitemap.xml
+- [ ] robots.txt
+- [ ] Structured Data (Schema.org)
+
+---
+
+# 🚀 Version 2.0 — Future Features
+
+- [ ] Progressive Web App (PWA)
+- [ ] Offline mode
+- [ ] Export chord ke PDF
+- [ ] Guitar tuner
+- [ ] Metronome
+- [ ] Playlist latihan
+- [ ] Community song contribution
+- [ ] Rating lagu
+- [ ] Request lagu
+
+---
+
+# 🛠️ Code Quality
+
+- [ ] Rapikan struktur folder
+- [ ] Modularisasi JavaScript
+- [ ] Tambahkan util/helper functions
+- [ ] Hilangkan duplikasi kode
+- [ ] Tambahkan komentar pada bagian kompleks
+- [ ] Standarisasi penamaan variabel dan fungsi
+- [ ] Tambahkan konfigurasi linting (ESLint)
+- [ ] Tambahkan formatter (Prettier)
+
+---
+
+# 📚 Documentation
+
+- [ ] Lengkapi README
+- [ ] Dokumentasi API
+- [ ] Dokumentasi database
+- [ ] Deployment guide
+- [ ] Contribution guide
+- [ ] Changelog yang konsisten
+
+---
+
+# ✅ Completed
+
+- [x] Halaman Home
+- [x] Halaman Detail Lagu
+- [x] Pencarian lagu
+- [x] Dark Mode
+- [x] Responsive Layout
+- [x] Backend API dasar
+- [x] Integrasi MySQL
+- [x] Deployment ke Vercel
+
+---
+
+## 📌 Priority
+
+### High
+
+- UX Search
+- Error Handling
+- API Validation
+- Performance
+- Responsive UI
+
+### Medium
+
+- Guitar Features
+- Admin Panel
+- Database Optimization
+
+### Low
+
+- Login
+- PWA
+- Community Features
+- SEO
+- Export PDF
