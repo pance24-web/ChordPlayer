@@ -129,12 +129,13 @@ function renderSongList(songArray) {
   if (songArray.length === 0) {
     songListContainer.innerHTML = `
       <div class="empty-state">
+        <div class="empty-icon">🔍</div>
         <p>Lagu yang kamu cari tidak ditemukan.</p>
+        <span class="empty-hint">Coba kata kunci lain</span>
       </div>
     `;
-    return;
+  return;
   }
-
   songListContainer.innerHTML = songArray.map(song => `
     <a href="detail.html?id=${encodeURIComponent(song.id)}" class="song-card">
       <div class="song-info">
