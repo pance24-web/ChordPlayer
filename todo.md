@@ -14,10 +14,10 @@ Meningkatkan kualitas ChordPlayer dari sisi **User Experience**, **Performance**
 
 - [x] Tambahkan debounce pada pencarian completed:2026-08-12
 - [x] Tampilkan loading saat mengambil data completed:2026-08-13
-- [ ] Tampilkan empty state jika lagu tidak ditemukan
-- [ ] Tampilkan pesan error jika API gagal
-- [ ] Tambahkan tombol clear search
-- [ ] Tambahkan pencarian berdasarkan artis
+- [x] Tampilkan empty state jika lagu tidak ditemukan completed:2026-08-13
+- [x] Tampilkan pesan error jika API gagal completed:2026-08-13
+- [x] Tambahkan tombol clear search completed:2026-08-13
+- [x] Tambahkan pencarian berdasarkan artis completed:2026-08-13
 
 ## Song Detail
 
