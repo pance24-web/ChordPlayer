@@ -86,12 +86,10 @@ async function loadSongs() {
   if (!songListContainer) return;
 
   try {
-   
-   
-   
-   
+    // Tampilkan loading state
     songListContainer.innerHTML = `
       <div class="empty-state">
+        <div class="loading-spinner"></div>
         <p>Memuat daftar lagu...</p>
       </div>
     `;
@@ -110,50 +108,26 @@ async function loadSongs() {
     console.error(error);
     songListContainer.innerHTML = `
       <div class="empty-state">
-        <p>Gagal memuat daftar lagu.</p>
+        <p>❌ Gagal memuat daftar lagu.</p>
       </div>
     `;
   }
-}
-
-// ─── RENDER DAFTAR LAGU ────────────────────────────────────────
-function renderSongList(songArray) {
-  const songListContainer = document.getElementById('songList');
-  const songCountContainer = document.getElementById('songCount');
-
-  if (!songListContainer) return;
-
-  if (songCountContainer) {
-    songCountContainer.textContent = `${songArray.length} lagu`;
-  }
-
-  // ✅ Tampilkan pesan jika hasil pencarian kosong
-  if (songArray.length === 0) {
-    songListContainer.innerHTML = `
-      <div class="empty-state">
-        <p>Lagu yang kamu cari tidak ditemukan.</p>
-      </div>
-    `;
-    return;
-  }
-
-songListContainer.innerHTML = songArray.map(song => `
-  <a href="detail.html?id=${encodeURIComponent(song.id)}" class="song-card">
-    <div class="song-info">
-      <div class="title">${escapeHTML(song.title)}</div>
-      <div class="artist">${escapeHTML(song.artist)}</div>
-    </div>
-    <span class="arrow">→</span>
-  </a>
-`).join('');
 }
 
 // ─── SEARCH ───────────────────────────────────────────────────
 function handleSearch() {
   const searchInput = document.getElementById('searchInput');
+  const searchBox = document.querySelector('.search-box');
   if (!searchInput) return;
 
-  const keyword = searchInput.value.toLowerCase().trim(); // ✅ spasi diabaikan
+  const keyword = searchInput.value.toLowerCase().trim();
+
+  // Tampilkan loading indicator saat searching
+  if (keyword.length > 0) {
+    searchBox?.classList.add('loading');
+  } else {
+    searchBox?.classList.remove('loading');
+  }
 
   const result = allSongs.filter(song =>
     song.title.toLowerCase().includes(keyword) ||
@@ -161,8 +135,10 @@ function handleSearch() {
   );
 
   renderSongList(result);
+  
+  // Hilangkan loading setelah hasil ditampilkan
+  searchBox?.classList.remove('loading');
 }
-
 // ─── DETAIL LAGU ───────────────────────────────────────────────
 async function loadSongDetail() {
   const title = document.getElementById('songTitle');
@@ -184,7 +160,8 @@ async function loadSongDetail() {
   }
 
   try {
-    lyrics.textContent = "Memuat chord...";
+    // Tampilkan loading dengan spinner
+    lyrics.innerHTML = `<div class="loading-spinner"></div> Memuat chord...`;
 
     const response = await fetch(`${API_BASE_URL}/${encodeURIComponent(id)}`);
 
