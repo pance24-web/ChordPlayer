@@ -114,6 +114,38 @@ async function loadSongs() {
   }
 }
 
+// ─── RENDER DAFTAR LAGU ────────────────────────────────────────
+function renderSongList(songArray) {
+  const songListContainer = document.getElementById('songList');
+  const songCountContainer = document.getElementById('songCount');
+
+  if (!songListContainer) return;
+
+  if (songCountContainer) {
+    songCountContainer.textContent = `${songArray.length} lagu`;
+  }
+
+  // ✅ Tampilkan pesan jika hasil pencarian kosong
+  if (songArray.length === 0) {
+    songListContainer.innerHTML = `
+      <div class="empty-state">
+        <p>Lagu yang kamu cari tidak ditemukan.</p>
+      </div>
+    `;
+    return;
+  }
+
+  songListContainer.innerHTML = songArray.map(song => `
+    <a href="detail.html?id=${encodeURIComponent(song.id)}" class="song-card">
+      <div class="song-info">
+        <div class="title">${escapeHTML(song.title)}</div>
+        <div class="artist">${escapeHTML(song.artist)}</div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+  `).join('');
+}
+
 // ─── SEARCH ───────────────────────────────────────────────────
 function handleSearch() {
   const searchInput = document.getElementById('searchInput');
