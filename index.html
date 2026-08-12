@@ -19,6 +19,7 @@
     </nav>
   </header>
 
+  <main class="container">
     <section class="search-section">
       <h2>Cari Chord Lagu</h2>
       <div class="search-box">
@@ -27,7 +28,12 @@
           id="searchInput" 
           placeholder="Cari judul lagu atau nama artis..." 
         />
-        <div class="loading-text">Mencari...</div>
+        <button id="btnClearSearch" class="btn-clear-search" aria-label="Hapus pencarian" style="display:none;">✕</button>
+      </div>
+      <div class="search-filter">
+        <button class="filter-chip active" data-filter="all">Semua</button>
+        <button class="filter-chip" data-filter="title">Judul</button>
+        <button class="filter-chip" data-filter="artist">Artis</button>
       </div>
     </section>
 

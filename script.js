@@ -50,6 +50,7 @@ function debounce(func, delay = 300) {
 // ─── STATE APLIKASI ───────────────────────────────────────────
 let allSongs = [];
 const API_BASE_URL = '/api/songs';
+let searchFilter = 'all'; // 'all', 'title', atau 'artist'
 
 // Buat debounced version dari handleSearch
 const debouncedSearch = debounce(handleSearch, 300);
@@ -107,8 +108,11 @@ async function loadSongs() {
   } catch (error) {
     console.error(error);
     songListContainer.innerHTML = `
-      <div class="empty-state">
-        <p>❌ Gagal memuat daftar lagu.</p>
+      <div class="empty-state error-state">
+        <div class="empty-icon">⚠️</div>
+        <p>Gagal memuat daftar lagu.</p>
+        <span class="empty-hint">Periksa koneksi internet kamu</span>
+        <button class="btn-retry" onclick="loadSongs()">🔄 Coba Lagi</button>
       </div>
     `;
   }
@@ -151,9 +155,15 @@ function renderSongList(songArray) {
 function handleSearch() {
   const searchInput = document.getElementById('searchInput');
   const searchBox = document.querySelector('.search-box');
+  const btnClear = document.getElementById('btnClearSearch');
   if (!searchInput) return;
 
   const keyword = searchInput.value.toLowerCase().trim();
+
+  // Tampilkan/sembunyikan tombol clear
+  if (btnClear) {
+    btnClear.style.display = keyword.length > 0 ? 'block' : 'none';
+  }
 
   // Tampilkan loading indicator saat searching
   if (keyword.length > 0) {
@@ -162,16 +172,59 @@ function handleSearch() {
     searchBox?.classList.remove('loading');
   }
 
-  const result = allSongs.filter(song =>
-    song.title.toLowerCase().includes(keyword) ||
-    song.artist.toLowerCase().includes(keyword)
-  );
+  const result = allSongs.filter(song => {
+    if (searchFilter === 'title') {
+      return song.title.toLowerCase().includes(keyword);
+    }
+    if (searchFilter === 'artist') {
+      return song.artist.toLowerCase().includes(keyword);
+    }
+    // default: 'all'
+    return song.title.toLowerCase().includes(keyword) ||
+           song.artist.toLowerCase().includes(keyword);
+  });
 
   renderSongList(result);
   
   // Hilangkan loading setelah hasil ditampilkan
   searchBox?.classList.remove('loading');
 }
+
+// ─── CLEAR SEARCH ──────────────────────────────────────────────
+function clearSearch() {
+  const searchInput = document.getElementById('searchInput');
+  const btnClear = document.getElementById('btnClearSearch');
+  
+  if (searchInput) {
+    searchInput.value = '';
+    searchInput.focus();
+  }
+  
+  if (btnClear) {
+    btnClear.style.display = 'none';
+  }
+  
+  renderSongList(allSongs); // Tampilkan semua lagu lagi
+}
+
+// ─── FILTER CHIPS (Semua/Judul/Artis) ──────────────────────────
+function setupFilterChips() {
+  const chips = document.querySelectorAll('.filter-chip');
+  
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      // Reset semua chip ke non-active
+      chips.forEach(c => c.classList.remove('active'));
+      // Set chip yang diklik jadi active
+      chip.classList.add('active');
+      // Update filter state
+      searchFilter = chip.dataset.filter;
+      // Jalankan ulang search dengan filter baru
+      handleSearch();
+    });
+  });
+}
+
 // ─── DETAIL LAGU ───────────────────────────────────────────────
 async function loadSongDetail() {
   const title = document.getElementById('songTitle');
@@ -233,7 +286,12 @@ async function loadSongDetail() {
 
   } catch (error) {
     console.error(error);
-    lyrics.textContent = "Gagal memuat lagu.";
+    lyrics.innerHTML = `
+      <div class="error-state">
+        <p>⚠️ Gagal memuat lagu.</p>
+        <span class="empty-hint">Periksa koneksi internet kamu</span>
+      </div>
+    `;
   }
 }
 // ─── TRANSPOSE CHORD ──────────────────────────────────────────
@@ -381,6 +439,15 @@ document.addEventListener('DOMContentLoaded', () => {
   if (searchInput) {
     searchInput.addEventListener('input', debouncedSearch);
   }
+
+  // Setup tombol clear search
+  const btnClearSearch = document.getElementById('btnClearSearch');
+  if (btnClearSearch) {
+    btnClearSearch.addEventListener('click', clearSearch);
+  }
+
+  // Setup filter chips (Semua/Judul/Artis)
+  setupFilterChips();
 
   loadSongs();        // Untuk halaman utama (index.html)
   loadSongDetail();   // Untuk halaman detail (detail.html)
