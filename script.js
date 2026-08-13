@@ -82,6 +82,31 @@ function updateTransposeDisplay() {
   display.textContent = `Transpose: ${sign}${transposeValue}`;
 }
 
+// ─── SKELETON RENDERER ─────────────────────────────────────────
+// Bikin beberapa kartu skeleton yang bentuknya meniru song-card asli,
+// supaya transisi skeleton → data asli terasa mulus (bukan lompat)
+function renderSongSkeletons(count = 4) {
+  return Array.from({ length: count }, () => `
+    <div class="skeleton-song-card">
+      <div class="skeleton skeleton-title"></div>
+      <div class="skeleton skeleton-artist"></div>
+    </div>
+  `).join('');
+}
+
+function renderLyricsSkeleton() {
+  return `
+    <div class="skeleton-lyrics">
+      <div class="skeleton skeleton-line w-3-5"></div>
+      <div class="skeleton skeleton-line w-full"></div>
+      <div class="skeleton skeleton-line w-4-5"></div>
+      <div class="skeleton skeleton-line w-full"></div>
+      <div class="skeleton skeleton-line w-2-5"></div>
+      <div class="skeleton skeleton-line w-4-5"></div>
+    </div>
+  `;
+}
+
 // ─── LOAD DATA LAGU ───────────────────────────────────────────
 async function loadSongs() {
   const songListContainer = document.getElementById('songList');
@@ -89,12 +114,7 @@ async function loadSongs() {
 
   try {
     // Tampilkan loading state
-    songListContainer.innerHTML = `
-      <div class="empty-state">
-        <div class="loading-spinner"></div>
-        <p>Memuat daftar lagu...</p>
-      </div>
-    `;
+    songListContainer.innerHTML = renderSongSkeletons(4);
 
     const response = await fetch(API_BASE_URL);
 
@@ -248,8 +268,9 @@ async function loadSongDetail() {
 
   try {
     // Tampilkan loading dengan spinner
-    lyrics.innerHTML = `<div class="loading-spinner"></div> Memuat chord...`;
-
+// Tampilkan skeleton loading yang meniru bentuk baris chord/lirik
+    lyrics.innerHTML = renderLyricsSkeleton();
+    
     const response = await fetch(`${API_BASE_URL}/${encodeURIComponent(id)}`);
 
     // ✅ Cek dulu apakah fetch berhasil sebelum membaca isinya
