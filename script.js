@@ -419,6 +419,55 @@ async function copyChord() {
   }
 }
 
+// ─── SHARE LAGU ────────────────────────────────────────────────
+// Pakai Web Share API (native share sheet) kalau didukung browser,
+// fallback ke copy link kalau tidak didukung (misal di desktop Chrome/Firefox)
+async function shareSong() {
+  const btn = document.getElementById('btnShareSong');
+  const title = document.getElementById('songTitle');
+  const artist = document.getElementById('songArtist');
+  if (!btn) return;
+
+  const shareData = {
+    title: `${title?.textContent || 'Chord Lagu'} - ChordPlayer`,
+    text: `Lihat chord "${title?.textContent}" oleh ${artist?.textContent} di ChordPlayer`,
+    url: window.location.href
+  };
+
+  // Cek apakah browser support native share (biasanya di HP)
+  if (navigator.share) {
+    try {
+      await navigator.share(shareData);
+    } catch (error) {
+      // User batal share (klik cancel) — tidak perlu tampilkan error
+      if (error.name !== 'AbortError') {
+        console.error('Gagal share:', error);
+      }
+    }
+  } else {
+    // Fallback: copy link ke clipboard (untuk desktop)
+    try {
+      await navigator.clipboard.writeText(shareData.url);
+      showShareFeedback(btn);
+    } catch (error) {
+      fallbackCopy(shareData.url);
+      showShareFeedback(btn);
+    }
+  }
+}
+
+// Tampilkan feedback visual sesaat setelah link berhasil di-copy (fallback path)
+function showShareFeedback(btn) {
+  const originalText = btn.textContent;
+  btn.textContent = '✅ Link tersalin!';
+  btn.classList.add('copied');
+
+  setTimeout(() => {
+    btn.textContent = originalText;
+    btn.classList.remove('copied');
+  }, 1500);
+}
+
 // Fallback pakai textarea sementara (untuk browser yang tidak support Clipboard API)
 function fallbackCopy(text) {
   const textarea = document.createElement('textarea');
@@ -451,7 +500,8 @@ function setupDetailControls() {
   const btnUp = document.getElementById('btnTransposeUp');
   const btnDown = document.getElementById('btnTransposeDown');
   const btnScroll = document.getElementById('btnAutoScroll');
-  const btnCopy = document.getElementById('btnCopyChord'); // ← Ditambahkan
+  const btnCopy = document.getElementById('btnCopyChord');
+  const btnShare = document.getElementById('btnShareSong'); // ← Ditambahkan
 
   if (btnUp) {
     btnUp.addEventListener('click', transposeUp);
@@ -465,9 +515,13 @@ function setupDetailControls() {
     btnScroll.addEventListener('click', autoScroll);
   }
 
-  if (btnCopy) {                              // ← Ditambahkan
-    btnCopy.addEventListener('click', copyChord); // ← Ditambahkan
-  }                                            // ← Ditambahkan
+  if (btnCopy) {
+    btnCopy.addEventListener('click', copyChord);
+  }
+
+  if (btnShare) {                                // ← Ditambahkan
+    btnShare.addEventListener('click', shareSong); // ← Ditambahkan
+  }                                               // ← Ditambahkan
 }
 
 // ─── START ────────────────────────────────────────────────────

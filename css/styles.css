@@ -309,6 +309,23 @@ footer {
   background-color: transparent;
 }
 
+/* Tombol share lagu */
+.btn-share {
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+}
+
+.btn-share:hover {
+  background-color: var(--accent-color);
+  color: #ffffff;
+}
+
+.btn-share.copied {
+  border-color: var(--green-accent);
+  color: var(--green-accent);
+  background-color: transparent;
+}
+
 /* Tampilan nilai transpose */
 .transpose-display {
   font-size: 0.9rem;
