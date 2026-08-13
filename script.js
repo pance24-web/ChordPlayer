@@ -1,5 +1,6 @@
 // ─── DARK MODE MANAGEMENT ─────────────────────────────────────
 const DARK_MODE_KEY = 'chordplayer-dark-mode';
+const SCROLL_POSITION_PREFIX = 'chordplayer-scroll-'; // ← Ditambahkan
 
 function initDarkMode() {
   // Cek localStorage atau system preference
@@ -276,6 +277,8 @@ async function loadSongDetail() {
     // ✅ Reset tampilan transpose
     updateTransposeDisplay();
 
+    // ✅ Pulihkan posisi scroll terakhir untuk lagu ini
+    restoreScrollPosition(id); // ← Ditambahkan
     // ✅ Reset tombol scroll jika sebelumnya aktif
     if (scrollInterval) {
       clearInterval(scrollInterval);
@@ -462,6 +465,42 @@ async function shareSong() {
 function printChord() {
   window.print();
 }
+
+// ─── SIMPAN & PULIHKAN POSISI SCROLL ──────────────────────────
+// Posisi disimpan per-lagu (pakai song ID) supaya tidak tertukar
+// antar lagu. Disimpan hanya saat scroll berhenti (debounce),
+// bukan di setiap event scroll, biar tidak boros write ke localStorage.
+
+function getScrollKey(songId) {
+  return `${SCROLL_POSITION_PREFIX}${songId}`;
+}
+
+function saveScrollPosition(songId) {
+  if (!songId) return;
+  localStorage.setItem(getScrollKey(songId), window.scrollY.toString());
+}
+
+function restoreScrollPosition(songId) {
+  if (!songId) return;
+
+  const savedPosition = localStorage.getItem(getScrollKey(songId));
+  if (savedPosition === null) return;
+
+  const position = parseInt(savedPosition, 10);
+  if (isNaN(position) || position <= 0) return;
+
+  // Delay singkat supaya konten (chord/lirik) sudah selesai dirender
+  // sebelum browser scroll ke posisi tersimpan
+  setTimeout(() => {
+    window.scrollTo({ top: position, behavior: 'instant' });
+  }, 100);
+}
+
+// Debounced version — dipanggil di event listener scroll
+const debouncedSaveScroll = debounce((songId) => {
+  saveScrollPosition(songId);
+}, 500);
+
 // Tampilkan feedback visual sesaat setelah link berhasil di-copy (fallback path)
 function showShareFeedback(btn) {
   const originalText = btn.textContent;
@@ -564,5 +603,14 @@ document.addEventListener('DOMContentLoaded', () => {
   loadSongs();        // Untuk halaman utama (index.html)
   loadSongDetail();   // Untuk halaman detail (detail.html)
   setupDetailControls(); // ✅ Pasang event listener tombol detail
+
+  // ✅ Setup penyimpanan posisi scroll (hanya relevan di halaman detail)
+  const params = new URLSearchParams(window.location.search); // ← Ditambahkan
+  const currentSongId = params.get('id');                     // ← Ditambahkan
+  if (currentSongId) {                                         // ← Ditambahkan
+    window.addEventListener('scroll', () => {                  // ← Ditambahkan
+      debouncedSaveScroll(currentSongId);                       // ← Ditambahkan
+    });                                                          // ← Ditambahkan
+  }                                                              // ← Ditambahkan
 
 });
