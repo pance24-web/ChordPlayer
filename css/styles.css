@@ -292,6 +292,23 @@ footer {
   color: #ffffff;
 }
 
+/* Tombol copy chord */
+.btn-copy {
+  border-color: var(--text-secondary);
+  color: var(--text-secondary);
+}
+
+.btn-copy:hover {
+  background-color: var(--text-secondary);
+  color: #ffffff;
+}
+
+.btn-copy.copied {
+  border-color: var(--green-accent);
+  color: var(--green-accent);
+  background-color: transparent;
+}
+
 /* Tampilan nilai transpose */
 .transpose-display {
   font-size: 0.9rem;

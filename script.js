@@ -400,6 +400,49 @@ function autoScroll() {
   if (btn) btn.textContent = '⏸ Stop Scroll';
 }
 
+// ─── COPY CHORD ────────────────────────────────────────────────
+// Menyalin chord & lirik yang sedang ditampilkan (sudah termasuk transpose) ke clipboard
+async function copyChord() {
+  const btn = document.getElementById('btnCopyChord');
+  const lyrics = document.getElementById('lyricsArea');
+  if (!lyrics || !btn) return;
+
+  const textToCopy = lyrics.textContent;
+
+  try {
+    await navigator.clipboard.writeText(textToCopy);
+    showCopyFeedback(btn);
+  } catch (error) {
+    // Fallback untuk browser lama / permission ditolak
+    fallbackCopy(textToCopy);
+    showCopyFeedback(btn);
+  }
+}
+
+// Fallback pakai textarea sementara (untuk browser yang tidak support Clipboard API)
+function fallbackCopy(text) {
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  textarea.style.position = 'fixed';
+  textarea.style.opacity = '0';
+  document.body.appendChild(textarea);
+  textarea.select();
+  document.execCommand('copy');
+  document.body.removeChild(textarea);
+}
+
+// Tampilkan feedback visual sesaat setelah berhasil copy
+function showCopyFeedback(btn) {
+  const originalText = btn.textContent;
+  btn.textContent = '✅ Tersalin!';
+  btn.classList.add('copied');
+
+  setTimeout(() => {
+    btn.textContent = originalText;
+    btn.classList.remove('copied');
+  }, 1500);
+}
+
 // ─── EVENT LISTENERS (Halaman Detail) ─────────────────────────
 // Menghubungkan tombol dengan fungsinya lewat JavaScript,
 // bukan lewat onclick di HTML
@@ -408,8 +451,8 @@ function setupDetailControls() {
   const btnUp = document.getElementById('btnTransposeUp');
   const btnDown = document.getElementById('btnTransposeDown');
   const btnScroll = document.getElementById('btnAutoScroll');
+  const btnCopy = document.getElementById('btnCopyChord'); // ← Ditambahkan
 
-  // Tombol hanya ada di halaman detail, jadi kita cek dulu
   if (btnUp) {
     btnUp.addEventListener('click', transposeUp);
   }
@@ -421,6 +464,10 @@ function setupDetailControls() {
   if (btnScroll) {
     btnScroll.addEventListener('click', autoScroll);
   }
+
+  if (btnCopy) {                              // ← Ditambahkan
+    btnCopy.addEventListener('click', copyChord); // ← Ditambahkan
+  }                                            // ← Ditambahkan
 }
 
 // ─── START ────────────────────────────────────────────────────
