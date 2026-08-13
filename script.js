@@ -72,6 +72,30 @@ function escapeHTML(text) {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
 }
+// ─── TOAST NOTIFICATION SYSTEM ─────────────────────────────────
+// Sistem notifikasi ringan untuk feedback aksi (copy, share, error, dll).
+// type: 'default' | 'success' | 'error'
+function showToast(message, type = 'default', duration = 2500) {
+  const container = document.getElementById('toastContainer');
+  if (!container) return;
+
+  const icons = { default: 'ℹ️', success: '✅', error: '⚠️' };
+
+  const toast = document.createElement('div');
+  toast.className = `toast toast-${type}`;
+  toast.style.setProperty('--toast-duration', `${duration}ms`);
+  toast.innerHTML = `
+    <span class="toast-icon">${icons[type] || icons.default}</span>
+    <span>${escapeHTML(message)}</span>
+  `;
+
+  container.appendChild(toast);
+
+  // Hapus toast dari DOM setelah animasi selesai (durasi masuk + tampil + keluar)
+  setTimeout(() => {
+    toast.remove();
+  }, duration + 250);
+}
 
 // ─── UPDATE TAMPILAN TRANSPOSE ────────────────────────────────
 function updateTransposeDisplay() {
@@ -136,6 +160,7 @@ async function loadSongs() {
         <button class="btn-retry" onclick="loadSongs()">🔄 Coba Lagi</button>
       </div>
     `;
+    showToast('Gagal memuat daftar lagu', 'error'); // ← Ditambahkan
   }
 }
 
@@ -270,7 +295,7 @@ async function loadSongDetail() {
     // Tampilkan loading dengan spinner
 // Tampilkan skeleton loading yang meniru bentuk baris chord/lirik
     lyrics.innerHTML = renderLyricsSkeleton();
-    
+
     const response = await fetch(`${API_BASE_URL}/${encodeURIComponent(id)}`);
 
     // ✅ Cek dulu apakah fetch berhasil sebelum membaca isinya
@@ -316,6 +341,7 @@ async function loadSongDetail() {
         <span class="empty-hint">Periksa koneksi internet kamu</span>
       </div>
     `;
+    showToast('Gagal memuat chord', 'error'); // ← Ditambahkan
   }
 }
 
@@ -454,10 +480,12 @@ async function copyChord() {
   try {
     await navigator.clipboard.writeText(textToCopy);
     showCopyFeedback(btn);
+    showToast('Chord berhasil disalin', 'success'); // ← Ditambahkan
   } catch (error) {
     // Fallback untuk browser lama / permission ditolak
     fallbackCopy(textToCopy);
     showCopyFeedback(btn);
+    showToast('Chord berhasil disalin', 'success'); // ← Ditambahkan
   }
 }
 
@@ -491,9 +519,11 @@ async function shareSong() {
     try {
       await navigator.clipboard.writeText(shareData.url);
       showShareFeedback(btn);
+      showToast('Link berhasil disalin', 'success'); // ← Ditambahkan
     } catch (error) {
       fallbackCopy(shareData.url);
       showShareFeedback(btn);
+      showToast('Link berhasil disalin', 'success'); // ← Ditambahkan
     }
   }
 }

@@ -572,7 +572,64 @@ footer {
    shadow/gradient, chord dibedakan lewat bold + warna
    aksen tipis (hemat tinta), bukan background block.
    ═══════════════════════════════════════════════════════ */
-@media print {
+/* ─── TOAST NOTIFICATION ─── */
+.toast-container {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  z-index: 1000;
+  width: 90%;
+  max-width: 360px;
+  pointer-events: none; /* Container transparan terhadap klik, toast individu tetap bisa */
+}
+
+.toast {
+  background-color: var(--text-primary);
+  color: var(--bg-secondary);
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0;
+  transform: translateY(12px);
+  animation: toast-in 0.25s ease forwards, toast-out 0.25s ease forwards var(--toast-duration, 2.5s);
+  pointer-events: auto;
+}
+
+.toast-icon {
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.toast.toast-success {
+  background-color: var(--green-accent);
+  color: #ffffff;
+}
+
+.toast.toast-error {
+  background-color: #dc2626;
+  color: #ffffff;
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes toast-out {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-8px); }
+}
+
+   @media print {
 
   /* Reset warna paksa ke mode terang, apapun tema aktifnya */
   body {
