@@ -455,7 +455,13 @@ async function shareSong() {
     }
   }
 }
-
+// ─── PRINT CHORD ───────────────────────────────────────────────
+// Memicu dialog print browser. Layout kertas diatur penuh lewat
+// @media print di styles.css — nav, tombol, dark mode disembunyikan
+// otomatis, tanpa perlu manipulasi DOM di sini.
+function printChord() {
+  window.print();
+}
 // Tampilkan feedback visual sesaat setelah link berhasil di-copy (fallback path)
 function showShareFeedback(btn) {
   const originalText = btn.textContent;
@@ -501,7 +507,8 @@ function setupDetailControls() {
   const btnDown = document.getElementById('btnTransposeDown');
   const btnScroll = document.getElementById('btnAutoScroll');
   const btnCopy = document.getElementById('btnCopyChord');
-  const btnShare = document.getElementById('btnShareSong'); // ← Ditambahkan
+  const btnShare = document.getElementById('btnShareSong');
+  const btnPrint = document.getElementById('btnPrintChord'); // ← Ditambahkan
 
   if (btnUp) {
     btnUp.addEventListener('click', transposeUp);
@@ -519,9 +526,13 @@ function setupDetailControls() {
     btnCopy.addEventListener('click', copyChord);
   }
 
-  if (btnShare) {                                // ← Ditambahkan
-    btnShare.addEventListener('click', shareSong); // ← Ditambahkan
-  }                                               // ← Ditambahkan
+  if (btnShare) {
+    btnShare.addEventListener('click', shareSong);
+  }
+
+  if (btnPrint) {                              // ← Ditambahkan
+    btnPrint.addEventListener('click', printChord); // ← Ditambahkan
+  }                                             // ← Ditambahkan
 }
 
 // ─── START ────────────────────────────────────────────────────

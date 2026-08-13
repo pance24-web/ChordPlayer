@@ -319,6 +319,21 @@ footer {
   background-color: var(--accent-color);
   color: #ffffff;
 }
+/* Tombol print chord */
+.btn-print {
+  border-color: var(--green-accent);
+  color: var(--green-accent);
+}
+
+.btn-print:hover {
+  background-color: var(--green-accent);
+  color: #ffffff;
+}
+
+/* Print header — disembunyikan di layar, hanya muncul di kertas */
+.print-header {
+  display: none;
+}
 
 .btn-share.copied {
   border-color: var(--green-accent);
@@ -493,4 +508,89 @@ footer {
   background-color: var(--accent-color);
   border-color: var(--accent-color);
   color: white;
+}
+
+/* ═══════════════════════════════════════════════════════
+   PRINT STYLESHEET
+   Kertas punya aturan sendiri: tanpa dark mode, tanpa
+   shadow/gradient, chord dibedakan lewat bold + warna
+   aksen tipis (hemat tinta), bukan background block.
+   ═══════════════════════════════════════════════════════ */
+@media print {
+
+  /* Reset warna paksa ke mode terang, apapun tema aktifnya */
+  body {
+    background: #ffffff !important;
+    color: #1a1a1a !important;
+  }
+
+  /* Sembunyikan semua elemen yang tidak relevan di kertas */
+  header,
+  footer,
+  .btn-back,
+  .control-panel,
+  .search-section {
+    display: none !important;
+  }
+
+  /* Header cetak: brand kecil + garis pemisah bertinta tipis */
+  .print-header {
+    display: block !important;
+    margin-bottom: 1.5rem;
+  }
+
+  .print-brand {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #666666;
+  }
+
+  .print-divider {
+    height: 2px;
+    background: #1a1a1a;
+    margin-top: 0.4rem;
+    width: 48px;
+  }
+
+  /* Judul & artis — tetap terlihat, tanpa warna aksen biru */
+  .meta-data h2 {
+    color: #1a1a1a !important;
+    font-size: 1.5rem;
+  }
+
+  .song-artist {
+    color: #555555 !important;
+  }
+
+  /* Area lirik & chord: prioritas utama halaman cetak */
+  .lyrics-area {
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 11pt;
+    line-height: 1.7;
+    color: #1a1a1a !important;
+  }
+
+  /* Buang margin/padding container agar konten memenuhi kertas */
+  .container {
+    max-width: 100%;
+    margin: 0;
+    padding: 0.5cm;
+  }
+
+  /* Cegah lirik terpotong tanggung di tengah baris antar halaman */
+  .lyrics-area {
+    orphans: 3;
+    widows: 3;
+  }
+
+  /* Setup halaman: margin standar, tanpa header/footer browser default */
+  @page {
+    margin: 1.5cm;
+  }
 }
