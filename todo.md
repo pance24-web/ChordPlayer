@@ -24,8 +24,8 @@ Meningkatkan kualitas ChordPlayer dari sisi **User Experience**, **Performance**
 - [x] Tambahkan tombol copy chord completed:2026-08-13
 - [x] Tambahkan tombol share lagu completed:2026-08-13
 - [x] Tambahkan tombol print chord completed:2026-08-13
-- [ ] Tambahkan tombol kembali ke daftar lagu
-- [ ] Simpan posisi auto scroll terakhir
+- [x] Tambahkan tombol kembali ke daftar lagu completed:2026-08-14
+- [x] Simpan posisi auto scroll terakhir completed:2026-08-14
 
 ## Interface
 

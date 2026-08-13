@@ -297,6 +297,24 @@ async function loadSongDetail() {
     `;
   }
 }
+
+// ─── TOMBOL KEMBALI (SMART BACK) ───────────────────────────────
+// Pakai history.back() supaya search/filter di index.html tidak
+// hilang (browser kembalikan state halaman dari cache).
+// Fallback ke index.html kalau tidak ada history sebelumnya
+// (misal user buka link detail langsung dari share/bookmark).
+function handleBackClick(event) {
+  // Cek apakah ada history untuk di-back.
+  // window.history.length > 1 artinya user datang dari halaman lain
+  // di dalam aplikasi ini (bukan buka link detail langsung dari luar)
+  if (window.history.length > 1 && document.referrer.includes(window.location.origin)) {
+    event.preventDefault(); // Batalkan navigasi href default
+    window.history.back();
+  }
+  // Kalau tidak ada history yang relevan, biarkan href="index.html"
+  // bawaan yang jalan (tidak perlu preventDefault)
+}
+
 // ─── TRANSPOSE CHORD ──────────────────────────────────────────
 // Fungsi ini mengubah nada chord (misal C jadi D) berdasarkan
 // jumlah langkah (step). Step positif = naik nada, negatif = turun nada.
@@ -547,8 +565,9 @@ function setupDetailControls() {
   const btnScroll = document.getElementById('btnAutoScroll');
   const btnCopy = document.getElementById('btnCopyChord');
   const btnShare = document.getElementById('btnShareSong');
-  const btnPrint = document.getElementById('btnPrintChord'); // ← Ditambahkan
-
+  const btnPrint = document.getElementById('btnPrintChord');
+  const btnBack = document.getElementById('btnBack'); // ← Ditambahkan
+ 
   if (btnUp) {
     btnUp.addEventListener('click', transposeUp);
   }
@@ -571,7 +590,14 @@ function setupDetailControls() {
 
   if (btnPrint) {                              // ← Ditambahkan
     btnPrint.addEventListener('click', printChord); // ← Ditambahkan
-  }                                             // ← Ditambahkan
+  }  
+  if (btnPrint) {
+    btnPrint.addEventListener('click', printChord);
+  }
+
+  if (btnBack) {                                  // ← Ditambahkan
+    btnBack.addEventListener('click', handleBackClick); // ← Ditambahkan
+  }                                                // ← Ditambahkan                                           // ← Ditambahkan
 }
 
 // ─── START ────────────────────────────────────────────────────
