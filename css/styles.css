@@ -486,6 +486,114 @@ footer {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Panel diagram chord gitar */
+.chord-diagram-panel {
+  margin: var(--space-5) 0;
+  padding: var(--space-5);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.chord-diagram-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-3);
+}
+
+.section-kicker {
+  margin: 0 0 0.2rem;
+  color: var(--green-accent);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.chord-diagram-heading h3 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 1.25rem;
+}
+
+.chord-diagram-hint,
+.diagram-order {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+}
+
+.chord-diagram {
+  display: flex;
+  min-height: 190px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.guitar-diagram-svg {
+  width: min(100%, 300px);
+  height: auto;
+  overflow: visible;
+}
+
+.diagram-string,
+.diagram-fret {
+  stroke: var(--text-secondary);
+  stroke-width: 1.4;
+  opacity: 0.72;
+}
+
+.diagram-fret {
+  opacity: 0.55;
+}
+
+.diagram-nut {
+  stroke: var(--text-primary);
+  stroke-width: 4;
+}
+
+.diagram-dot {
+  fill: var(--green-accent);
+  stroke: var(--green-accent);
+}
+
+.diagram-dot-label {
+  fill: var(--bg-primary);
+  font-size: 0.55rem;
+  font-weight: 700;
+}
+
+.diagram-open,
+.diagram-muted,
+.diagram-string-label {
+  fill: var(--text-primary);
+}
+
+.diagram-open {
+  stroke: var(--text-primary);
+  stroke-width: 2;
+}
+
+.diagram-muted {
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.diagram-string-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
+.diagram-empty {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
 /* Area chord & lirik */
 .lyrics-area {
   background-color: var(--bg-secondary);
@@ -506,6 +614,38 @@ footer {
 .lyrics-area.text-transition {
   opacity: 0.4;
   transition: opacity 0.12s ease;
+}
+
+/* Highlight chord yang sedang berada di area baca aktif */
+.lyrics-line {
+  min-height: 1.8em;
+  border-radius: 0.35rem;
+  transition: background-color 0.18s ease;
+}
+
+.chord-token {
+  color: var(--green-accent);
+  font-weight: 700;
+  transition: color 0.18s ease, background-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.chord-token.active-chord {
+  color: var(--bg-primary);
+  background-color: var(--green-accent);
+  border-radius: 0.25rem;
+  box-shadow: 0 0 0 0.2rem color-mix(in srgb, var(--green-accent) 18%, transparent);
+  padding: 0.08em 0.25em;
+}
+
+.lyrics-line.active-chord-line {
+  background-color: color-mix(in srgb, var(--green-accent) 7%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lyrics-line,
+  .chord-token {
+    transition: none;
+  }
 }
 
 /* ─── THEME TOGGLE ─── */
@@ -725,6 +865,19 @@ footer {
 
   .btn-scroll {
     margin-left: 0;
+  }
+
+  .chord-diagram-panel {
+    padding: var(--space-4);
+  }
+
+  .chord-diagram-heading {
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .chord-diagram-hint {
+    font-size: 0.75rem;
   }
 
   .lyrics-area {
