@@ -70,7 +70,7 @@ function escapeHTML(text) {
 }
 
 // ─── HIGHLIGHT CHORD AKTIF ─────────────────────────────────────
-const chordTokenPattern = /\b[A-G](?:#|b)?(?:m|maj|min|7|sus|dim|add)?(?:\/[A-G](?:#|b)?)?\b/g;
+const chordTokenPattern = /\b[A-G](?:#|b)?(?:7sus4|maj9|maj7|maj|min9|min7|m9|m7|sus2|sus4|sus|dim7|dim|aug|add\d+|13|9|6|7|m|min)?(?:\/[A-G](?:#|b)?)?(?![#bA-Za-z0-9])/g;
 
 const guitarChordShapes = {
   C: ['x', 3, 2, 0, 1, 0],
@@ -511,47 +511,22 @@ const flatToSharp = {
   "Bb": "A#"
 };
 
+function transposeNote(note, step) {
+  const normalizedNote = flatToSharp[note] || note;
+  const index = chordList.indexOf(normalizedNote);
+  if (index === -1) return note;
+  const transposedIndex = (index + step) % chordList.length;
+  return chordList[(transposedIndex + chordList.length) % chordList.length];
+}
+
 function transposeChord(chord, step) {
-  return chord.replace(
-    /\b[A-G](#|b)?(m|maj|min|7|sus|dim|add)?\b/g,
-    function(match) {
+  const chordPattern = /\b([A-G](?:#|b)?)(7sus4|maj9|maj7|maj|min9|min7|m9|m7|sus2|sus4|sus|dim7|dim|aug|add\d+|13|9|6|7|m|min)?(?:\/([A-G](?:#|b)?))?(?![#bA-Za-z0-9])/g;
 
-      let root = match;
-      let suffix = "";
-
-      if (match.length > 1) {
-        if (match[1] === "#" || match[1] === "b") {
-          root = match.substring(0, 2);
-          suffix = match.substring(2);
-        } else {
-          root = match.substring(0, 1);
-          suffix = match.substring(1);
-        }
-      }
-
-      if (flatToSharp[root]) {
-        root = flatToSharp[root];
-      }
-
-      let index = chordList.indexOf(root);
-
-      if (index === -1) {
-        return match;
-      }
-
-      index += step;
-
-      if (index < 0) {
-        index += chordList.length;
-      }
-
-      if (index >= chordList.length) {
-        index -= chordList.length;
-      }
-
-      return chordList[index] + suffix;
-    }
-  );
+  return chord.replace(chordPattern, (match, root, quality = '', bass) => {
+    const transposedRoot = transposeNote(root, step);
+    const transposedBass = bass ? `/${transposeNote(bass, step)}` : '';
+    return `${transposedRoot}${quality}${transposedBass}`;
+  });
 }
 
 // ─── UPDATE TAMPILAN CHORD ─────────────────────────────────────
@@ -579,6 +554,14 @@ function transposeUp() {
 
 function transposeDown() {
   transposeValue--;
+  updateChordDisplay();
+  updateTransposeDisplay();
+  updateCapoRecommendation();
+}
+
+function resetTranspose() {
+  if (transposeValue === 0) return;
+  transposeValue = 0;
   updateChordDisplay();
   updateTransposeDisplay();
   updateCapoRecommendation();
@@ -800,6 +783,7 @@ function showCopyFeedback(btn) {
 function setupDetailControls() {
   const btnUp = document.getElementById('btnTransposeUp');
   const btnDown = document.getElementById('btnTransposeDown');
+  const btnReset = document.getElementById('btnResetTranspose');
   const btnScroll = document.getElementById('btnAutoScroll');
   const btnCopy = document.getElementById('btnCopyChord');
   const btnShare = document.getElementById('btnShareSong');
@@ -813,6 +797,10 @@ function setupDetailControls() {
 
   if (btnDown) {
     btnDown.addEventListener('click', transposeDown);
+  }
+
+  if (btnReset) {
+    btnReset.addEventListener('click', resetTranspose);
   }
 
   if (btnScroll) {
