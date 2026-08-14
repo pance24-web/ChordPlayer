@@ -20,7 +20,7 @@
 </header>
   <main class="container">
 
-  <!-- ✅ Tombol kembali -->
+  <!-- Tombol kembali (smart back — pertahankan state search) -->
   <a href="index.html" class="btn-back" id="btnBack">← Kembali</a>
 
   <!-- Info lagu -->
@@ -30,26 +30,28 @@
   </section>
 
   <!-- Tombol kontrol -->
-<section class="control-panel">
-  <button class="btn-control" id="btnTransposeUp">▲ Transpose Up</button>
-  <span id="transposeDisplay" class="transpose-display">Transpose: 0</span>
-  <button class="btn-control" id="btnTransposeDown">▼ Transpose Down</button>
-  <button class="btn-control btn-scroll" id="btnAutoScroll">▶ Auto Scroll</button>
-  <button class="btn-control btn-copy" id="btnCopyChord">📋 Copy Chord</button>
-  <button class="btn-control btn-share" id="btnShareSong">🔗 Bagikan</button>
-  <button class="btn-control btn-print" id="btnPrintChord">🖨️ Print</button>
-</section>
+  <section class="control-panel">
+    <button class="btn-control" id="btnTransposeUp">▲ Transpose Up</button>
+    <span id="transposeDisplay" class="transpose-display">Transpose: 0</span>
+    <button class="btn-control" id="btnTransposeDown">▼ Transpose Down</button>
+    <button class="btn-control btn-scroll" id="btnAutoScroll">▶ Auto Scroll</button>
+    <button class="btn-control btn-copy" id="btnCopyChord">📋 Copy Chord</button>
+    <button class="btn-control btn-share" id="btnShareSong">🔗 Bagikan</button>
+    <button class="btn-control btn-print" id="btnPrintChord">🖨️ Print</button>
+  </section>
 
-<!-- Header ini hanya muncul di kertas, disembunyikan di layar -->
-<div class="print-header">
-  <div class="print-brand">ChordPlayer</div>
-  <div class="print-divider"></div>
-</div>
- <!-- Area chord & lirik -->
-<pre id="lyricsArea" class="lyrics-area">Memuat chord...</pre>
+  <!-- Header ini hanya muncul di kertas, disembunyikan di layar -->
+  <div class="print-header">
+    <div class="print-brand">ChordPlayer</div>
+    <div class="print-divider"></div>
+  </div>
 
-</main>
+  <!-- Area chord & lirik -->
+  <pre id="lyricsArea" class="lyrics-area">Memuat chord...</pre>
+
+  </main>
   <footer>© 2026 ChordPlayer App</footer>
+
   <!-- Container untuk toast notification -->
   <div id="toastContainer" class="toast-container" aria-live="polite"></div>
 

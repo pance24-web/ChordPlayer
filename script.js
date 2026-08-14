@@ -1,11 +1,10 @@
 // ─── DARK MODE MANAGEMENT ─────────────────────────────────────
 const DARK_MODE_KEY = 'chordplayer-dark-mode';
-const SCROLL_POSITION_PREFIX = 'chordplayer-scroll-'; // ← Ditambahkan
+const SCROLL_POSITION_PREFIX = 'chordplayer-scroll-';
 
 function initDarkMode() {
-  // Cek localStorage atau system preference
   const savedTheme = localStorage.getItem(DARK_MODE_KEY);
-  
+
   if (savedTheme === 'dark') {
     document.body.classList.add('dark-mode');
     updateThemeToggle(true);
@@ -13,7 +12,6 @@ function initDarkMode() {
     document.body.classList.remove('dark-mode');
     updateThemeToggle(false);
   } else {
-    // Jika belum ada setting, ikuti system preference
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     if (prefersDark) {
       document.body.classList.add('dark-mode');
@@ -37,9 +35,6 @@ function updateThemeToggle(isDark) {
 }
 
 // ─── DEBOUNCE UTILITY ─────────────────────────────────────────
-// Fungsi ini menundakan eksekusi function sampai user berhenti ngetik
-// Misal: kalau ngetik 3 huruf berturut-turut (3 oninput events),
-// function hanya dijalankan 1x setelah 300ms user berhenti
 function debounce(func, delay = 300) {
   let timeoutId;
   return function (...args) {
@@ -53,7 +48,6 @@ let allSongs = [];
 const API_BASE_URL = '/api/songs';
 let searchFilter = 'all'; // 'all', 'title', atau 'artist'
 
-// Buat debounced version dari handleSearch
 const debouncedSearch = debounce(handleSearch, 300);
 
 // ─── DETAIL CONTROL STATE ─────────────────────────────────────
@@ -61,9 +55,7 @@ let currentChord = "";
 let transposeValue = 0;
 let scrollInterval = null;
 
-
 // ─── SECURITY: ESCAPE HTML ────────────────────────────────────
-// Mencegah kode HTML/script masuk langsung ke halaman
 function escapeHTML(text) {
   return String(text)
     .replace(/&/g, "&amp;")
@@ -72,8 +64,8 @@ function escapeHTML(text) {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
 }
+
 // ─── TOAST NOTIFICATION SYSTEM ─────────────────────────────────
-// Sistem notifikasi ringan untuk feedback aksi (copy, share, error, dll).
 // type: 'default' | 'success' | 'error'
 function showToast(message, type = 'default', duration = 2500) {
   const container = document.getElementById('toastContainer');
@@ -91,7 +83,6 @@ function showToast(message, type = 'default', duration = 2500) {
 
   container.appendChild(toast);
 
-  // Hapus toast dari DOM setelah animasi selesai (durasi masuk + tampil + keluar)
   setTimeout(() => {
     toast.remove();
   }, duration + 250);
@@ -107,8 +98,6 @@ function updateTransposeDisplay() {
 }
 
 // ─── SKELETON RENDERER ─────────────────────────────────────────
-// Bikin beberapa kartu skeleton yang bentuknya meniru song-card asli,
-// supaya transisi skeleton → data asli terasa mulus (bukan lompat)
 function renderSongSkeletons(count = 4) {
   return Array.from({ length: count }, () => `
     <div class="skeleton-song-card">
@@ -137,7 +126,6 @@ async function loadSongs() {
   if (!songListContainer) return;
 
   try {
-    // Tampilkan loading state
     songListContainer.innerHTML = renderSongSkeletons(4);
 
     const response = await fetch(API_BASE_URL);
@@ -160,7 +148,7 @@ async function loadSongs() {
         <button class="btn-retry" onclick="loadSongs()">🔄 Coba Lagi</button>
       </div>
     `;
-    showToast('Gagal memuat daftar lagu', 'error'); // ← Ditambahkan
+    showToast('Gagal memuat daftar lagu', 'error');
   }
 }
 
@@ -175,7 +163,6 @@ function renderSongList(songArray) {
     songCountContainer.textContent = `${songArray.length} lagu`;
   }
 
-  // ✅ Tampilkan pesan jika hasil pencarian kosong
   if (songArray.length === 0) {
     songListContainer.innerHTML = `
       <div class="empty-state">
@@ -184,7 +171,7 @@ function renderSongList(songArray) {
         <span class="empty-hint">Coba kata kunci lain</span>
       </div>
     `;
-  return;
+    return;
   }
   songListContainer.innerHTML = songArray.map(song => `
     <a href="detail.html?id=${encodeURIComponent(song.id)}" class="song-card">
@@ -206,12 +193,10 @@ function handleSearch() {
 
   const keyword = searchInput.value.toLowerCase().trim();
 
-  // Tampilkan/sembunyikan tombol clear
   if (btnClear) {
     btnClear.style.display = keyword.length > 0 ? 'block' : 'none';
   }
 
-  // Tampilkan loading indicator saat searching
   if (keyword.length > 0) {
     searchBox?.classList.add('loading');
   } else {
@@ -225,14 +210,11 @@ function handleSearch() {
     if (searchFilter === 'artist') {
       return song.artist.toLowerCase().includes(keyword);
     }
-    // default: 'all'
     return song.title.toLowerCase().includes(keyword) ||
            song.artist.toLowerCase().includes(keyword);
   });
 
   renderSongList(result);
-  
-  // Hilangkan loading setelah hasil ditampilkan
   searchBox?.classList.remove('loading');
 }
 
@@ -240,32 +222,28 @@ function handleSearch() {
 function clearSearch() {
   const searchInput = document.getElementById('searchInput');
   const btnClear = document.getElementById('btnClearSearch');
-  
+
   if (searchInput) {
     searchInput.value = '';
     searchInput.focus();
   }
-  
+
   if (btnClear) {
     btnClear.style.display = 'none';
   }
-  
-  renderSongList(allSongs); // Tampilkan semua lagu lagi
+
+  renderSongList(allSongs);
 }
 
 // ─── FILTER CHIPS (Semua/Judul/Artis) ──────────────────────────
 function setupFilterChips() {
   const chips = document.querySelectorAll('.filter-chip');
-  
+
   chips.forEach(chip => {
     chip.addEventListener('click', () => {
-      // Reset semua chip ke non-active
       chips.forEach(c => c.classList.remove('active'));
-      // Set chip yang diklik jadi active
       chip.classList.add('active');
-      // Update filter state
       searchFilter = chip.dataset.filter;
-      // Jalankan ulang search dengan filter baru
       handleSearch();
     });
   });
@@ -292,13 +270,10 @@ async function loadSongDetail() {
   }
 
   try {
-    // Tampilkan loading dengan spinner
-// Tampilkan skeleton loading yang meniru bentuk baris chord/lirik
     lyrics.innerHTML = renderLyricsSkeleton();
 
     const response = await fetch(`${API_BASE_URL}/${encodeURIComponent(id)}`);
 
-    // ✅ Cek dulu apakah fetch berhasil sebelum membaca isinya
     if (response.status === 404) {
       title.textContent = "-";
       artist.textContent = "-";
@@ -320,12 +295,9 @@ async function loadSongDetail() {
     transposeValue = 0;
     lyrics.textContent = currentChord;
 
-    // ✅ Reset tampilan transpose
     updateTransposeDisplay();
+    restoreScrollPosition(id);
 
-    // ✅ Pulihkan posisi scroll terakhir untuk lagu ini
-    restoreScrollPosition(id); // ← Ditambahkan
-    // ✅ Reset tombol scroll jika sebelumnya aktif
     if (scrollInterval) {
       clearInterval(scrollInterval);
       scrollInterval = null;
@@ -341,38 +313,24 @@ async function loadSongDetail() {
         <span class="empty-hint">Periksa koneksi internet kamu</span>
       </div>
     `;
-    showToast('Gagal memuat chord', 'error'); // ← Ditambahkan
+    showToast('Gagal memuat chord', 'error');
   }
 }
 
 // ─── TOMBOL KEMBALI (SMART BACK) ───────────────────────────────
-// Pakai history.back() supaya search/filter di index.html tidak
-// hilang (browser kembalikan state halaman dari cache).
-// Fallback ke index.html kalau tidak ada history sebelumnya
-// (misal user buka link detail langsung dari share/bookmark).
 function handleBackClick(event) {
-  // Cek apakah ada history untuk di-back.
-  // window.history.length > 1 artinya user datang dari halaman lain
-  // di dalam aplikasi ini (bukan buka link detail langsung dari luar)
   if (window.history.length > 1 && document.referrer.includes(window.location.origin)) {
-    event.preventDefault(); // Batalkan navigasi href default
+    event.preventDefault();
     window.history.back();
   }
-  // Kalau tidak ada history yang relevan, biarkan href="index.html"
-  // bawaan yang jalan (tidak perlu preventDefault)
 }
 
 // ─── TRANSPOSE CHORD ──────────────────────────────────────────
-// Fungsi ini mengubah nada chord (misal C jadi D) berdasarkan
-// jumlah langkah (step). Step positif = naik nada, negatif = turun nada.
-// Contoh: transposeChord("C G Am", 2) akan menghasilkan "D A Bm"
 const chordList = [
   "C","C#","D","D#","E","F",
   "F#","G","G#","A","A#","B"
 ];
 
-// ✅ Tabel konversi flat → sharp
-// Karena Bb sama dengan A#, Eb sama dengan D#, dst
 const flatToSharp = {
   "Db": "C#",
   "Eb": "D#",
@@ -382,85 +340,86 @@ const flatToSharp = {
 };
 
 function transposeChord(chord, step) {
-
   return chord.replace(
     /\b[A-G](#|b)?(m|maj|min|7|sus|dim|add)?\b/g,
     function(match) {
-      
+
       let root = match;
       let suffix = "";
 
-      if(match.length > 1){
-        if(match[1] === "#" || match[1] === "b"){
-          root = match.substring(0,2);
+      if (match.length > 1) {
+        if (match[1] === "#" || match[1] === "b") {
+          root = match.substring(0, 2);
           suffix = match.substring(2);
-        }
-        else{
-          root = match.substring(0,1);
+        } else {
+          root = match.substring(0, 1);
           suffix = match.substring(1);
         }
       }
 
-      // ✅ Jika root adalah nada flat (misal "Bb"), ubah dulu ke bentuk sharp ("A#")
       if (flatToSharp[root]) {
         root = flatToSharp[root];
       }
 
       let index = chordList.indexOf(root);
 
-      if(index === -1){
-        return match; // chord tidak dikenali, biarkan apa adanya
+      if (index === -1) {
+        return match;
       }
 
       index += step;
 
-      if(index < 0){
+      if (index < 0) {
         index += chordList.length;
       }
 
-      if(index >= chordList.length){
+      if (index >= chordList.length) {
         index -= chordList.length;
       }
 
       return chordList[index] + suffix;
-
     }
   );
-}  
+}
+
 // ─── UPDATE TAMPILAN CHORD ─────────────────────────────────────
-// Menampilkan ulang chord ke layar setelah nilai transpose berubah
 function updateChordDisplay() {
   const lyrics = document.getElementById("lyricsArea");
-  lyrics.textContent = transposeChord(currentChord, transposeValue);
+  if (!lyrics) return;
+
+  // Fade out sebentar, ganti teks, fade in — perubahan transpose
+  // terasa halus, bukan "kedip" instan
+  lyrics.classList.add('text-transition');
+
+  setTimeout(() => {
+    lyrics.textContent = transposeChord(currentChord, transposeValue);
+    lyrics.classList.remove('text-transition');
+  }, 120);
 }
+
 function transposeUp() {
   transposeValue++;
   updateChordDisplay();
-  updateTransposeDisplay(); // ✅ perbarui angka
+  updateTransposeDisplay();
 }
 
 function transposeDown() {
   transposeValue--;
   updateChordDisplay();
-  updateTransposeDisplay(); // ✅ perbarui angka
+  updateTransposeDisplay();
 }
 
 // ─── AUTO SCROLL ───────────────────────────────────────────────
-// Fungsi ini menyalakan/mematikan scroll otomatis halaman.
-// Jika sudah aktif (scrollInterval ada isinya), maka klik akan
-// menghentikannya. Jika belum aktif, klik akan menyalakannya.
 function autoScroll() {
   const btn = document.getElementById('btnAutoScroll');
 
   if (scrollInterval) {
-    // Scroll aktif → hentikan
     clearInterval(scrollInterval);
     scrollInterval = null;
     if (btn) btn.textContent = '▶ Auto Scroll';
     return;
   }
 
-  // Scroll belum aktif → mulai
   scrollInterval = setInterval(() => {
     window.scrollBy({ top: 1, behavior: "smooth" });
   }, 100);
@@ -469,7 +428,6 @@ function autoScroll() {
 }
 
 // ─── COPY CHORD ────────────────────────────────────────────────
-// Menyalin chord & lirik yang sedang ditampilkan (sudah termasuk transpose) ke clipboard
 async function copyChord() {
   const btn = document.getElementById('btnCopyChord');
   const lyrics = document.getElementById('lyricsArea');
@@ -480,18 +438,15 @@ async function copyChord() {
   try {
     await navigator.clipboard.writeText(textToCopy);
     showCopyFeedback(btn);
-    showToast('Chord berhasil disalin', 'success'); // ← Ditambahkan
+    showToast('Chord berhasil disalin', 'success');
   } catch (error) {
-    // Fallback untuk browser lama / permission ditolak
     fallbackCopy(textToCopy);
     showCopyFeedback(btn);
-    showToast('Chord berhasil disalin', 'success'); // ← Ditambahkan
+    showToast('Chord berhasil disalin', 'success');
   }
 }
 
 // ─── SHARE LAGU ────────────────────────────────────────────────
-// Pakai Web Share API (native share sheet) kalau didukung browser,
-// fallback ke copy link kalau tidak didukung (misal di desktop Chrome/Firefox)
 async function shareSong() {
   const btn = document.getElementById('btnShareSong');
   const title = document.getElementById('songTitle');
@@ -504,42 +459,33 @@ async function shareSong() {
     url: window.location.href
   };
 
-  // Cek apakah browser support native share (biasanya di HP)
   if (navigator.share) {
     try {
       await navigator.share(shareData);
     } catch (error) {
-      // User batal share (klik cancel) — tidak perlu tampilkan error
       if (error.name !== 'AbortError') {
         console.error('Gagal share:', error);
       }
     }
   } else {
-    // Fallback: copy link ke clipboard (untuk desktop)
     try {
       await navigator.clipboard.writeText(shareData.url);
       showShareFeedback(btn);
-      showToast('Link berhasil disalin', 'success'); // ← Ditambahkan
+      showToast('Link berhasil disalin', 'success');
     } catch (error) {
       fallbackCopy(shareData.url);
       showShareFeedback(btn);
-      showToast('Link berhasil disalin', 'success'); // ← Ditambahkan
+      showToast('Link berhasil disalin', 'success');
     }
   }
 }
+
 // ─── PRINT CHORD ───────────────────────────────────────────────
-// Memicu dialog print browser. Layout kertas diatur penuh lewat
-// @media print di styles.css — nav, tombol, dark mode disembunyikan
-// otomatis, tanpa perlu manipulasi DOM di sini.
 function printChord() {
   window.print();
 }
 
 // ─── SIMPAN & PULIHKAN POSISI SCROLL ──────────────────────────
-// Posisi disimpan per-lagu (pakai song ID) supaya tidak tertukar
-// antar lagu. Disimpan hanya saat scroll berhenti (debounce),
-// bukan di setiap event scroll, biar tidak boros write ke localStorage.
-
 function getScrollKey(songId) {
   return `${SCROLL_POSITION_PREFIX}${songId}`;
 }
@@ -558,19 +504,16 @@ function restoreScrollPosition(songId) {
   const position = parseInt(savedPosition, 10);
   if (isNaN(position) || position <= 0) return;
 
-  // Delay singkat supaya konten (chord/lirik) sudah selesai dirender
-  // sebelum browser scroll ke posisi tersimpan
   setTimeout(() => {
     window.scrollTo({ top: position, behavior: 'instant' });
   }, 100);
 }
 
-// Debounced version — dipanggil di event listener scroll
 const debouncedSaveScroll = debounce((songId) => {
   saveScrollPosition(songId);
 }, 500);
 
-// Tampilkan feedback visual sesaat setelah link berhasil di-copy (fallback path)
+// ─── FEEDBACK HELPERS ──────────────────────────────────────────
 function showShareFeedback(btn) {
   const originalText = btn.textContent;
   btn.textContent = '✅ Link tersalin!';
@@ -582,7 +525,6 @@ function showShareFeedback(btn) {
   }, 1500);
 }
 
-// Fallback pakai textarea sementara (untuk browser yang tidak support Clipboard API)
 function fallbackCopy(text) {
   const textarea = document.createElement('textarea');
   textarea.value = text;
@@ -594,7 +536,6 @@ function fallbackCopy(text) {
   document.body.removeChild(textarea);
 }
 
-// Tampilkan feedback visual sesaat setelah berhasil copy
 function showCopyFeedback(btn) {
   const originalText = btn.textContent;
   btn.textContent = '✅ Tersalin!';
@@ -607,9 +548,6 @@ function showCopyFeedback(btn) {
 }
 
 // ─── EVENT LISTENERS (Halaman Detail) ─────────────────────────
-// Menghubungkan tombol dengan fungsinya lewat JavaScript,
-// bukan lewat onclick di HTML
-
 function setupDetailControls() {
   const btnUp = document.getElementById('btnTransposeUp');
   const btnDown = document.getElementById('btnTransposeDown');
@@ -617,8 +555,8 @@ function setupDetailControls() {
   const btnCopy = document.getElementById('btnCopyChord');
   const btnShare = document.getElementById('btnShareSong');
   const btnPrint = document.getElementById('btnPrintChord');
-  const btnBack = document.getElementById('btnBack'); // ← Ditambahkan
- 
+  const btnBack = document.getElementById('btnBack');
+
   if (btnUp) {
     btnUp.addEventListener('click', transposeUp);
   }
@@ -639,55 +577,46 @@ function setupDetailControls() {
     btnShare.addEventListener('click', shareSong);
   }
 
-  if (btnPrint) {                              // ← Ditambahkan
-    btnPrint.addEventListener('click', printChord); // ← Ditambahkan
-  }  
   if (btnPrint) {
     btnPrint.addEventListener('click', printChord);
   }
 
-  if (btnBack) {                                  // ← Ditambahkan
-    btnBack.addEventListener('click', handleBackClick); // ← Ditambahkan
-  }                                                // ← Ditambahkan                                           // ← Ditambahkan
+  if (btnBack) {
+    btnBack.addEventListener('click', handleBackClick);
+  }
 }
 
 // ─── START ────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
-  // Inisialisasi dark mode
   initDarkMode();
-  
-  // Setup theme toggle button
+
   const themeToggle = document.getElementById('themeToggle');
   if (themeToggle) {
     themeToggle.addEventListener('click', toggleDarkMode);
   }
 
-  // Setup search input dengan debounce
   const searchInput = document.getElementById('searchInput');
   if (searchInput) {
     searchInput.addEventListener('input', debouncedSearch);
   }
 
-  // Setup tombol clear search
   const btnClearSearch = document.getElementById('btnClearSearch');
   if (btnClearSearch) {
     btnClearSearch.addEventListener('click', clearSearch);
   }
 
-  // Setup filter chips (Semua/Judul/Artis)
   setupFilterChips();
 
-  loadSongs();        // Untuk halaman utama (index.html)
-  loadSongDetail();   // Untuk halaman detail (detail.html)
-  setupDetailControls(); // ✅ Pasang event listener tombol detail
+  loadSongs();
+  loadSongDetail();
+  setupDetailControls();
 
-  // ✅ Setup penyimpanan posisi scroll (hanya relevan di halaman detail)
-  const params = new URLSearchParams(window.location.search); // ← Ditambahkan
-  const currentSongId = params.get('id');                     // ← Ditambahkan
-  if (currentSongId) {                                         // ← Ditambahkan
-    window.addEventListener('scroll', () => {                  // ← Ditambahkan
-      debouncedSaveScroll(currentSongId);                       // ← Ditambahkan
-    });                                                          // ← Ditambahkan
-  }                                                              // ← Ditambahkan
-
+  // Setup penyimpanan posisi scroll (hanya relevan di halaman detail)
+  const params = new URLSearchParams(window.location.search);
+  const currentSongId = params.get('id');
+  if (currentSongId) {
+    window.addEventListener('scroll', () => {
+      debouncedSaveScroll(currentSongId);
+    });
+  }
 });

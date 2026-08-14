@@ -17,16 +17,16 @@
   --control-bg: #f1f5f9;
 
   /* Spacing Scale — kelipatan 4px, dipakai konsisten di semua komponen */
-  --space-1: 0.25rem;  /* 4px  — gap sangat kecil (icon+text) */
-  --space-2: 0.5rem;   /* 8px  — gap kecil antar elemen dekat */
-  --space-3: 0.75rem;  /* 12px — padding tombol, gap standar */
-  --space-4: 1rem;     /* 16px — padding card, margin section kecil */
-  --space-5: 1.5rem;   /* 24px — margin antar section */
-  --space-6: 2rem;     /* 32px — margin besar (container top/bottom) */
-  --space-8: 3rem;     /* 48px — jarak sangat besar */
-  --space-10: 4rem;    /* 64px — footer margin-top */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-8: 3rem;
+  --space-10: 4rem;
 
-  /* Radius scale — dipakai konsisten juga */
+  /* Radius scale */
   --radius-sm: 6px;
   --radius-md: 8px;
   --radius-full: 999px;
@@ -95,7 +95,8 @@ header nav {
 nav ul {
   list-style: none;
   display: flex;
-  gap: 0.5rem;
+  gap: var(--space-2);
+  align-items: center;
 }
 
 nav ul li a {
@@ -128,6 +129,10 @@ nav ul li a.active {
   margin-bottom: var(--space-3);
 }
 
+.search-box {
+  position: relative;
+}
+
 .search-box input {
   width: 100%;
   padding: var(--space-3) var(--space-4);
@@ -143,6 +148,67 @@ nav ul li a.active {
 .search-box input:focus {
   border-color: var(--accent-color);
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.search-box.loading input {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+/* Tombol clear search */
+.btn-clear-search {
+  position: absolute;
+  right: var(--space-3);
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: var(--space-1) var(--space-2);
+  border-radius: 50%;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.btn-clear-search:hover {
+  background-color: var(--badge-bg);
+  color: var(--text-primary);
+}
+
+/* Filter chips (Semua/Judul/Artis) */
+.search-filter {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.filter-chip {
+  padding: var(--space-2) var(--space-4);
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-full);
+  background-color: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background-color 0.18s ease, border-color 0.18s ease,
+              color 0.18s ease, transform 0.1s ease;
+}
+
+.filter-chip:hover {
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+}
+
+.filter-chip:active {
+  transform: scale(0.94);
+}
+
+.filter-chip.active {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+  color: white;
 }
 
 /* ─── SONG LIST ─── */
@@ -180,12 +246,30 @@ nav ul li a.active {
   justify-content: space-between;
   align-items: center;
   transition: transform 0.15s, border-color 0.2s, box-shadow 0.2s, background-color 0.3s ease;
+  animation: card-fade-in 0.35s ease backwards;
 }
 
 .song-card:hover {
   transform: translateY(-2px);
   border-color: var(--accent-color);
   box-shadow: 0 4px 12px rgba(37, 99, 235, 0.08);
+}
+
+/* Stagger fade-in untuk 10 kartu pertama */
+.song-card:nth-child(1) { animation-delay: 0.02s; }
+.song-card:nth-child(2) { animation-delay: 0.04s; }
+.song-card:nth-child(3) { animation-delay: 0.06s; }
+.song-card:nth-child(4) { animation-delay: 0.08s; }
+.song-card:nth-child(5) { animation-delay: 0.10s; }
+.song-card:nth-child(6) { animation-delay: 0.12s; }
+.song-card:nth-child(7) { animation-delay: 0.14s; }
+.song-card:nth-child(8) { animation-delay: 0.16s; }
+.song-card:nth-child(9) { animation-delay: 0.18s; }
+.song-card:nth-child(10) { animation-delay: 0.20s; }
+
+@keyframes card-fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .song-info .title {
@@ -209,6 +293,39 @@ nav ul li a.active {
   transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
+.empty-icon {
+  font-size: 2.5rem;
+  margin-bottom: var(--space-2);
+  opacity: 0.5;
+}
+
+.empty-hint {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: var(--space-2);
+}
+
+.error-state {
+  text-align: center;
+}
+
+.btn-retry {
+  margin-top: var(--space-4);
+  padding: var(--space-2) var(--space-5);
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-retry:hover {
+  background-color: var(--accent-hover);
+}
+
 /* Panah di kartu lagu */
 .arrow {
   color: var(--accent-color);
@@ -229,7 +346,6 @@ footer {
 
 /* ─── DETAIL PAGE ─── */
 
-/* Tombol kembali */
 .btn-back {
   display: inline-block;
   margin-bottom: var(--space-5);
@@ -244,7 +360,6 @@ footer {
   color: var(--accent-hover);
 }
 
-/* Info lagu (judul & artis) */
 .meta-data {
   margin-bottom: var(--space-5);
 }
@@ -263,7 +378,7 @@ footer {
   transition: color 0.3s ease;
 }
 
-/* Panel kontrol transpose & scroll */
+/* Panel kontrol transpose, scroll, copy, share, print */
 .control-panel {
   display: flex;
   align-items: center;
@@ -277,7 +392,6 @@ footer {
   transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-/* Tombol kontrol */
 .btn-control {
   padding: var(--space-2) var(--space-4);
   font-size: 0.9rem;
@@ -287,7 +401,7 @@ footer {
   background-color: transparent;
   color: var(--accent-color);
   cursor: pointer;
-  transition: background-color 0.2s, color 0.2s, border-color 0.3s ease;
+  transition: background-color 0.2s, color 0.2s, border-color 0.3s ease, transform 0.1s ease;
 }
 
 .btn-control:hover {
@@ -295,11 +409,15 @@ footer {
   color: #ffffff;
 }
 
-/* Tombol scroll — warna berbeda agar mudah dibedakan */
+.btn-control:active {
+  transform: scale(0.96);
+}
+
+/* Tombol scroll */
 .btn-scroll {
   border-color: var(--green-accent);
   color: var(--green-accent);
-  margin-left: auto; /* dorong ke kanan */
+  margin-left: auto;
 }
 
 .btn-scroll:hover {
@@ -334,6 +452,13 @@ footer {
   background-color: var(--accent-color);
   color: #ffffff;
 }
+
+.btn-share.copied {
+  border-color: var(--green-accent);
+  color: var(--green-accent);
+  background-color: transparent;
+}
+
 /* Tombol print chord */
 .btn-print {
   border-color: var(--green-accent);
@@ -348,12 +473,6 @@ footer {
 /* Print header — disembunyikan di layar, hanya muncul di kertas */
 .print-header {
   display: none;
-}
-
-.btn-share.copied {
-  border-color: var(--green-accent);
-  color: var(--green-accent);
-  background-color: transparent;
 }
 
 /* Tampilan nilai transpose */
@@ -377,12 +496,19 @@ footer {
   font-size: 0.95rem;
   line-height: 1.8;
   color: var(--text-primary);
-  white-space: pre-wrap;   /* agar teks tidak keluar layar */
+  white-space: pre-wrap;
   word-break: break-word;
   min-height: 200px;
   transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
+/* Class sementara saat transpose — fade halus, bukan kedip instan */
+.lyrics-area.text-transition {
+  opacity: 0.4;
+  transition: opacity 0.12s ease;
+}
+
+/* ─── THEME TOGGLE ─── */
 .theme-toggle {
   display: inline-flex;
   align-items: center;
@@ -391,7 +517,7 @@ footer {
   height: 40px;
   background-color: transparent;
   border: none;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   color: white;
   cursor: pointer;
   font-size: 1.1rem;
@@ -419,22 +545,6 @@ footer {
   100% { transform: rotate(360deg); }
 }
 
-.search-box.loading input {
-  opacity: 0.6;
-  cursor: wait;
-}
-
-.search-box .loading-text {
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-  margin-top: 0.5rem;
-  display: none;
-}
-
-.search-box.loading .loading-text {
-  display: block;
-}
-
 /* ─── SKELETON LOADING ─── */
 .skeleton {
   background: linear-gradient(
@@ -445,7 +555,7 @@ footer {
   );
   background-size: 200% 100%;
   animation: skeleton-pulse 1.4s ease-in-out infinite;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
 }
 
 @keyframes skeleton-pulse {
@@ -453,7 +563,6 @@ footer {
   100% { background-position: -200% 0; }
 }
 
-/* Skeleton untuk kartu lagu di daftar (index.html) */
 .skeleton-song-card {
   background-color: var(--bg-secondary);
   border: 1px solid var(--border-color);
@@ -474,12 +583,11 @@ footer {
   width: 40%;
 }
 
-/* Skeleton untuk area chord/lirik di detail.html */
 .skeleton-lyrics {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  padding: 0.25rem 0;
+  gap: var(--space-3);
+  padding: var(--space-1) 0;
 }
 
 .skeleton-line {
@@ -491,102 +599,6 @@ footer {
 .skeleton-line.w-3-5 { width: 60%; }
 .skeleton-line.w-2-5 { width: 40%; }
 
-/* ─── EMPTY STATE ICON ─── */
-.empty-icon {
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
-  opacity: 0.5;
-}
-
-.empty-hint {
-  display: block;
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  margin-top: 0.5rem;
-}
-
-/* ─── ERROR STATE ─── */
-.error-state {
-  text-align: center;
-}
-
-.btn-retry {
-  margin-top: 1rem;
-  padding: 0.5rem 1.25rem;
-  background-color: var(--accent-color);
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.btn-retry:hover {
-  background-color: var(--accent-hover);
-}
-
-/* ─── CLEAR SEARCH BUTTON ─── */
-.search-box {
-  position: relative;
-}
-
-.btn-clear-search {
-  position: absolute;
-  right: 0.75rem;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  color: var(--text-secondary);
-  font-size: 1rem;
-  cursor: pointer;
-  padding: 0.25rem 0.5rem;
-  border-radius: 50%;
-  transition: background-color 0.2s, color 0.2s;
-}
-
-.btn-clear-search:hover {
-  background-color: var(--badge-bg);
-  color: var(--text-primary);
-}
-
-/* ─── SEARCH FILTER CHIPS ─── */
-.search-filter {
-  display: flex;
-  gap: var(--space-2);
-  margin-top: var(--space-3);
-}
-
-.filter-chip {
-  padding: var(--space-2) var(--space-4);
-  font-size: 0.85rem;
-  font-weight: 600;
-  border: 1.5px solid var(--border-color);
-  border-radius: var(--radius-full);
-  background-color: transparent;
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.filter-chip:hover {
-  border-color: var(--accent-color);
-  color: var(--accent-color);
-}
-
-.filter-chip.active {
-  background-color: var(--accent-color);
-  border-color: var(--accent-color);
-  color: white;
-}
-
-/* ═══════════════════════════════════════════════════════
-   PRINT STYLESHEET
-   Kertas punya aturan sendiri: tanpa dark mode, tanpa
-   shadow/gradient, chord dibedakan lewat bold + warna
-   aksen tipis (hemat tinta), bukan background block.
-   ═══════════════════════════════════════════════════════ */
 /* ─── TOAST NOTIFICATION ─── */
 .toast-container {
   position: fixed;
@@ -599,7 +611,7 @@ footer {
   z-index: 1000;
   width: 90%;
   max-width: 360px;
-  pointer-events: none; /* Container transparan terhadap klik, toast individu tetap bisa */
+  pointer-events: none;
 }
 
 .toast {
@@ -612,7 +624,7 @@ footer {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--space-2);
   opacity: 0;
   transform: translateY(12px);
   animation: toast-in 0.25s ease forwards, toast-out 0.25s ease forwards var(--toast-duration, 2.5s);
@@ -644,24 +656,129 @@ footer {
   to   { opacity: 0; transform: translateY(-8px); }
 }
 
-   @media print {
+/* ═══════════════════════════════════════════════════════
+   RESPONSIVE LAYOUT
+   ═══════════════════════════════════════════════════════ */
+@media (max-width: 640px) {
 
-  /* Reset warna paksa ke mode terang, apapun tema aktifnya */
+  .container {
+    margin: var(--space-4) auto;
+    padding: 0 var(--space-4);
+  }
+
+  .logo {
+    font-size: 1.1rem;
+  }
+
+  header nav {
+    padding: 0 var(--space-4);
+  }
+
+  .search-section h2 {
+    font-size: 1.25rem;
+  }
+
+  .search-box input {
+    font-size: 0.95rem;
+  }
+
+  .search-filter {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: var(--space-1);
+  }
+
+  .filter-chip {
+    flex-shrink: 0;
+  }
+
+  .song-card {
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .song-info .title {
+    font-size: 1rem;
+  }
+
+  .meta-data h2 {
+    font-size: 1.4rem;
+  }
+
+  .control-panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2);
+  }
+
+  .btn-control {
+    width: 100%;
+    text-align: center;
+    padding: var(--space-3) var(--space-2);
+    font-size: 0.85rem;
+  }
+
+  .transpose-display {
+    grid-column: 1 / -1;
+    text-align: center;
+  }
+
+  .btn-scroll {
+    margin-left: 0;
+  }
+
+  .lyrics-area {
+    padding: var(--space-4);
+    font-size: 0.85rem;
+    line-height: 1.7;
+  }
+
+  .toast-container {
+    bottom: var(--space-4);
+    width: 92%;
+  }
+}
+
+@media (max-width: 360px) {
+  .control-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .btn-control {
+    font-size: 0.8rem;
+  }
+}
+
+/* ─── AKSESIBILITAS: prefers-reduced-motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════
+   PRINT STYLESHEET
+   ═══════════════════════════════════════════════════════ */
+@media print {
+
   body {
     background: #ffffff !important;
     color: #1a1a1a !important;
   }
 
-  /* Sembunyikan semua elemen yang tidak relevan di kertas */
   header,
   footer,
   .btn-back,
   .control-panel,
-  .search-section {
+  .search-section,
+  .toast-container {
     display: none !important;
   }
 
-  /* Header cetak: brand kecil + garis pemisah bertinta tipis */
   .print-header {
     display: block !important;
     margin-bottom: 1.5rem;
@@ -683,7 +800,6 @@ footer {
     width: 48px;
   }
 
-  /* Judul & artis — tetap terlihat, tanpa warna aksen biru */
   .meta-data h2 {
     color: #1a1a1a !important;
     font-size: 1.5rem;
@@ -693,7 +809,6 @@ footer {
     color: #555555 !important;
   }
 
-  /* Area lirik & chord: prioritas utama halaman cetak */
   .lyrics-area {
     background: none !important;
     border: none !important;
@@ -702,129 +817,17 @@ footer {
     font-size: 11pt;
     line-height: 1.7;
     color: #1a1a1a !important;
+    orphans: 3;
+    widows: 3;
   }
 
-  /* Buang margin/padding container agar konten memenuhi kertas */
   .container {
     max-width: 100%;
     margin: 0;
     padding: 0.5cm;
   }
 
-  /* Cegah lirik terpotong tanggung di tengah baris antar halaman */
-  .lyrics-area {
-    orphans: 3;
-    widows: 3;
-  }
-
-  /* Setup halaman: margin standar, tanpa header/footer browser default */
   @page {
     margin: 1.5cm;
-  }
-}
-
-/* ═══════════════════════════════════════════════════════
-   RESPONSIVE LAYOUT
-   Breakpoint: 640px (tablet kecil ke bawah dianggap mobile)
-   ═══════════════════════════════════════════════════════ */
-@media (max-width: 640px) {
-
-  /* Container lebih rapat di mobile */
-  .container {
-    margin: var(--space-4) auto;
-    padding: 0 var(--space-4);
-  }
-
-  /* Header: logo mengecil dikit, tetap 1 baris */
-  .logo {
-    font-size: 1.1rem;
-  }
-
-  header nav {
-    padding: 0 var(--space-4);
-  }
-
-  /* Search section */
-  .search-section h2 {
-    font-size: 1.25rem;
-  }
-
-  .search-box input {
-    font-size: 0.95rem;
-  }
-
-  /* Filter chips: scrollable horizontal kalau kepanjangan, bukan wrap acak */
-  .search-filter {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: var(--space-1); /* ruang biar scrollbar tidak nempel chip */
-  }
-
-  .filter-chip {
-    flex-shrink: 0; /* chip tidak menyusut, biar tetap terbaca */
-  }
-
-  /* Song card: sedikit lebih rapat */
-  .song-card {
-    padding: var(--space-3) var(--space-4);
-  }
-
-  .song-info .title {
-    font-size: 1rem;
-  }
-
-  /* ─── DETAIL PAGE ─── */
-
-  .meta-data h2 {
-    font-size: 1.4rem;
-  }
-
-  /* Control panel: susun 2 kolom rapi, bukan wrap acak */
-  .control-panel {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-2);
-  }
-
-  .btn-control {
-    width: 100%;
-    text-align: center;
-    padding: var(--space-3) var(--space-2);
-    font-size: 0.85rem;
-  }
-
-  /* Transpose display & scroll button: full width di baris sendiri */
-  .transpose-display {
-    grid-column: 1 / -1;
-    text-align: center;
-  }
-
-  .btn-scroll {
-    margin-left: 0; /* reset margin-left: auto yang tadinya dorong ke kanan */
-  }
-
-  /* Lyrics area: font sedikit lebih kecil supaya chord panjang tidak overflow */
-  .lyrics-area {
-    padding: var(--space-4);
-    font-size: 0.85rem;
-    line-height: 1.7;
-  }
-
-  /* Toast: sedikit lebih rapat ke tepi bawah di mobile */
-  .toast-container {
-    bottom: var(--space-4);
-    width: 92%;
-  }
-}
-
-/* Breakpoint tambahan untuk layar sangat sempit (HP lama/kecil) */
-@media (max-width: 360px) {
-  .control-panel {
-    grid-template-columns: 1fr; /* 1 kolom penuh kalau memang terlalu sempit */
-  }
-
-  .btn-control {
-    font-size: 0.8rem;
   }
 }
