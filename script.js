@@ -1,6 +1,7 @@
 // ─── DARK MODE MANAGEMENT ─────────────────────────────────────
 const DARK_MODE_KEY = 'chordplayer-dark-mode';
 const SCROLL_POSITION_PREFIX = 'chordplayer-scroll-';
+const AUTO_SCROLL_SPEED_KEY = 'chordplayer-auto-scroll-speed';
 
 function initDarkMode() {
   const savedTheme = localStorage.getItem(DARK_MODE_KEY);
@@ -54,6 +55,7 @@ const debouncedSearch = debounce(handleSearch, 300);
 let currentChord = "";
 let transposeValue = 0;
 let scrollInterval = null;
+let autoScrollSpeed = Number(localStorage.getItem(AUTO_SCROLL_SPEED_KEY)) || 1;
 let activeLineIndex = -1;
 let activeHighlightFrame = null;
 
@@ -583,21 +585,53 @@ function transposeDown() {
 }
 
 // ─── AUTO SCROLL ───────────────────────────────────────────────
-function autoScroll() {
-  const btn = document.getElementById('btnAutoScroll');
+function startAutoScroll() {
+  if (scrollInterval) {
+    clearInterval(scrollInterval);
+  }
 
+  scrollInterval = setInterval(() => {
+    window.scrollBy({ top: autoScrollSpeed, behavior: 'auto' });
+  }, 100);
+
+  const btn = document.getElementById('btnAutoScroll');
+  if (btn) btn.textContent = '⏸ Stop Scroll';
+}
+
+function autoScroll() {
   if (scrollInterval) {
     clearInterval(scrollInterval);
     scrollInterval = null;
+    const btn = document.getElementById('btnAutoScroll');
     if (btn) btn.textContent = '▶ Auto Scroll';
     return;
   }
 
-  scrollInterval = setInterval(() => {
-    window.scrollBy({ top: 1, behavior: "smooth" });
-  }, 100);
+  startAutoScroll();
+}
 
-  if (btn) btn.textContent = '⏸ Stop Scroll';
+function updateAutoScrollSpeed(event) {
+  const selectedSpeed = Number(event.target.value);
+  if (!Number.isFinite(selectedSpeed) || selectedSpeed <= 0) return;
+
+  autoScrollSpeed = selectedSpeed;
+  localStorage.setItem(AUTO_SCROLL_SPEED_KEY, String(autoScrollSpeed));
+
+  if (scrollInterval) {
+    startAutoScroll();
+  }
+}
+
+function initAutoScrollSpeed() {
+  const select = document.getElementById('scrollSpeed');
+  if (!select) return;
+
+  const availableSpeed = Array.from(select.options).some(
+    option => Number(option.value) === autoScrollSpeed
+  );
+  if (!availableSpeed) autoScrollSpeed = 1;
+  select.value = String(autoScrollSpeed);
+  select.addEventListener('change', updateAutoScrollSpeed);
 }
 
 // ─── COPY CHORD ────────────────────────────────────────────────
@@ -826,6 +860,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   setupFilterChips();
+  initAutoScrollSpeed();
 
   loadSongs();
   loadSongDetail();
