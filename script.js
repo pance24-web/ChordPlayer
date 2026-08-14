@@ -71,8 +71,25 @@ function escapeHTML(text) {
     .replace(/'/g, "&#039;");
 }
 
-// ─── HIGHLIGHT CHORD AKTIF ─────────────────────────────────────
-const chordTokenPattern = /\b[A-G](?:#|b)?(?:7sus4|maj9|maj7|maj|min9|min7|m9|m7|sus2|sus4|sus|dim7|dim|aug|add\d+|13|9|6|7|m|min)?(?:\/[A-G](?:#|b)?)?(?![#bA-Za-z0-9])/g;
+// ─── CHORD REGEX (SHARED SOURCE) ───────────────────────────────
+// Sebelumnya regex quality memakai daftar alternatif statis
+// (mis. "m7", "sus4", "maj9" sebagai pilihan terpisah). Itu gagal
+// total untuk kombinasi seperti "Cm7sus4" karena tidak ada satu
+// alternatif pun yang cocok dengan seluruh string, dan regex
+// engine tidak bisa "menggabungkan" dua alternatif.
+//
+// Sekarang quality dibangun dari potongan-potongan yang boleh
+// berulang: maj/min/dim/aug/sus/add/m + angka ekstensi tertentu.
+// "Cm7sus4" akan cocok sebagai: root "C" + "m" + "7" + "sus" + "4".
+//
+// Angka ekstensi sengaja dibatasi (bukan \d+ bebas) supaya teks
+// lain seperti "G20" atau "F1" tidak salah dianggap chord.
+const CHORD_QUALITY_SOURCE = '(?:maj|min|dim|aug|sus|add|m|2|4|5|6|7|9|11|13)*';
+const CHORD_PATTERN_SOURCE =
+  '([A-G](?:#|b)?)(' + CHORD_QUALITY_SOURCE + ')(?:/([A-G](?:#|b)?))?(?![#bA-Za-z0-9])';
+
+// Dipakai untuk highlight/wrap token chord di lirik.
+const chordTokenPattern = new RegExp('\\b' + CHORD_PATTERN_SOURCE, 'g');
 
 const guitarChordShapes = {
   C: { frets: ['x', 3, 2, 0, 1, 0], baseFret: 1 },
@@ -116,7 +133,7 @@ const chordQualityAliases = {
 };
 
 function parseChordName(chordText) {
-  const match = String(chordText).match(/^([A-G](?:#|b)?)(7sus4|maj9|maj7|maj|min9|min7|m9|m7|sus2|sus4|sus|dim7|dim|aug|add\d+|13|9|6|7|m|min)?/);
+  const match = String(chordText).match(new RegExp('^' + CHORD_PATTERN_SOURCE));
   if (!match) return null;
   const normalizedRoot = flatToSharp[match[1]] || match[1];
   const quality = chordQualityAliases[match[2] || ''] || match[2] || '';
@@ -695,7 +712,11 @@ function transposeNote(note, step) {
 }
 
 function transposeChord(chord, step) {
-  const chordPattern = /\b([A-G](?:#|b)?)(7sus4|maj9|maj7|maj|min9|min7|m9|m7|sus2|sus4|sus|dim7|dim|aug|add\d+|13|9|6|7|m|min)?(?:\/([A-G](?:#|b)?))?(?![#bA-Za-z0-9])/g;
+  // Regex ini sekarang berbagi sumber (CHORD_PATTERN_SOURCE) dengan
+  // chordTokenPattern, jadi apa yang di-highlight dan apa yang
+  // di-transpose selalu sinkron. Instance baru dibuat tiap panggilan
+  // supaya lastIndex regex global tidak nyangkut antar pemanggilan.
+  const chordPattern = new RegExp('\\b' + CHORD_PATTERN_SOURCE, 'g');
 
   return chord.replace(chordPattern, (match, root, quality = '', bass) => {
     const transposedRoot = transposeNote(root, step);
