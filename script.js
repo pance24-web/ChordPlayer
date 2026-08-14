@@ -269,7 +269,15 @@ function setupChordPopup() {
   const next = document.getElementById('nextChordShape');
   if (!lyrics || !popup) return;
 
-  lyrics.addEventListener('click', event => {
+  lyrics.addEventListener('pointerover', event => {
+    const token = event.target.closest('.chord-token');
+    if (token && event.pointerType === 'mouse') openChordPopup(token);
+  });
+  lyrics.addEventListener('pointerdown', event => {
+    const token = event.target.closest('.chord-token');
+    if (token && event.pointerType === 'touch') openChordPopup(token);
+  });
+  lyrics.addEventListener('focusin', event => {
     const token = event.target.closest('.chord-token');
     if (token) openChordPopup(token);
   });
