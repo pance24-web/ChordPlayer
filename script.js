@@ -236,15 +236,24 @@ function closeChordPopup() {
 
 function positionChordPopup(token, popup) {
   const rect = token.getBoundingClientRect();
-  const popupWidth = 270;
-  const margin = 12;
-  const left = Math.min(
-    Math.max(margin, rect.left + rect.width / 2 - popupWidth / 2),
-    window.innerWidth - popupWidth - margin
-  );
-  const top = rect.bottom + 10;
+  const popupWidth = 300;
+  const popupHeight = 320;
+  const margin = 16;
+  const scrollY = window.scrollY;
+
+  // Horizontal: coba tengahkan di bawah token
+  let left = rect.left + rect.width / 2 - popupWidth / 2;
+  left = Math.max(margin, Math.min(left, window.innerWidth - popupWidth - margin));
+
+  // Vertical: utamakan di bawah token, kalau tidak muat taruh di atas
+  let top = rect.bottom + scrollY + 10;
+  const bottomEdge = rect.bottom + popupHeight + 10;
+  if (bottomEdge > window.innerHeight) {
+    top = rect.top + scrollY - popupHeight - 10;
+  }
+
   popup.style.left = `${left}px`;
-  popup.style.top = `${Math.min(top, window.innerHeight - 230)}px`;
+  popup.style.top = `${Math.max(scrollY + margin, top)}px`;
 }
 
 function showPreviousChordShape() {
@@ -312,20 +321,33 @@ function updateActiveChord() {
   const lines = Array.from(lyrics.querySelectorAll('.lyrics-line'));
   if (!lines.length) return;
 
-  const anchor = window.innerHeight * 0.28;
+  // Anchor: 30% dari atas viewport
+  const anchor = window.innerHeight * 0.30;
   let closestLine = null;
   let closestDistance = Infinity;
 
   lines.forEach(line => {
+    // Hanya pertimbangkan baris yang punya chord token
     const tokens = line.querySelectorAll('.chord-token');
     if (!tokens.length) return;
+
     const rect = line.getBoundingClientRect();
-    const distance = Math.abs((rect.top + rect.height / 2) - anchor);
+    // Ukur dari tengah baris ke anchor
+    const midpoint = rect.top + rect.height / 2;
+    // Prioritaskan baris yang sudah melewati anchor (lebih natural saat scroll)
+    const distance = midpoint <= anchor
+      ? anchor - midpoint
+      : (midpoint - anchor) * 1.5;
+
     if (distance < closestDistance) {
       closestDistance = distance;
       closestLine = line;
     }
   });
+
+  // Hanya update DOM jika baris aktif berubah
+  const newIndex = closestLine ? Number(closestLine.dataset.lineIndex) : -1;
+  if (newIndex === activeLineIndex) return;
 
   lines.forEach(line => {
     const isActive = line === closestLine;
@@ -336,7 +358,7 @@ function updateActiveChord() {
     });
   });
 
-  activeLineIndex = closestLine ? Number(closestLine.dataset.lineIndex) : -1;
+  activeLineIndex = newIndex;
   updateChordDiagramFromLine(closestLine);
 }
 
@@ -385,29 +407,38 @@ function updateCapoRecommendation() {
   const description = document.getElementById('capoDescription');
   const badge = document.getElementById('capoBadge');
   const title = document.getElementById('capoTitle');
+  const icon = document.querySelector('.capo-icon');
   if (!description || !badge || !title) return;
 
+  // Animasi badge saat nilai berubah
+  badge.style.transform = 'scale(0.85)';
+  badge.style.opacity = '0.5';
+  setTimeout(() => {
+    badge.style.transform = 'scale(1)';
+    badge.style.opacity = '1';
+  }, 150);
+
   if (transposeValue === 0) {
-    title.textContent = 'Posisi natural';
-    description.textContent = 'Gunakan chord yang tampil langsung tanpa capo.';
+    if (icon) icon.textContent = '♩';
+    title.textContent = 'Tanpa capo';
+    description.textContent = 'Mainkan chord seperti yang tertulis.';
     badge.textContent = 'Capo 0';
     return;
   }
 
   if (transposeValue < 0) {
-    title.textContent = 'Tanpa capo';
-    description.textContent = 'Transpose sedang menurunkan nada. Capo hanya dapat menaikkan nada, jadi gunakan tanpa capo.';
-    badge.textContent = 'Capo 0';
+    if (icon) icon.textContent = '↓';
+    title.textContent = 'Nada diturunkan';
+    description.textContent = `Transpose −${Math.abs(transposeValue)} semitone. Capo tidak bisa menurunkan nada — mainkan tanpa capo.`;
+    badge.textContent = 'Tanpa Capo';
     return;
   }
 
-  const recommendedFret = Math.min(transposeValue, 6);
-  const extraNote = transposeValue > 6
-    ? ' Untuk transpose lebih tinggi, pertimbangkan menurunkan transpose agar posisi capo tetap nyaman.'
-    : '';
-  title.textContent = 'Gunakan bentuk chord lebih mudah';
-  description.textContent = `Pasang capo di fret ${recommendedFret}, lalu gunakan bentuk chord ${recommendedFret} semitone lebih rendah.${extraNote}`;
-  badge.textContent = `Capo ${recommendedFret}`;
+  const fret = Math.min(transposeValue, 7);
+  if (icon) icon.textContent = '⬆';
+  title.textContent = `Pasang capo di fret ${fret}`;
+  description.textContent = `Gunakan bentuk chord ${fret} semitone lebih rendah dari yang tampil.`;
+  badge.textContent = `Capo ${fret}`;
 }
 
 // ─── SKELETON RENDERER ─────────────────────────────────────────
@@ -745,8 +776,17 @@ function updateAutoScrollSpeed(event) {
   autoScrollSpeed = selectedSpeed;
   localStorage.setItem(AUTO_SCROLL_SPEED_KEY, String(autoScrollSpeed));
 
+  // Feedback visual singkat
+  const label = event.target.closest('.scroll-speed-control');
+  if (label) {
+    label.style.borderColor = 'var(--green-accent)';
+    setTimeout(() => {
+      label.style.borderColor = '';
+    }, 800);
+  }
+
   if (scrollInterval) {
-    startAutoScroll();
+    startAutoScroll(); // Restart dengan kecepatan baru
   }
 }
 
@@ -839,13 +879,14 @@ function updateFullscreenUI() {
 async function toggleFullscreen() {
   const fullscreenElement = getFullscreenElement();
 
+  // Tambahkan kelas transisi sementara
+  document.body.classList.add('fullscreen-transition');
+  setTimeout(() => document.body.classList.remove('fullscreen-transition'), 300);
+
   try {
     if (fullscreenElement) {
-      if (document.exitFullscreen) {
-        await document.exitFullscreen();
-      } else if (document.webkitExitFullscreen) {
-        document.webkitExitFullscreen();
-      }
+      if (document.exitFullscreen) await document.exitFullscreen();
+      else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
       return;
     }
 
@@ -854,11 +895,19 @@ async function toggleFullscreen() {
     } else if (document.documentElement.webkitRequestFullscreen) {
       document.documentElement.webkitRequestFullscreen();
     } else {
-      showToast('Browser ini belum mendukung fullscreen', 'error');
+      // Fallback: CSS fullscreen saja tanpa browser API
+      document.body.classList.toggle('is-fullscreen');
+      updateFullscreenUI();
+      showToast(
+        document.body.classList.contains('is-fullscreen')
+          ? 'Mode fokus aktif'
+          : 'Mode fokus dinonaktifkan',
+        'default'
+      );
     }
   } catch (error) {
     console.error('Gagal mengubah mode fullscreen:', error);
-    showToast('Fullscreen tidak dapat diaktifkan', 'error');
+    showToast('Fullscreen tidak dapat diaktifkan di browser ini', 'error');
   }
 }
 

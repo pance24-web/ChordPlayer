@@ -432,22 +432,38 @@ footer {
   color: var(--text-secondary);
   font-size: 0.82rem;
   white-space: nowrap;
+  background: var(--control-bg);
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 0.3rem 0.6rem;
+  transition: border-color 0.2s;
+  cursor: default;
+}
+
+.scroll-speed-control:focus-within {
+  border-color: var(--green-accent);
+}
+
+.scroll-speed-label {
+  font-size: 0.85rem;
+  line-height: 1;
 }
 
 .scroll-speed-control select {
-  min-height: 2rem;
-  padding: 0.25rem 1.8rem 0.25rem 0.55rem;
+  min-height: unset;
+  padding: 0;
   color: var(--text-primary);
-  background-color: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
+  background: transparent;
+  border: none;
   font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
   cursor: pointer;
-}
-
-.scroll-speed-control select:focus-visible {
-  outline: 2px solid var(--green-accent);
-  outline-offset: 2px;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  text-align: center;
+  min-width: 3.5rem;
 }
 
 /* Tombol copy chord */
@@ -538,7 +554,7 @@ footer {
   align-items: flex-start;
   justify-content: space-between;
   gap: var(--space-4);
-  margin-bottom: var(--space-3);
+  margin-bottom: var(--space-4);
 }
 
 .section-kicker {
@@ -564,74 +580,75 @@ footer {
 
 .chord-diagram {
   display: flex;
-  min-height: 190px;
+  min-height: 220px;
   align-items: center;
   justify-content: center;
   flex-direction: column;
 }
 
+/* SVG lebih besar dan proporsional */
 .guitar-diagram-svg {
-  width: min(100%, 300px);
+  width: min(100%, 340px);
   height: auto;
   overflow: visible;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.07));
 }
 
 .diagram-string,
 .diagram-fret {
   stroke: var(--text-secondary);
-  stroke-width: 1.4;
-  opacity: 0.72;
+  stroke-width: 1.5;
+  opacity: 0.6;
 }
 
 .diagram-fret {
-  opacity: 0.55;
+  opacity: 0.4;
 }
 
 .diagram-nut {
   stroke: var(--text-primary);
-  stroke-width: 4;
+  stroke-width: 5;
 }
 
 .diagram-position-marker {
   stroke: var(--text-primary);
-  stroke-width: 1.8;
+  stroke-width: 2;
 }
 
 .diagram-position {
   fill: var(--text-secondary);
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   font-weight: 700;
 }
 
+/* Dot lebih besar dan kontras */
 .diagram-dot {
   fill: var(--green-accent);
-  stroke: var(--green-accent);
+  stroke: none;
+  filter: drop-shadow(0 1px 3px rgba(22,163,74,0.35));
 }
 
 .diagram-dot-label {
-  fill: var(--bg-primary);
-  font-size: 0.55rem;
-  font-weight: 700;
-}
-
-.diagram-open,
-.diagram-muted,
-.diagram-string-label {
-  fill: var(--text-primary);
+  fill: #ffffff;
+  font-size: 0.6rem;
+  font-weight: 800;
 }
 
 .diagram-open {
+  fill: none;
   stroke: var(--text-primary);
-  stroke-width: 2;
+  stroke-width: 2.5;
 }
 
 .diagram-muted {
-  font-size: 1.15rem;
+  fill: var(--text-secondary);
+  font-size: 1.2rem;
   font-weight: 700;
 }
 
 .diagram-string-label {
-  font-size: 0.68rem;
+  fill: var(--text-secondary);
+  font-size: 0.72rem;
   font-weight: 700;
 }
 
@@ -649,22 +666,29 @@ footer {
   gap: var(--space-4);
   margin: var(--space-5) 0;
   padding: var(--space-4) var(--space-5);
-  background: color-mix(in srgb, var(--green-accent) 8%, var(--bg-secondary));
-  border: 1px solid color-mix(in srgb, var(--green-accent) 35%, var(--border-color));
+  background: color-mix(in srgb, var(--green-accent) 6%, var(--bg-secondary));
+  border: 1.5px solid color-mix(in srgb, var(--green-accent) 30%, var(--border-color));
   border-radius: var(--radius-md);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .capo-icon {
   display: grid;
-  width: 2.5rem;
-  height: 2.5rem;
-  flex: 0 0 2.5rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex: 0 0 2.75rem;
   place-items: center;
-  color: var(--bg-primary);
+  color: #ffffff;
   background: var(--green-accent);
-  border-radius: 50%;
-  font-size: 1.25rem;
+  border-radius: 10px;
+  font-size: 1.3rem;
   font-weight: 800;
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--green-accent) 40%, transparent);
+  transition: transform 0.2s ease;
+}
+
+.capo-recommendation:hover .capo-icon {
+  transform: scale(1.08) rotate(-3deg);
 }
 
 .capo-content {
@@ -679,25 +703,29 @@ footer {
 .capo-content h3 {
   margin: 0;
   color: var(--text-primary);
-  font-size: 1rem;
+  font-size: 0.95rem;
+  font-weight: 700;
 }
 
 .capo-content p:last-child {
-  margin: 0.25rem 0 0;
+  margin: 0.2rem 0 0;
   color: var(--text-secondary);
-  font-size: 0.86rem;
+  font-size: 0.82rem;
   line-height: 1.5;
 }
 
 .capo-badge {
   flex: 0 0 auto;
-  padding: 0.35rem 0.7rem;
+  padding: 0.4rem 0.85rem;
   color: var(--green-accent);
-  border: 1px solid currentColor;
+  background: color-mix(in srgb, var(--green-accent) 10%, var(--bg-secondary));
+  border: 1.5px solid var(--green-accent);
   border-radius: 999px;
-  font-size: 0.78rem;
-  font-weight: 700;
+  font-size: 0.82rem;
+  font-weight: 800;
   white-space: nowrap;
+  letter-spacing: 0.02em;
+  transition: transform 0.2s ease, opacity 0.2s ease, all 0.2s ease;
 }
 
 /* Popup diagram chord gitar */
@@ -705,118 +733,113 @@ footer {
   position: fixed;
   z-index: 1000;
   display: none;
-  width: min(270px, calc(100vw - 24px));
-  padding: var(--space-3);
+  width: min(300px, calc(100vw - 32px));
+  padding: var(--space-4);
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  box-shadow: 0 16px 42px rgb(0 0 0 / 22%);
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18), 0 4px 16px rgba(0,0,0,0.1);
   transform-origin: top center;
 }
 
 .chord-popup.is-open {
   display: block;
-  animation: chord-popup-in 0.16s ease-out;
+  animation: chord-popup-in 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.chord-popup-header,
-.chord-popup-footer {
+.chord-popup-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-2);
-}
-
-.chord-popup-header {
-  padding: 0 var(--space-1) var(--space-2);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: var(--space-3);
 }
 
 .chord-popup-header h3 {
   margin: 0;
   color: var(--text-primary);
-  font-size: 1.15rem;
-}
-
-.chord-popup-close,
-.chord-popup-nav {
-  display: grid;
-  place-items: center;
-  color: var(--text-secondary);
-  background: transparent;
-  border: 0;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.3px;
 }
 
 .chord-popup-close {
-  width: 1.8rem;
-  height: 1.8rem;
-  font-size: 1.4rem;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  color: var(--text-secondary);
+  background: var(--badge-bg);
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1rem;
   line-height: 1;
+  transition: background-color 0.15s, color 0.15s;
 }
 
-.chord-popup-close:hover,
-.chord-popup-nav:hover {
-  color: var(--green-accent);
-  background: color-mix(in srgb, var(--green-accent) 10%, transparent);
+.chord-popup-close:hover {
+  color: var(--text-primary);
+  background: var(--border-color);
 }
 
 .chord-popup-diagram {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 190px;
+  min-height: 200px;
+  padding: var(--space-2) 0;
 }
 
 .guitar-diagram-popup-svg {
-  width: 250px;
+  width: 260px;
   max-width: 100%;
 }
 
 .chord-popup-footer {
+  display: flex;
+  align-items: center;
   justify-content: center;
-  padding-top: var(--space-2);
+  gap: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border-color);
+  margin-top: var(--space-2);
   color: var(--text-secondary);
-  font-size: 0.78rem;
+  font-size: 0.8rem;
+  font-weight: 600;
 }
 
 .chord-popup-nav {
-  width: 1.8rem;
-  height: 1.8rem;
-  font-size: 1.35rem;
-}
-
-.lyrics-area .chord-token {
-  display: inline-block;
-  margin: 0;
-  padding: 0;
-  color: var(--green-accent);
-  background: transparent;
-  border: 0;
-  border-radius: 0.25rem;
-  font: inherit;
-  font-weight: 700;
-  line-height: inherit;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  color: var(--text-secondary);
+  background: var(--badge-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
   cursor: pointer;
-  transition: color 0.18s ease, background-color 0.18s ease, box-shadow 0.18s ease;
+  font-size: 1.1rem;
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
 }
 
-.lyrics-area .chord-token:hover,
-.lyrics-area .chord-token:focus-visible {
-  color: var(--bg-primary);
-  background-color: var(--green-accent);
-  outline: none;
-}
-
-.lyrics-area .chord-token[aria-expanded="true"] {
-  color: var(--bg-primary);
-  background-color: var(--green-accent);
-  box-shadow: 0 0 0 0.2rem color-mix(in srgb, var(--green-accent) 18%, transparent);
+.chord-popup-nav:hover {
+  color: var(--green-accent);
+  border-color: var(--green-accent);
+  background: color-mix(in srgb, var(--green-accent) 8%, var(--bg-secondary));
 }
 
 @keyframes chord-popup-in {
-  from { opacity: 0; transform: translateY(-6px) scale(0.97); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 /* Area chord & lirik */
@@ -845,25 +868,50 @@ footer {
 .lyrics-line {
   min-height: 1.8em;
   border-radius: 0.35rem;
-  transition: background-color 0.18s ease;
+  padding: 0 0.2rem;
+  transition: background-color 0.25s ease;
+}
+
+/* Highlight baris aktif — lebih subtle */
+.lyrics-line.active-chord-line {
+  background-color: color-mix(in srgb, var(--green-accent) 5%, transparent);
 }
 
 .chord-token {
+  display: inline-block;
+  margin: 0;
+  padding: 0.05em 0.2em;
   color: var(--green-accent);
+  background: transparent;
+  border: 0;
+  border-radius: 0.2rem;
+  font: inherit;
   font-weight: 700;
-  transition: color 0.18s ease, background-color 0.18s ease, box-shadow 0.18s ease;
+  line-height: inherit;
+  cursor: pointer;
+  transition: color 0.15s ease, background-color 0.15s ease;
 }
 
+.chord-token:hover,
+.chord-token:focus-visible {
+  color: var(--bg-primary);
+  background-color: var(--green-accent);
+  outline: none;
+}
+
+.chord-token[aria-expanded="true"] {
+  color: var(--bg-primary);
+  background-color: var(--green-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--green-accent) 20%, transparent);
+}
+
+/* Chord aktif saat scroll — lebih kontras dan clean */
 .chord-token.active-chord {
   color: var(--bg-primary);
   background-color: var(--green-accent);
   border-radius: 0.25rem;
-  box-shadow: 0 0 0 0.2rem color-mix(in srgb, var(--green-accent) 18%, transparent);
-  padding: 0.08em 0.25em;
-}
-
-.lyrics-line.active-chord-line {
-  background-color: color-mix(in srgb, var(--green-accent) 7%, transparent);
+  padding: 0.08em 0.3em;
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--green-accent) 35%, transparent);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -875,7 +923,7 @@ footer {
   }
 }
 
-/* Fullscreen mode: fokus pada area chord saat bermain */
+/* Fullscreen mode */
 body.is-fullscreen {
   min-height: 100vh;
   background: var(--bg-primary);
@@ -887,13 +935,14 @@ body.is-fullscreen .btn-back,
 body.is-fullscreen .meta-data,
 body.is-fullscreen .chord-diagram-panel,
 body.is-fullscreen .capo-recommendation {
-  display: none;
+  display: none !important;
 }
 
 body.is-fullscreen main.container {
-  width: min(100%, 1100px);
+  width: min(100%, 900px);
   max-width: none;
-  padding-top: var(--space-4);
+  margin: 0 auto;
+  padding: var(--space-3) var(--space-5);
 }
 
 body.is-fullscreen .control-panel {
@@ -901,18 +950,30 @@ body.is-fullscreen .control-panel {
   z-index: 10;
   top: 0;
   margin-bottom: var(--space-4);
-  padding: var(--space-3) 0;
-  background: color-mix(in srgb, var(--bg-primary) 92%, transparent);
-  backdrop-filter: blur(10px);
+  padding: var(--space-3) var(--space-4);
+  background: color-mix(in srgb, var(--bg-primary) 88%, transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
 }
 
 body.is-fullscreen .lyrics-area {
-  min-height: calc(100vh - 6rem);
+  min-height: calc(100vh - 8rem);
   border: none;
   border-radius: 0;
-  padding: var(--space-4) 0;
-  font-size: clamp(1rem, 1.8vw, 1.25rem);
-  line-height: 2;
+  padding: var(--space-5) 0;
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+  line-height: 2.1;
+  background: transparent;
+  box-shadow: none;
+}
+
+/* Fade saat masuk/keluar fullscreen */
+body.fullscreen-transition * {
+  transition: opacity 0.25s ease !important;
+  opacity: 0.5;
 }
 
 /* ─── THEME TOGGLE ─── */

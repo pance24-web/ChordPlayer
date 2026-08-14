@@ -29,7 +29,7 @@ Meningkatkan kualitas ChordPlayer dari sisi **User Experience**, **Performance**
 
 ## Interface
 
-- [ ] Perhalus animasi transisi
+- [x] Perhalus animasi transisi completed:2026-08-14
 - [x] Tambahkan skeleton loading completed:2026-08-14
 - [x] Tambahkan toast notification completed:2026-08-14
 - [x] Perbaiki konsistensi spacing completed:2026-08-14
