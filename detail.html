@@ -58,18 +58,6 @@
     <div class="print-divider"></div>
   </div>
 
-  <!-- Diagram chord gitar aktif -->
-  <section id="chordDiagramPanel" class="chord-diagram-panel" aria-live="polite">
-    <div class="chord-diagram-heading">
-      <div>
-        <p class="section-kicker">Fingering gitar</p>
-        <h3 id="chordDiagramTitle">Chord aktif</h3>
-      </div>
-      <span class="chord-diagram-hint">Ikuti chord yang sedang terlihat</span>
-    </div>
-    <div id="chordDiagram" class="chord-diagram" aria-label="Diagram fingering chord gitar"></div>
-  </section>
-
   <!-- Rekomendasi capo -->
   <section id="capoRecommendation" class="capo-recommendation" aria-live="polite">
     <div class="capo-icon" aria-hidden="true">♯</div>
@@ -82,10 +70,27 @@
   </section>
 
   <!-- Area chord & lirik -->
-  <pre id="lyricsArea" class="lyrics-area">Memuat chord...</pre>
+  <div id="lyricsArea" class="lyrics-area" role="region" aria-label="Lirik dan chord lagu">Memuat chord...</div>
 
   </main>
   <footer>© 2026 ChordPlayer App</footer>
+
+  <!-- Popup diagram chord gitar -->
+  <div id="chordPopup" class="chord-popup" role="dialog" aria-label="Diagram chord gitar" aria-hidden="true">
+    <div class="chord-popup-header">
+      <div>
+        <p class="section-kicker">Diagram gitar</p>
+        <h3 id="chordPopupTitle">Chord</h3>
+      </div>
+      <button id="closeChordPopup" class="chord-popup-close" type="button" aria-label="Tutup diagram chord">×</button>
+    </div>
+    <div id="chordPopupDiagram" class="chord-popup-diagram"></div>
+    <div class="chord-popup-footer">
+      <button id="previousChordShape" class="chord-popup-nav" type="button" aria-label="Bentuk chord sebelumnya">‹</button>
+      <span id="chordPopupCount">1 dari 1</span>
+      <button id="nextChordShape" class="chord-popup-nav" type="button" aria-label="Bentuk chord berikutnya">›</button>
+    </div>
+  </div>
 
   <!-- Container untuk toast notification -->
   <div id="toastContainer" class="toast-container" aria-live="polite"></div>

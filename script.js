@@ -58,6 +58,8 @@ let scrollInterval = null;
 let autoScrollSpeed = Number(localStorage.getItem(AUTO_SCROLL_SPEED_KEY)) || 1;
 let activeLineIndex = -1;
 let activeHighlightFrame = null;
+let activeChordPopup = null;
+let activeChordShapeIndex = 0;
 
 // ─── SECURITY: ESCAPE HTML ────────────────────────────────────
 function escapeHTML(text) {
@@ -134,26 +136,38 @@ function resolveChordShape(chordName) {
   return guitarChordShapes[fallbackKey] || guitarChordShapes[root] || null;
 }
 
-function renderChordDiagram(chordText) {
-  const container = document.getElementById('chordDiagram');
-  const title = document.getElementById('chordDiagramTitle');
-  if (!container || !title) return;
+// Diagram dirender melalui createGuitarDiagramSvg() di dalam popup chord.
+function updateChordDiagramFromLine(line) {
+  // Diagram kini dibuka hanya ketika gitaris mengklik chord.
+  return line?.querySelector('.chord-token') || null;
+}
 
+function getChordShapeOptions(chordText) {
   const chordName = parseChordName(chordText);
+  if (!chordName) return [];
+
   const shape = resolveChordShape(chordName);
-  title.textContent = chordName || 'Chord aktif';
+  return shape ? [{ name: chordName, shape }] : [];
+}
 
-  if (!shape) {
-    container.innerHTML = '<p class="diagram-empty">Diagram untuk chord ini belum tersedia.</p>';
-    return;
-  }
+function renderPopupShape(option) {
+  const container = document.getElementById('chordPopupDiagram');
+  const title = document.getElementById('chordPopupTitle');
+  const count = document.getElementById('chordPopupCount');
+  if (!container || !title || !count || !option) return;
 
-  const width = 300;
-  const height = 210;
-  const left = 42;
-  const top = 36;
-  const stringGap = 38;
-  const fretGap = 25;
+  title.textContent = option.name;
+  count.textContent = `${activeChordShapeIndex + 1} dari ${getChordShapeOptions(activeChordPopup?.textContent || '').length || 1}`;
+  container.innerHTML = createGuitarDiagramSvg(option.name, option.shape, 'popup');
+}
+
+function createGuitarDiagramSvg(chordName, shape, variant = 'default') {
+  const width = 260;
+  const height = 195;
+  const left = 38;
+  const top = 34;
+  const stringGap = 36;
+  const fretGap = 23;
   const fretCount = 5;
   const baseFret = shape.baseFret || 1;
   const right = left + stringGap * 5;
@@ -168,8 +182,8 @@ function renderChordDiagram(chordText) {
   }).join('');
   const markers = shape.frets.map((value, stringIndex) => {
     const x = left + stringGap * stringIndex;
-    if (value === 'x') return `<text x="${x}" y="23" text-anchor="middle" class="diagram-muted">×</text>`;
-    if (value === 0) return `<circle cx="${x}" cy="23" r="5" class="diagram-open" />`;
+    if (value === 'x') return `<text x="${x}" y="22" text-anchor="middle" class="diagram-muted">×</text>`;
+    if (value === 0) return `<circle cx="${x}" cy="22" r="5" class="diagram-open" />`;
     const fret = Number(value);
     const relativeFret = fret - baseFret + 1;
     if (relativeFret < 1 || relativeFret > fretCount) return '';
@@ -177,26 +191,108 @@ function renderChordDiagram(chordText) {
     return `<circle cx="${x}" cy="${y}" r="8" class="diagram-dot" /><text x="${x}" y="${y + 4}" text-anchor="middle" class="diagram-dot-label">${fret}</text>`;
   }).join('');
   const labels = ['E', 'A', 'D', 'G', 'B', 'e'].map((label, index) =>
-    `<text x="${left + stringGap * index}" y="${bottom + 22}" text-anchor="middle" class="diagram-string-label">${label}</text>`
+    `<text x="${left + stringGap * index}" y="${bottom + 21}" text-anchor="middle" class="diagram-string-label">${label}</text>`
   ).join('');
   const topMarker = baseFret === 1
     ? `<line x1="${left}" y1="${top}" x2="${right}" y2="${top}" class="diagram-nut" />`
-    : `<line x1="${left}" y1="${top}" x2="${right}" y2="${top}" class="diagram-position-marker" /><text x="15" y="${top + 5}" class="diagram-position">${baseFret}fr</text>`;
+    : `<line x1="${left}" y1="${top}" x2="${right}" y2="${top}" class="diagram-position-marker" /><text x="12" y="${top + 5}" class="diagram-position">${baseFret}fr</text>`;
 
-  container.innerHTML = `<svg class="guitar-diagram-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="Diagram chord ${escapeHTML(chordName)}">
+  return `<svg class="guitar-diagram-svg ${variant === 'popup' ? 'guitar-diagram-popup-svg' : ''}" viewBox="0 0 ${width} ${height}" role="img" aria-label="Diagram chord ${escapeHTML(chordName)}">
     ${topMarker}${strings}${frets}${markers}${labels}
-  </svg><span class="diagram-order">Senar: E A D G B e</span>`;
+  </svg>`;
 }
 
-function updateChordDiagramFromLine(line) {
-  const chordToken = line?.querySelector('.chord-token');
-  renderChordDiagram(chordToken?.textContent || '');
+function openChordPopup(token) {
+  const popup = document.getElementById('chordPopup');
+  if (!popup || !token) return;
+
+  const options = getChordShapeOptions(token.textContent);
+  if (!options.length) {
+    showToast(`Diagram untuk ${token.textContent} belum tersedia`, 'default');
+    return;
+  }
+
+  if (activeChordPopup && activeChordPopup !== token) {
+    activeChordPopup.setAttribute('aria-expanded', 'false');
+  }
+  activeChordPopup = token;
+  activeChordShapeIndex = 0;
+  token.setAttribute('aria-expanded', 'true');
+  popup.setAttribute('aria-hidden', 'false');
+  popup.classList.add('is-open');
+  renderPopupShape(options[activeChordShapeIndex]);
+  positionChordPopup(token, popup);
+}
+
+function closeChordPopup() {
+  const popup = document.getElementById('chordPopup');
+  if (!popup) return;
+  popup.classList.remove('is-open');
+  popup.setAttribute('aria-hidden', 'true');
+  activeChordPopup?.setAttribute('aria-expanded', 'false');
+  activeChordPopup = null;
+  activeChordShapeIndex = 0;
+}
+
+function positionChordPopup(token, popup) {
+  const rect = token.getBoundingClientRect();
+  const popupWidth = 270;
+  const margin = 12;
+  const left = Math.min(
+    Math.max(margin, rect.left + rect.width / 2 - popupWidth / 2),
+    window.innerWidth - popupWidth - margin
+  );
+  const top = rect.bottom + 10;
+  popup.style.left = `${left}px`;
+  popup.style.top = `${Math.min(top, window.innerHeight - 230)}px`;
+}
+
+function showPreviousChordShape() {
+  const options = getChordShapeOptions(activeChordPopup?.textContent || '');
+  if (!options.length) return;
+  activeChordShapeIndex = (activeChordShapeIndex - 1 + options.length) % options.length;
+  renderPopupShape(options[activeChordShapeIndex]);
+}
+
+function showNextChordShape() {
+  const options = getChordShapeOptions(activeChordPopup?.textContent || '');
+  if (!options.length) return;
+  activeChordShapeIndex = (activeChordShapeIndex + 1) % options.length;
+  renderPopupShape(options[activeChordShapeIndex]);
+}
+
+function setupChordPopup() {
+  const lyrics = document.getElementById('lyricsArea');
+  const popup = document.getElementById('chordPopup');
+  const close = document.getElementById('closeChordPopup');
+  const previous = document.getElementById('previousChordShape');
+  const next = document.getElementById('nextChordShape');
+  if (!lyrics || !popup) return;
+
+  lyrics.addEventListener('click', event => {
+    const token = event.target.closest('.chord-token');
+    if (token) openChordPopup(token);
+  });
+  close?.addEventListener('click', closeChordPopup);
+  previous?.addEventListener('click', showPreviousChordShape);
+  next?.addEventListener('click', showNextChordShape);
+  document.addEventListener('click', event => {
+    if (activeChordPopup && !popup.contains(event.target) && !event.target.closest('.chord-token')) {
+      closeChordPopup();
+    }
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') closeChordPopup();
+  });
+  window.addEventListener('resize', () => {
+    if (activeChordPopup) positionChordPopup(activeChordPopup, popup);
+  });
 }
 
 function renderLyrics(text) {
   return String(text).split("\n").map((line, lineIndex) => {
     const safeLine = escapeHTML(line);
-    const renderedLine = safeLine.replace(chordTokenPattern, '<span class="chord-token" data-line-index="' + lineIndex + '">$&</span>');
+    const renderedLine = safeLine.replace(chordTokenPattern, '<button type="button" class="chord-token" data-line-index="' + lineIndex + '" aria-expanded="false">$&</button>');
     return `<div class="lyrics-line" data-line-index="${lineIndex}">${renderedLine || '&nbsp;'}</div>`;
   }).join('');
 }
@@ -502,6 +598,7 @@ async function loadSongDetail() {
 
     currentChord = song.chord;
     transposeValue = 0;
+    closeChordPopup();
     lyrics.innerHTML = renderLyrics(currentChord);
     scheduleActiveChordUpdate();
 
@@ -576,6 +673,7 @@ function updateChordDisplay() {
   // Fade out sebentar, ganti teks, fade in — perubahan transpose
   // terasa halus, bukan "kedip" instan
   lyrics.classList.add('text-transition');
+  closeChordPopup();
 
   setTimeout(() => {
     lyrics.innerHTML = renderLyrics(transposeChord(currentChord, transposeValue));
@@ -892,6 +990,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadSongs();
   loadSongDetail();
   setupDetailControls();
+  setupChordPopup();
 
   document.addEventListener('fullscreenchange', updateFullscreenUI);
   document.addEventListener('webkitfullscreenchange', updateFullscreenUI);
@@ -904,6 +1003,9 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('scroll', () => {
       debouncedSaveScroll(currentSongId);
       scheduleActiveChordUpdate();
+      if (activeChordPopup) {
+        positionChordPopup(activeChordPopup, document.getElementById('chordPopup'));
+      }
     }, { passive: true });
     window.addEventListener('resize', scheduleActiveChordUpdate);
   }
