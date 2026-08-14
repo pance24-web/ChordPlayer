@@ -235,6 +235,36 @@ function updateTransposeDisplay() {
   display.textContent = `Transpose: ${sign}${transposeValue}`;
 }
 
+// ─── REKOMENDASI CAPO ───────────────────────────────────────────
+function updateCapoRecommendation() {
+  const description = document.getElementById('capoDescription');
+  const badge = document.getElementById('capoBadge');
+  const title = document.getElementById('capoTitle');
+  if (!description || !badge || !title) return;
+
+  if (transposeValue === 0) {
+    title.textContent = 'Posisi natural';
+    description.textContent = 'Gunakan chord yang tampil langsung tanpa capo.';
+    badge.textContent = 'Capo 0';
+    return;
+  }
+
+  if (transposeValue < 0) {
+    title.textContent = 'Tanpa capo';
+    description.textContent = 'Transpose sedang menurunkan nada. Capo hanya dapat menaikkan nada, jadi gunakan tanpa capo.';
+    badge.textContent = 'Capo 0';
+    return;
+  }
+
+  const recommendedFret = Math.min(transposeValue, 6);
+  const extraNote = transposeValue > 6
+    ? ' Untuk transpose lebih tinggi, pertimbangkan menurunkan transpose agar posisi capo tetap nyaman.'
+    : '';
+  title.textContent = 'Gunakan bentuk chord lebih mudah';
+  description.textContent = `Pasang capo di fret ${recommendedFret}, lalu gunakan bentuk chord ${recommendedFret} semitone lebih rendah.${extraNote}`;
+  badge.textContent = `Capo ${recommendedFret}`;
+}
+
 // ─── SKELETON RENDERER ─────────────────────────────────────────
 function renderSongSkeletons(count = 4) {
   return Array.from({ length: count }, () => `
@@ -435,6 +465,7 @@ async function loadSongDetail() {
     scheduleActiveChordUpdate();
 
     updateTransposeDisplay();
+    updateCapoRecommendation();
     restoreScrollPosition(id);
 
     if (scrollInterval) {
@@ -541,12 +572,14 @@ function transposeUp() {
   transposeValue++;
   updateChordDisplay();
   updateTransposeDisplay();
+  updateCapoRecommendation();
 }
 
 function transposeDown() {
   transposeValue--;
   updateChordDisplay();
   updateTransposeDisplay();
+  updateCapoRecommendation();
 }
 
 // ─── AUTO SCROLL ───────────────────────────────────────────────
