@@ -658,6 +658,48 @@ function printChord() {
   window.print();
 }
 
+// ─── FULLSCREEN MODE ────────────────────────────────────────────
+function getFullscreenElement() {
+  return document.fullscreenElement || document.webkitFullscreenElement;
+}
+
+function updateFullscreenUI() {
+  const btn = document.getElementById('btnFullscreen');
+  const isFullscreen = Boolean(getFullscreenElement());
+  document.body.classList.toggle('is-fullscreen', isFullscreen);
+
+  if (!btn) return;
+  btn.setAttribute('aria-pressed', String(isFullscreen));
+  btn.textContent = isFullscreen ? '⛶ Keluar Fullscreen' : '⛶ Fullscreen';
+  btn.setAttribute('aria-label', isFullscreen ? 'Keluar dari mode fullscreen' : 'Masuk ke mode fullscreen');
+}
+
+async function toggleFullscreen() {
+  const fullscreenElement = getFullscreenElement();
+
+  try {
+    if (fullscreenElement) {
+      if (document.exitFullscreen) {
+        await document.exitFullscreen();
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      }
+      return;
+    }
+
+    if (document.documentElement.requestFullscreen) {
+      await document.documentElement.requestFullscreen();
+    } else if (document.documentElement.webkitRequestFullscreen) {
+      document.documentElement.webkitRequestFullscreen();
+    } else {
+      showToast('Browser ini belum mendukung fullscreen', 'error');
+    }
+  } catch (error) {
+    console.error('Gagal mengubah mode fullscreen:', error);
+    showToast('Fullscreen tidak dapat diaktifkan', 'error');
+  }
+}
+
 // ─── SIMPAN & PULIHKAN POSISI SCROLL ──────────────────────────
 function getScrollKey(songId) {
   return `${SCROLL_POSITION_PREFIX}${songId}`;
@@ -728,6 +770,7 @@ function setupDetailControls() {
   const btnCopy = document.getElementById('btnCopyChord');
   const btnShare = document.getElementById('btnShareSong');
   const btnPrint = document.getElementById('btnPrintChord');
+  const btnFullscreen = document.getElementById('btnFullscreen');
   const btnBack = document.getElementById('btnBack');
 
   if (btnUp) {
@@ -752,6 +795,10 @@ function setupDetailControls() {
 
   if (btnPrint) {
     btnPrint.addEventListener('click', printChord);
+  }
+
+  if (btnFullscreen) {
+    btnFullscreen.addEventListener('click', toggleFullscreen);
   }
 
   if (btnBack) {
@@ -783,6 +830,10 @@ document.addEventListener('DOMContentLoaded', () => {
   loadSongs();
   loadSongDetail();
   setupDetailControls();
+
+  document.addEventListener('fullscreenchange', updateFullscreenUI);
+  document.addEventListener('webkitfullscreenchange', updateFullscreenUI);
+  updateFullscreenUI();
 
   // Setup penyimpanan posisi scroll (hanya relevan di halaman detail)
   const params = new URLSearchParams(window.location.search);

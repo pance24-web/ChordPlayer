@@ -465,6 +465,18 @@ footer {
   color: var(--green-accent);
 }
 
+/* Tombol fullscreen */
+.btn-fullscreen {
+  border-color: var(--green-accent);
+  color: var(--green-accent);
+}
+
+.btn-fullscreen:hover,
+.btn-fullscreen[aria-pressed="true"] {
+  color: var(--bg-primary);
+  background-color: var(--green-accent);
+}
+
 .btn-print:hover {
   background-color: var(--green-accent);
   color: #ffffff;
@@ -704,6 +716,46 @@ footer {
   .chord-token {
     transition: none;
   }
+}
+
+/* Fullscreen mode: fokus pada area chord saat bermain */
+body.is-fullscreen {
+  min-height: 100vh;
+  background: var(--bg-primary);
+}
+
+body.is-fullscreen header,
+body.is-fullscreen footer,
+body.is-fullscreen .btn-back,
+body.is-fullscreen .meta-data,
+body.is-fullscreen .chord-diagram-panel,
+body.is-fullscreen .capo-recommendation {
+  display: none;
+}
+
+body.is-fullscreen main.container {
+  width: min(100%, 1100px);
+  max-width: none;
+  padding-top: var(--space-4);
+}
+
+body.is-fullscreen .control-panel {
+  position: sticky;
+  z-index: 10;
+  top: 0;
+  margin-bottom: var(--space-4);
+  padding: var(--space-3) 0;
+  background: color-mix(in srgb, var(--bg-primary) 92%, transparent);
+  backdrop-filter: blur(10px);
+}
+
+body.is-fullscreen .lyrics-area {
+  min-height: calc(100vh - 6rem);
+  border: none;
+  border-radius: 0;
+  padding: var(--space-4) 0;
+  font-size: clamp(1rem, 1.8vw, 1.25rem);
+  line-height: 2;
 }
 
 /* ─── THEME TOGGLE ─── */
