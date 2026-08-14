@@ -73,31 +73,65 @@ function escapeHTML(text) {
 const chordTokenPattern = /\b[A-G](?:#|b)?(?:7sus4|maj9|maj7|maj|min9|min7|m9|m7|sus2|sus4|sus|dim7|dim|aug|add\d+|13|9|6|7|m|min)?(?:\/[A-G](?:#|b)?)?(?![#bA-Za-z0-9])/g;
 
 const guitarChordShapes = {
-  C: ['x', 3, 2, 0, 1, 0],
-  D: ['x', 'x', 0, 2, 3, 2],
-  Dm: ['x', 'x', 0, 2, 3, 1],
-  E: [0, 2, 2, 1, 0, 0],
-  Em: [0, 2, 2, 0, 0, 0],
-  F: [1, 3, 3, 2, 1, 1],
-  G: [3, 2, 0, 0, 0, 3],
-  A: ['x', 0, 2, 2, 2, 0],
-  Am: ['x', 0, 2, 2, 1, 0],
-  B: ['x', 2, 4, 4, 4, 2],
-  Bm: ['x', 2, 4, 4, 3, 2],
-  'C#': ['x', 4, 6, 6, 6, 4],
-  'D#': ['x', 6, 8, 8, 8, 6],
-  'F#': [2, 4, 4, 3, 2, 2],
-  'G#': [4, 6, 6, 5, 4, 4],
-  'A#': ['x', 1, 3, 3, 3, 1]
+  C: { frets: ['x', 3, 2, 0, 1, 0], baseFret: 1 },
+  C7: { frets: ['x', 3, 2, 3, 1, 0], baseFret: 1 },
+  Cmaj7: { frets: ['x', 3, 2, 0, 0, 0], baseFret: 1 },
+  Cadd9: { frets: ['x', 3, 2, 0, 3, 3], baseFret: 1 },
+  D: { frets: ['x', 'x', 0, 2, 3, 2], baseFret: 1 },
+  Dm: { frets: ['x', 'x', 0, 2, 3, 1], baseFret: 1 },
+  D7: { frets: ['x', 'x', 0, 2, 1, 2], baseFret: 1 },
+  Dsus2: { frets: ['x', 'x', 0, 2, 3, 0], baseFret: 1 },
+  Dsus4: { frets: ['x', 'x', 0, 2, 3, 3], baseFret: 1 },
+  E: { frets: [0, 2, 2, 1, 0, 0], baseFret: 1 },
+  Em: { frets: [0, 2, 2, 0, 0, 0], baseFret: 1 },
+  E7: { frets: [0, 2, 0, 1, 0, 0], baseFret: 1 },
+  Emaj7: { frets: [0, 2, 1, 1, 0, 0], baseFret: 1 },
+  Esus4: { frets: [0, 2, 2, 2, 0, 0], baseFret: 1 },
+  F: { frets: [1, 3, 3, 2, 1, 1], baseFret: 1 },
+  Fmaj7: { frets: [1, 3, 3, 2, 1, 0], baseFret: 1 },
+  G: { frets: [3, 2, 0, 0, 0, 3], baseFret: 1 },
+  G7: { frets: [3, 2, 0, 0, 0, 1], baseFret: 1 },
+  Gadd9: { frets: [3, 2, 0, 2, 0, 3], baseFret: 1 },
+  A: { frets: ['x', 0, 2, 2, 2, 0], baseFret: 1 },
+  A7: { frets: ['x', 0, 2, 0, 2, 0], baseFret: 1 },
+  Am: { frets: ['x', 0, 2, 2, 1, 0], baseFret: 1 },
+  Am7: { frets: ['x', 0, 2, 0, 1, 0], baseFret: 1 },
+  Asus2: { frets: ['x', 0, 2, 2, 0, 0], baseFret: 1 },
+  B: { frets: ['x', 2, 4, 4, 4, 2], baseFret: 2 },
+  B7: { frets: ['x', 2, 1, 2, 0, 2], baseFret: 1 },
+  Bm: { frets: ['x', 2, 4, 4, 3, 2], baseFret: 2 },
+  'C#': { frets: ['x', 4, 6, 6, 6, 4], baseFret: 4 },
+  'D#': { frets: ['x', 6, 8, 8, 8, 6], baseFret: 6 },
+  'F#': { frets: [2, 4, 4, 3, 2, 2], baseFret: 2 },
+  'G#': { frets: [4, 6, 6, 5, 4, 4], baseFret: 4 },
+  'A#': { frets: ['x', 1, 3, 3, 3, 1], baseFret: 1 }
+};
+
+const chordQualityAliases = {
+  min: 'm',
+  min7: 'm7',
+  min9: 'm9'
 };
 
 function parseChordName(chordText) {
-  const match = String(chordText).match(/^([A-G](?:#|b)?)(m|maj|min|7|sus|dim|add)?/);
+  const match = String(chordText).match(/^([A-G](?:#|b)?)(7sus4|maj9|maj7|maj|min9|min7|m9|m7|sus2|sus4|sus|dim7|dim|aug|add\d+|13|9|6|7|m|min)?/);
   if (!match) return null;
   const normalizedRoot = flatToSharp[match[1]] || match[1];
-  let quality = match[2] || '';
-  if (quality === 'min') quality = 'm';
+  const quality = chordQualityAliases[match[2] || ''] || match[2] || '';
   return `${normalizedRoot}${quality}`;
+}
+
+function resolveChordShape(chordName) {
+  if (!chordName) return null;
+  const exactShape = guitarChordShapes[chordName];
+  if (exactShape) return exactShape;
+
+  const root = chordName.match(/^[A-G](?:#)?/)?.[0];
+  if (!root) return null;
+  const fallbackQuality = chordName.slice(root.length);
+  const isMinorQuality = /^(?:m(?!aj)|min)/.test(fallbackQuality);
+  const fallbackKey = isMinorQuality ? `${root}m` : fallbackQuality.includes('7') ? `${root}7` : root;
+  return guitarChordShapes[fallbackKey] || guitarChordShapes[root] || null;
 }
 
 function renderChordDiagram(chordText) {
@@ -106,7 +140,7 @@ function renderChordDiagram(chordText) {
   if (!container || !title) return;
 
   const chordName = parseChordName(chordText);
-  const shape = chordName ? guitarChordShapes[chordName] : null;
+  const shape = resolveChordShape(chordName);
   title.textContent = chordName || 'Chord aktif';
 
   if (!shape) {
@@ -115,12 +149,13 @@ function renderChordDiagram(chordText) {
   }
 
   const width = 300;
-  const height = 190;
+  const height = 210;
   const left = 42;
-  const top = 30;
+  const top = 36;
   const stringGap = 38;
   const fretGap = 25;
   const fretCount = 5;
+  const baseFret = shape.baseFret || 1;
   const right = left + stringGap * 5;
   const bottom = top + fretGap * fretCount;
   const strings = Array.from({ length: 6 }, (_, index) => {
@@ -131,21 +166,25 @@ function renderChordDiagram(chordText) {
     const y = top + fretGap * index;
     return `<line x1="${left}" y1="${y}" x2="${right}" y2="${y}" class="diagram-fret" />`;
   }).join('');
-  const markers = shape.map((value, stringIndex) => {
+  const markers = shape.frets.map((value, stringIndex) => {
     const x = left + stringGap * stringIndex;
-    if (value === 'x') return `<text x="${x}" y="18" text-anchor="middle" class="diagram-muted">×</text>`;
-    if (value === 0) return `<circle cx="${x}" cy="15" r="5" class="diagram-open" />`;
+    if (value === 'x') return `<text x="${x}" y="23" text-anchor="middle" class="diagram-muted">×</text>`;
+    if (value === 0) return `<circle cx="${x}" cy="23" r="5" class="diagram-open" />`;
     const fret = Number(value);
-    const y = top + fretGap * (fret - 0.5);
+    const relativeFret = fret - baseFret + 1;
+    if (relativeFret < 1 || relativeFret > fretCount) return '';
+    const y = top + fretGap * (relativeFret - 0.5);
     return `<circle cx="${x}" cy="${y}" r="8" class="diagram-dot" /><text x="${x}" y="${y + 4}" text-anchor="middle" class="diagram-dot-label">${fret}</text>`;
   }).join('');
   const labels = ['E', 'A', 'D', 'G', 'B', 'e'].map((label, index) =>
     `<text x="${left + stringGap * index}" y="${bottom + 22}" text-anchor="middle" class="diagram-string-label">${label}</text>`
   ).join('');
+  const topMarker = baseFret === 1
+    ? `<line x1="${left}" y1="${top}" x2="${right}" y2="${top}" class="diagram-nut" />`
+    : `<line x1="${left}" y1="${top}" x2="${right}" y2="${top}" class="diagram-position-marker" /><text x="15" y="${top + 5}" class="diagram-position">${baseFret}fr</text>`;
 
   container.innerHTML = `<svg class="guitar-diagram-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="Diagram chord ${escapeHTML(chordName)}">
-    <line x1="${left}" y1="${top}" x2="${right}" y2="${top}" class="diagram-nut" />
-    ${strings}${frets}${markers}${labels}
+    ${topMarker}${strings}${frets}${markers}${labels}
   </svg><span class="diagram-order">Senar: E A D G B e</span>`;
 }
 

@@ -592,6 +592,17 @@ footer {
   stroke-width: 4;
 }
 
+.diagram-position-marker {
+  stroke: var(--text-primary);
+  stroke-width: 1.8;
+}
+
+.diagram-position {
+  fill: var(--text-secondary);
+  font-size: 0.65rem;
+  font-weight: 700;
+}
+
 .diagram-dot {
   fill: var(--green-accent);
   stroke: var(--green-accent);
