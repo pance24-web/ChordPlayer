@@ -15,6 +15,21 @@
   --header-bg: #2563eb;
   --header-text: #e0e7ff;
   --control-bg: #f1f5f9;
+
+  /* Spacing Scale — kelipatan 4px, dipakai konsisten di semua komponen */
+  --space-1: 0.25rem;  /* 4px  — gap sangat kecil (icon+text) */
+  --space-2: 0.5rem;   /* 8px  — gap kecil antar elemen dekat */
+  --space-3: 0.75rem;  /* 12px — padding tombol, gap standar */
+  --space-4: 1rem;     /* 16px — padding card, margin section kecil */
+  --space-5: 1.5rem;   /* 24px — margin antar section */
+  --space-6: 2rem;     /* 32px — margin besar (container top/bottom) */
+  --space-8: 3rem;     /* 48px — jarak sangat besar */
+  --space-10: 4rem;    /* 64px — footer margin-top */
+
+  /* Radius scale — dipakai konsisten juga */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-full: 999px;
 }
 
 /* Dark Mode */
@@ -65,7 +80,7 @@ header {
 header nav {
   max-width: 800px;
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0 var(--space-5);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -98,27 +113,27 @@ nav ul li a.active {
 /* ─── LAYOUT CONTAINER ─── */
 .container {
   max-width: 800px;
-  margin: 2rem auto;
-  padding: 0 1.5rem;
+  margin: var(--space-6) auto;
+  padding: 0 var(--space-5);
 }
 
 /* ─── SEARCH SECTION ─── */
 .search-section {
-  margin-bottom: 2rem;
+  margin-bottom: var(--space-6);
 }
 
 .search-section h2 {
   font-size: 1.5rem;
   color: var(--text-primary);
-  margin-bottom: 0.75rem;
+  margin-bottom: var(--space-3);
 }
 
 .search-box input {
   width: 100%;
-  padding: 0.75rem 1rem;
+  padding: var(--space-3) var(--space-4);
   font-size: 1rem;
   border: 2px solid var(--border-color);
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s, background-color 0.3s ease, color 0.3s ease;
   background-color: var(--bg-secondary);
@@ -135,7 +150,7 @@ nav ul li a.active {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: var(--space-4);
 }
 
 .badge {
@@ -143,22 +158,22 @@ nav ul li a.active {
   color: var(--badge-color);
   font-size: 0.85rem;
   font-weight: 600;
-  padding: 0.25rem 0.6rem;
-  border-radius: 999px;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .song-list {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: var(--space-3);
 }
 
 .song-card {
   background-color: var(--bg-secondary);
   border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 1rem 1.25rem;
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-5);
   text-decoration: none;
   color: inherit;
   display: flex;
@@ -186,9 +201,9 @@ nav ul li a.active {
 
 .empty-state {
   text-align: center;
-  padding: 3rem 1rem;
+  padding: var(--space-8) var(--space-4);
   background-color: var(--bg-secondary);
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   border: 1px dashed var(--border-color);
   color: var(--text-secondary);
   transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
@@ -205,10 +220,10 @@ nav ul li a.active {
 /* ─── FOOTER ─── */
 footer {
   text-align: center;
-  padding: 2rem 0;
+  padding: var(--space-6) 0;
   color: var(--text-muted);
   font-size: 0.875rem;
-  margin-top: 4rem;
+  margin-top: var(--space-10);
   transition: color 0.3s ease;
 }
 
@@ -217,7 +232,7 @@ footer {
 /* Tombol kembali */
 .btn-back {
   display: inline-block;
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--space-5);
   color: var(--accent-color);
   text-decoration: none;
   font-weight: 500;
@@ -231,14 +246,14 @@ footer {
 
 /* Info lagu (judul & artis) */
 .meta-data {
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--space-5);
 }
 
 .meta-data h2 {
   font-size: 1.75rem;
   font-weight: 700;
   color: var(--text-primary);
-  margin-bottom: 0.25rem;
+  margin-bottom: var(--space-1);
   transition: color 0.3s ease;
 }
 
@@ -252,23 +267,23 @@ footer {
 .control-panel {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: var(--space-3);
   flex-wrap: wrap;
-  margin-bottom: 1.5rem;
-  padding: 1rem;
+  margin-bottom: var(--space-5);
+  padding: var(--space-4);
   background-color: var(--bg-secondary);
   border: 1px solid var(--border-color);
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 /* Tombol kontrol */
 .btn-control {
-  padding: 0.5rem 1rem;
+  padding: var(--space-2) var(--space-4);
   font-size: 0.9rem;
   font-weight: 600;
   border: 2px solid var(--accent-color);
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   background-color: transparent;
   color: var(--accent-color);
   cursor: pointer;
@@ -347,8 +362,8 @@ footer {
   font-weight: 600;
   color: var(--badge-color);
   background-color: var(--control-bg);
-  padding: 0.4rem 0.75rem;
-  border-radius: 6px;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -356,8 +371,8 @@ footer {
 .lyrics-area {
   background-color: var(--bg-secondary);
   border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 1.5rem;
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
   font-family: 'Courier New', Courier, monospace;
   font-size: 0.95rem;
   line-height: 1.8;
@@ -442,11 +457,11 @@ footer {
 .skeleton-song-card {
   background-color: var(--bg-secondary);
   border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 1rem 1.25rem;
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-5);
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: var(--space-2);
 }
 
 .skeleton-title {
@@ -539,16 +554,16 @@ footer {
 /* ─── SEARCH FILTER CHIPS ─── */
 .search-filter {
   display: flex;
-  gap: 0.5rem;
-  margin-top: 0.75rem;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
 }
 
 .filter-chip {
-  padding: 0.35rem 0.9rem;
+  padding: var(--space-2) var(--space-4);
   font-size: 0.85rem;
   font-weight: 600;
   border: 1.5px solid var(--border-color);
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   background-color: transparent;
   color: var(--text-secondary);
   cursor: pointer;
@@ -575,12 +590,12 @@ footer {
 /* ─── TOAST NOTIFICATION ─── */
 .toast-container {
   position: fixed;
-  bottom: 1.5rem;
+  bottom: var(--space-5);
   left: 50%;
   transform: translateX(-50%);
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: var(--space-2);
   z-index: 1000;
   width: 90%;
   max-width: 360px;
@@ -590,8 +605,8 @@ footer {
 .toast {
   background-color: var(--text-primary);
   color: var(--bg-secondary);
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
   font-size: 0.9rem;
   font-weight: 500;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
