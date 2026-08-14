@@ -722,3 +722,109 @@ footer {
     margin: 1.5cm;
   }
 }
+
+/* ═══════════════════════════════════════════════════════
+   RESPONSIVE LAYOUT
+   Breakpoint: 640px (tablet kecil ke bawah dianggap mobile)
+   ═══════════════════════════════════════════════════════ */
+@media (max-width: 640px) {
+
+  /* Container lebih rapat di mobile */
+  .container {
+    margin: var(--space-4) auto;
+    padding: 0 var(--space-4);
+  }
+
+  /* Header: logo mengecil dikit, tetap 1 baris */
+  .logo {
+    font-size: 1.1rem;
+  }
+
+  header nav {
+    padding: 0 var(--space-4);
+  }
+
+  /* Search section */
+  .search-section h2 {
+    font-size: 1.25rem;
+  }
+
+  .search-box input {
+    font-size: 0.95rem;
+  }
+
+  /* Filter chips: scrollable horizontal kalau kepanjangan, bukan wrap acak */
+  .search-filter {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: var(--space-1); /* ruang biar scrollbar tidak nempel chip */
+  }
+
+  .filter-chip {
+    flex-shrink: 0; /* chip tidak menyusut, biar tetap terbaca */
+  }
+
+  /* Song card: sedikit lebih rapat */
+  .song-card {
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .song-info .title {
+    font-size: 1rem;
+  }
+
+  /* ─── DETAIL PAGE ─── */
+
+  .meta-data h2 {
+    font-size: 1.4rem;
+  }
+
+  /* Control panel: susun 2 kolom rapi, bukan wrap acak */
+  .control-panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2);
+  }
+
+  .btn-control {
+    width: 100%;
+    text-align: center;
+    padding: var(--space-3) var(--space-2);
+    font-size: 0.85rem;
+  }
+
+  /* Transpose display & scroll button: full width di baris sendiri */
+  .transpose-display {
+    grid-column: 1 / -1;
+    text-align: center;
+  }
+
+  .btn-scroll {
+    margin-left: 0; /* reset margin-left: auto yang tadinya dorong ke kanan */
+  }
+
+  /* Lyrics area: font sedikit lebih kecil supaya chord panjang tidak overflow */
+  .lyrics-area {
+    padding: var(--space-4);
+    font-size: 0.85rem;
+    line-height: 1.7;
+  }
+
+  /* Toast: sedikit lebih rapat ke tepi bawah di mobile */
+  .toast-container {
+    bottom: var(--space-4);
+    width: 92%;
+  }
+}
+
+/* Breakpoint tambahan untuk layar sangat sempit (HP lama/kecil) */
+@media (max-width: 360px) {
+  .control-panel {
+    grid-template-columns: 1fr; /* 1 kolom penuh kalau memang terlalu sempit */
+  }
+
+  .btn-control {
+    font-size: 0.8rem;
+  }
+}
