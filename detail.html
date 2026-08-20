@@ -1,4 +1,26 @@
-<!-- Tombol kontrol utama (dipakai terus saat latihan) -->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Lihat chord dan lirik lengkap. Transpose nada dan gunakan auto scroll saat bermain gitar.">
+  <title>ChordPlayer - Detail Lagu</title>
+  <link rel="icon" href="asset/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<header>
+  <nav>
+    <div class="logo">ChordPlayer</div>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode">🌙</button></li>
+    </ul>
+  </nav>
+</header>
+  <main class="container">
+
+    <!-- Tombol kontrol utama (dipakai terus saat latihan) -->
 <section class="control-panel">
   <button class="btn-control" id="btnTransposeUp">▲ Transpose Up</button>
   <span id="transposeDisplay" class="transpose-display">Transpose: 0</span>
@@ -31,3 +53,50 @@
     </div>
   </div>
 </section>
+
+  <!-- Header ini hanya muncul di kertas, disembunyikan di layar -->
+  <div class="print-header">
+    <div class="print-brand">ChordPlayer</div>
+    <div class="print-divider"></div>
+  </div>
+
+  <!-- Rekomendasi capo -->
+  <section id="capoRecommendation" class="capo-recommendation" aria-live="polite">
+    <div class="capo-icon" aria-hidden="true">♯</div>
+    <div class="capo-content">
+      <p class="section-kicker">Saran bermain</p>
+      <h3 id="capoTitle">Rekomendasi capo</h3>
+      <p id="capoDescription">Capo 0 — tanpa capo untuk posisi transpose saat ini.</p>
+    </div>
+    <span id="capoBadge" class="capo-badge">Capo 0</span>
+  </section>
+
+  <!-- Area chord & lirik -->
+  <div id="lyricsArea" class="lyrics-area" role="region" aria-label="Lirik dan chord lagu">Memuat chord...</div>
+
+  </main>
+  <footer>© 2026 ChordPlayer App</footer>
+
+  <!-- Popup diagram chord gitar -->
+  <div id="chordPopup" class="chord-popup" role="dialog" aria-label="Diagram chord gitar" aria-hidden="true">
+    <div class="chord-popup-header">
+      <div>
+        <p class="section-kicker">Diagram gitar</p>
+        <h3 id="chordPopupTitle">Chord</h3>
+      </div>
+      <button id="closeChordPopup" class="chord-popup-close" type="button" aria-label="Tutup diagram chord">×</button>
+    </div>
+    <div id="chordPopupDiagram" class="chord-popup-diagram"></div>
+    <div class="chord-popup-footer">
+      <button id="previousChordShape" class="chord-popup-nav" type="button" aria-label="Bentuk chord sebelumnya">‹</button>
+      <span id="chordPopupCount">1 dari 1</span>
+      <button id="nextChordShape" class="chord-popup-nav" type="button" aria-label="Bentuk chord berikutnya">›</button>
+    </div>
+  </div>
+
+  <!-- Container untuk toast notification -->
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
