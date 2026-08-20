@@ -1039,8 +1039,39 @@ function setupDetailControls() {
   }
 
   if (btnBack) {
-    btnBack.addEventListener('click', handleBackClick);
-  }
+      btnBack.addEventListener('click', handleBackClick);
+    }
+
+  setupMoreActionsMenu(); // ✅ tambahan baru
+}
+
+// ─── MENU AKSI SEKUNDER (dropdown "Lainnya") ─────────────────
+function setupMoreActionsMenu() {
+  const btn = document.getElementById('btnMoreActions');
+  const menu = document.getElementById('moreActionsMenu');
+  if (!btn || !menu) return;
+
+  btn.addEventListener('click', (event) => {
+    event.stopPropagation();
+    const isOpen = menu.classList.toggle('is-open');
+    btn.setAttribute('aria-expanded', String(isOpen));
+  });
+
+  // Tutup menu kalau klik di luar
+  document.addEventListener('click', (event) => {
+    if (!menu.contains(event.target) && event.target !== btn) {
+      menu.classList.remove('is-open');
+      btn.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  // Tutup menu dengan Esc
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      menu.classList.remove('is-open');
+      btn.setAttribute('aria-expanded', 'false');
+    }
+  });
 }
 
 // ─── START ────────────────────────────────────────────────────

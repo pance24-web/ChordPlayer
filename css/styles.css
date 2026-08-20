@@ -424,6 +424,92 @@ footer {
   background-color: var(--green-accent);
   color: #ffffff;
 }
+/* Tombol Reset — warna netral, beda dari tombol aksi utama */
+.btn-reset-transpose {
+  border-color: var(--text-secondary);
+  color: var(--text-secondary);
+}
+
+.btn-reset-transpose:hover {
+  background-color: var(--text-secondary);
+  color: #ffffff;
+}
+
+/* ─── MENU AKSI SEKUNDER (dropdown "Lainnya") ─── */
+.more-actions {
+  position: relative;
+}
+
+.btn-more {
+  border-color: var(--border-color);
+  color: var(--text-secondary);
+}
+
+.btn-more:hover {
+  background-color: var(--control-bg);
+  color: var(--text-primary);
+}
+
+.more-actions-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + var(--space-2));
+  right: 0;
+  min-width: 180px;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  padding: var(--space-2);
+  z-index: 50;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.more-actions-menu.is-open {
+  display: flex;
+  animation: menu-in 0.15s ease;
+}
+
+@keyframes menu-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.menu-item {
+  width: 100%;
+  text-align: left;
+  padding: var(--space-2) var(--space-3);
+  font-size: 0.9rem;
+  font-weight: 500;
+  border: none;
+  border-radius: var(--radius-sm);
+  background-color: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.menu-item:hover {
+  background-color: var(--control-bg);
+}
+
+.menu-item.copied {
+  color: var(--green-accent);
+}
+
+/* Mobile: menu jadi full width di bawah tombol, bukan absolute kecil */
+@media (max-width: 640px) {
+  .more-actions {
+    grid-column: 1 / -1;
+  }
+
+  .more-actions-menu {
+    position: static;
+    width: 100%;
+    margin-top: var(--space-2);
+  }
+}
 
 .scroll-speed-control {
   display: inline-flex;
