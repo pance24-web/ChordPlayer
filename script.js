@@ -648,7 +648,8 @@ async function loadSongDetail() {
   try {
     lyrics.innerHTML = renderLyricsSkeleton();
 
-    const fetchUrl = `${API_BASE_URL}/${encodeURIComponent(id)}`;
+    // Endpoint detail menggunakan query parameter: /api/song-detail?id=...
+    const fetchUrl = `/api/song-detail?id=${encodeURIComponent(id)}`;
     console.log('[loadSongDetail] Fetching:', fetchUrl);
 
     const response = await fetch(fetchUrl, { signal: controller.signal });
