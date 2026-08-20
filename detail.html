@@ -21,38 +21,38 @@
   <main class="container">
 
     <!-- Tombol kontrol utama (dipakai terus saat latihan) -->
-<section class="control-panel">
-  <button class="btn-control" id="btnTransposeUp">▲ Transpose Up</button>
-  <span id="transposeDisplay" class="transpose-display">Transpose: 0</span>
-  <button class="btn-control" id="btnTransposeDown">▼ Transpose Down</button>
-  <button class="btn-control btn-reset-transpose" id="btnResetTranspose">↺ Reset</button>
+  <section class="control-panel">
+    <button class="btn-control" id="btnTransposeUp">▲ Transpose Up</button>
+    <span id="transposeDisplay" class="transpose-display">Transpose: 0</span>
+    <button class="btn-control" id="btnTransposeDown">▼ Transpose Down</button>
+    <button class="btn-control btn-reset-transpose" id="btnResetTranspose">↺ Reset</button>
 
-  <button class="btn-control btn-scroll" id="btnAutoScroll">▶ Auto Scroll</button>
-  <label class="scroll-speed-control" for="scrollSpeed">
-    <span class="scroll-speed-label">🐢</span>
-    <select id="scrollSpeed" aria-label="Kecepatan auto-scroll">
-      <option value="0.25">0,25×</option>
-      <option value="0.5">0,5×</option>
-      <option value="1" selected>1×</option>
-      <option value="1.5">1,5×</option>
-      <option value="2">2×</option>
-      <option value="3">3×</option>
-      <option value="4">4×</option>
-    </select>
-    <span class="scroll-speed-label">🐇</span>
-  </label>
+    <button class="btn-control btn-scroll" id="btnAutoScroll">▶ Auto Scroll</button>
+    <label class="scroll-speed-control" for="scrollSpeed">
+      <span class="scroll-speed-label">🐢</span>
+      <select id="scrollSpeed" aria-label="Kecepatan auto-scroll">
+        <option value="0.25">0,25×</option>
+        <option value="0.5">0,5×</option>
+        <option value="1" selected>1×</option>
+        <option value="1.5">1,5×</option>
+        <option value="2">2×</option>
+        <option value="3">3×</option>
+        <option value="4">4×</option>
+      </select>
+      <span class="scroll-speed-label">🐇</span>
+    </label>
 
-  <!-- Menu aksi sekunder — dipakai sesekali, bukan saat latihan aktif -->
-  <div class="more-actions">
-    <button class="btn-control btn-more" id="btnMoreActions" aria-haspopup="true" aria-expanded="false" aria-label="Aksi lainnya">⋯ Lainnya</button>
-    <div class="more-actions-menu" id="moreActionsMenu" role="menu">
-      <button class="menu-item" id="btnCopyChord" role="menuitem">📋 Copy Chord</button>
-      <button class="menu-item" id="btnShareSong" role="menuitem">🔗 Bagikan</button>
-      <button class="menu-item" id="btnPrintChord" role="menuitem">🖨️ Print</button>
-      <button class="menu-item" id="btnFullscreen" role="menuitem" aria-pressed="false">⛶ Fullscreen</button>
+    <!-- Menu aksi sekunder — dipakai sesekali, bukan saat latihan aktif -->
+    <div class="more-actions">
+      <button class="btn-control btn-more" id="btnMoreActions" aria-haspopup="true" aria-expanded="false" aria-label="Aksi lainnya">⋯ Lainnya</button>
+      <div class="more-actions-menu" id="moreActionsMenu" role="menu">
+        <button class="menu-item" id="btnCopyChord" role="menuitem">📋 Copy Chord</button>
+        <button class="menu-item" id="btnShareSong" role="menuitem">🔗 Bagikan</button>
+        <button class="menu-item" id="btnPrintChord" role="menuitem">🖨️ Print</button>
+        <button class="menu-item" id="btnFullscreen" role="menuitem" aria-pressed="false">⛶ Fullscreen</button>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
   <!-- Header ini hanya muncul di kertas, disembunyikan di layar -->
   <div class="print-header">
