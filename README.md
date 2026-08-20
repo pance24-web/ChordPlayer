@@ -46,24 +46,24 @@ https://chord-player-phi.vercel.app
 
 ## Frontend
 
-* HTML5
-* CSS3
-* JavaScript
+- HTML5
+- CSS3
+- JavaScript
 
 ## Backend
 
-* JavaScript API
-* Vercel Serverless Function
+- JavaScript API
+- Vercel Serverless Function
 
 ## Database
 
-* MySQL
+- MySQL
 
 ## Tools
 
-* Git
-* GitHub
-* Vercel
+- Git
+- GitHub
+- Vercel
 
 ---
 
@@ -127,63 +127,64 @@ npm install
 
 # 🔐 Environment Setup
 
-Buat file `.env`:
+Buat file `.env` di root project:
 
 ```env
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=your_password
-DB_NAME=chordplayer
+DB_HOST=your-db-host
+DB_PORT=3306
+DB_USER=your-db-user
+DB_PASSWORD=your-db-password
+DB_NAME=your-db-name
+DB_SSL=false
 ```
 
-Import database:
+> **Menggunakan database cloud (contoh: Aiven, PlanetScale, dll)?**
+> Sesuaikan `DB_HOST` dan `DB_PORT` dengan connection info dari provider kamu, lalu set `DB_SSL=true` — kebanyakan provider cloud MySQL mewajibkan koneksi SSL.
 
-```sql
-docs/schema.sql
-```
-
----
+## Buat tabel `songs` dengan menjalankan query di `docs/schema.sql` lewat client MySQL pilihanmu (TablePlus, MySQL Workbench, VS Code Database Client, dll).
 
 # ▶️ Running Locally
+
+Project ini menggunakan **Vercel Serverless Functions**, sehingga cara termudah menjalankannya secara lokal adalah dengan Vercel CLI.
+
+Install Vercel CLI (sekali saja, secara global):
+
+```bash
+npm install -g vercel
+```
 
 Jalankan aplikasi:
 
 ```bash
-npm start
+vercel dev
 ```
 
-Buka browser:
-
-```text
-http://localhost:3000
-```
-
----
+## Ikuti instruksi di terminal (biasanya akan meminta login/link project untuk pertama kali). Setelah berjalan, buka URL yang ditampilkan di terminal (biasanya `http://localhost:3000`).
 
 # 🗺️ Roadmap
 
 ## ✅ Completed
 
-* [x] Basic chord search
-* [x] Song detail page
-* [x] MySQL database integration
-* [x] Dark mode
-* [x] Responsive layout
+- [x] Basic chord search
+- [x] Song detail page
+- [x] MySQL database integration
+- [x] Dark mode
+- [x] Responsive layout
 
 ## 🚧 In Progress
 
-* [ ] User favorites
-* [ ] User authentication
-* [ ] Improved chord editor
-* [ ] Better mobile experience
+- [ ] User favorites
+- [ ] User authentication
+- [ ] Improved chord editor
+- [ ] Better mobile experience
 
 ## 🔮 Future Plans
 
-* [ ] Export chord ke PDF
-* [ ] Audio preview
-* [ ] Guitar tuning assistant
-* [ ] Community song contribution
-* [ ] Progressive Web App (PWA)
+- [ ] Export chord ke PDF
+- [ ] Audio preview
+- [ ] Guitar tuning assistant
+- [ ] Community song contribution
+- [ ] Progressive Web App (PWA)
 
 ---
 
@@ -220,9 +221,9 @@ git push origin feature/nama-fitur
 
 Jika menemukan bug atau memiliki ide fitur baru:
 
-* Buat Issue baru
-* Jelaskan masalah atau saran
-* Sertakan langkah reproduksi jika diperlukan
+- Buat Issue baru
+- Jelaskan masalah atau saran
+- Sertakan langkah reproduksi jika diperlukan
 
 ---
 
