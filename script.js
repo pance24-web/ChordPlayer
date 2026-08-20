@@ -616,12 +616,22 @@ async function loadSongDetail() {
   const artist = document.getElementById('songArtist');
   const lyrics = document.getElementById('lyricsArea');
 
+  // Log diagnostik — bantu kita lihat apakah fungsi ini benar-benar jalan
+  console.log('[loadSongDetail] dipanggil. Elemen ditemukan:', {
+    title: Boolean(title),
+    artist: Boolean(artist),
+    lyrics: Boolean(lyrics)
+  });
+
   if (!title || !artist || !lyrics) {
+    console.warn('[loadSongDetail] Berhenti: elemen DOM tidak ditemukan (bukan halaman detail?)');
     return;
   }
 
   const params = new URLSearchParams(window.location.search);
   const id = params.get('id');
+
+  console.log('[loadSongDetail] id dari URL:', id);
 
   if (!id) {
     title.textContent = "-";
@@ -630,10 +640,21 @@ async function loadSongDetail() {
     return;
   }
 
+  // Timeout pengaman — kalau fetch macet lebih dari 10 detik,
+  // paksa berhenti dan tampilkan pesan error, jangan biarkan stuck selamanya
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 10000);
+
   try {
     lyrics.innerHTML = renderLyricsSkeleton();
 
-    const response = await fetch(`${API_BASE_URL}/${encodeURIComponent(id)}`);
+    const fetchUrl = `${API_BASE_URL}/${encodeURIComponent(id)}`;
+    console.log('[loadSongDetail] Fetching:', fetchUrl);
+
+    const response = await fetch(fetchUrl, { signal: controller.signal });
+    clearTimeout(timeoutId);
+
+    console.log('[loadSongDetail] Response status:', response.status);
 
     if (response.status === 404) {
       title.textContent = "-";
@@ -647,7 +668,13 @@ async function loadSongDetail() {
     }
 
     const result = await response.json();
+    console.log('[loadSongDetail] Data diterima:', result);
+
     const song = result.data;
+
+    if (!song) {
+      throw new Error('Response tidak berisi data lagu');
+    }
 
     title.textContent = song.title;
     artist.textContent = song.artist;
@@ -669,12 +696,17 @@ async function loadSongDetail() {
     const btn = document.getElementById('btnAutoScroll');
     if (btn) btn.textContent = '▶ Auto Scroll';
 
+    console.log('[loadSongDetail] Selesai, lagu berhasil ditampilkan.');
+
   } catch (error) {
-    console.error(error);
+    clearTimeout(timeoutId);
+    console.error('[loadSongDetail] Error:', error);
+
+    const isTimeout = error.name === 'AbortError';
     lyrics.innerHTML = `
       <div class="error-state">
-        <p>⚠️ Gagal memuat lagu.</p>
-        <span class="empty-hint">Periksa koneksi internet kamu</span>
+        <p>⚠️ ${isTimeout ? 'Waktu memuat lagu habis.' : 'Gagal memuat lagu.'}</p>
+        <span class="empty-hint">Periksa koneksi internet kamu, lalu refresh halaman</span>
       </div>
     `;
     showToast('Gagal memuat chord', 'error');
