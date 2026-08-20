@@ -1,0 +1,11 @@
+{
+  "remoteName": "origin",
+  "projects": [
+    {
+      "id": "prj_00imLyoLcVAR4OG9KrtXDpP6bONX",
+      "name": "chord-player",
+      "directory": ".",
+      "orgId": "team_RJ3jv4ct04GIJAYaIFOv96nZ"
+    }
+  ]
+}
