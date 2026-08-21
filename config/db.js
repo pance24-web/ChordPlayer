@@ -12,7 +12,7 @@ const pool = mysql.createPool({
   queueLimit: 0,
   // SSL diperlukan untuk koneksi ke Aiven (dan cloud database lain)
   ssl: process.env.DB_SSL === 'true'
-    ? { rejectUnauthorized: false }
+    ? { rejectUnauthorized: true }
     : undefined
 });
 
