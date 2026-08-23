@@ -8,34 +8,77 @@
   <link rel="icon" href="asset/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/styles.css">
 </head>
-<body>
+<body class="page-detail">
 <header>
-  <nav>
-    <div class="logo">ChordPlayer</div>
-    <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode">🌙</button></li>
-    </ul>
-  </nav>
+  <div class="header-inner">
+    <div class="header-left">
+      <button id="navToggle" class="nav-toggle" aria-label="Buka menu navigasi" aria-expanded="false">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+      </button>
+      <span class="logo-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+      </span>
+      <span class="logo">ChordPlayer</span>
+    </div>
+    <div class="header-center">
+      <a href="index.html" class="nav-link">Home</a>
+    </div>
+    <div class="header-right">
+      <span class="header-tagline">Cari chord. Mainkan musik.</span>
+      <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode"></button>
+    </div>
+  </div>
 </header>
+
+<!-- Menu dropdown mobile -->
+<nav class="site-menu" id="siteMenu" aria-label="Menu utama">
+  <a href="index.html" class="nav-link">Home</a>
+</nav>
+
   <main class="container">
+    <a href="index.html" id="btnBack" class="btn-back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      Kembali ke hasil pencarian
+    </a>
 
     <!-- Informasi lagu, diisi oleh loadSongDetail() -->
     <section class="meta-data" aria-live="polite">
-      <h2 id="songTitle">Memuat judul...</h2>
-      <p id="songArtist" class="song-artist">Memuat artis...</p>
+      <div class="song-cover" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+      </div>
+      <div>
+        <h2 id="songTitle">Memuat judul...</h2>
+        <p class="song-artist">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span id="songArtist">Memuat artis...</span>
+        </p>
+      </div>
     </section>
 
     <!-- Tombol kontrol utama (dipakai terus saat latihan) -->
   <section class="control-panel">
-    <button class="btn-control" id="btnTransposeUp">▲ Transpose Up</button>
+    <button class="btn-control" id="btnTransposeUp" aria-label="Naikkan nada satu semitone">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+      Transpose Up
+    </button>
     <span id="transposeDisplay" class="transpose-display">Transpose: 0</span>
-    <button class="btn-control" id="btnTransposeDown">▼ Transpose Down</button>
-    <button class="btn-control btn-reset-transpose" id="btnResetTranspose">↺ Reset</button>
+    <button class="btn-control" id="btnTransposeDown" aria-label="Turunkan nada satu semitone">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      Transpose Down
+    </button>
+    <button class="btn-control btn-reset-transpose" id="btnResetTranspose">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+      Reset
+    </button>
 
-    <button class="btn-control btn-scroll" id="btnAutoScroll">▶ Auto Scroll</button>
+    <button class="btn-control btn-scroll" id="btnAutoScroll">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      <span>Auto Scroll</span>
+    </button>
     <label class="scroll-speed-control" for="scrollSpeed">
-      <span class="scroll-speed-label">🐢</span>
+      <span class="scroll-speed-label" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+      </span>
       <select id="scrollSpeed" aria-label="Kecepatan auto-scroll">
         <option value="0.25">0,25×</option>
         <option value="0.5">0,5×</option>
@@ -45,17 +88,34 @@
         <option value="3">3×</option>
         <option value="4">4×</option>
       </select>
-      <span class="scroll-speed-label">🐇</span>
+      <span class="scroll-speed-label" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      </span>
     </label>
 
     <!-- Menu aksi sekunder — dipakai sesekali, bukan saat latihan aktif -->
     <div class="more-actions">
-      <button class="btn-control btn-more" id="btnMoreActions" aria-haspopup="true" aria-expanded="false" aria-label="Aksi lainnya">⋯ Lainnya</button>
+      <button class="btn-control btn-more" id="btnMoreActions" aria-haspopup="true" aria-expanded="false" aria-label="Aksi lainnya">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+        Lainnya
+      </button>
       <div class="more-actions-menu" id="moreActionsMenu" role="menu">
-        <button class="menu-item" id="btnCopyChord" role="menuitem">📋 Copy Chord</button>
-        <button class="menu-item" id="btnShareSong" role="menuitem">🔗 Bagikan</button>
-        <button class="menu-item" id="btnPrintChord" role="menuitem">🖨️ Print</button>
-        <button class="menu-item" id="btnFullscreen" role="menuitem" aria-pressed="false">⛶ Fullscreen</button>
+        <button class="menu-item" id="btnCopyChord" role="menuitem">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copy Chord
+        </button>
+        <button class="menu-item" id="btnShareSong" role="menuitem">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          Bagikan
+        </button>
+        <button class="menu-item" id="btnPrintChord" role="menuitem">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Print
+        </button>
+        <button class="menu-item" id="btnFullscreen" role="menuitem" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
+          Fullscreen
+        </button>
       </div>
     </div>
   </section>
@@ -77,11 +137,39 @@
     <span id="capoBadge" class="capo-badge">Capo 0</span>
   </section>
 
+  <!-- Hint sentuh chord (hanya muncul sampai popup pertama dibuka) -->
+  <div id="popupTouchHint" class="touch-hint">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+    Sentuh chord untuk melihat diagram
+  </div>
+
   <!-- Area chord & lirik -->
   <div id="lyricsArea" class="lyrics-area" role="region" aria-label="Lirik dan chord lagu">Memuat chord...</div>
 
   </main>
   <footer>© 2026 ChordPlayer App</footer>
+
+  <!-- Bottom navigation (mobile) -->
+  <nav class="bottom-nav" aria-label="Navigasi bawah">
+    <div class="bottom-nav-inner">
+      <a href="index.html" class="bottom-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>Beranda</span>
+      </a>
+      <a href="index.html#daftar-lagu" class="bottom-nav-item active" aria-current="page">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        <span>Lagu</span>
+      </a>
+      <button type="button" class="bottom-nav-item is-disabled" aria-disabled="true" title="Segera hadir">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        <span>Favorit</span>
+      </button>
+      <button type="button" class="bottom-nav-item is-disabled" aria-disabled="true" title="Segera hadir">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span>Akun</span>
+      </button>
+    </div>
+  </nav>
 
   <!-- Popup diagram chord gitar -->
   <div id="chordPopup" class="chord-popup" role="dialog" aria-label="Diagram chord gitar" aria-hidden="true">
@@ -93,6 +181,7 @@
       <button id="closeChordPopup" class="chord-popup-close" type="button" aria-label="Tutup diagram chord">×</button>
     </div>
     <div id="chordPopupDiagram" class="chord-popup-diagram"></div>
+    <div class="chord-popup-capo">Capo <span id="chordPopupCapo">0</span></div>
     <div class="chord-popup-footer">
       <button id="previousChordShape" class="chord-popup-nav" type="button" aria-label="Bentuk chord sebelumnya">‹</button>
       <span id="chordPopupCount">1 dari 1</span>

@@ -2,6 +2,18 @@
 
 > Last Updated: August 2026
 
+## 🎨 UI/UX Redesign (Handoff Sprint 1–3)
+
+- [ ] Sprint 1 — Foundation: design tokens (#0D47A1/#22C55E/surface/text), radius, typography, fokus ring
+- [ ] Sprint 1 — Header baru: logo mark hijau + wordmark, tagline desktop, toggle SVG
+- [ ] Sprint 2 — Home: hero heading + subtitle, search field dengan ikon & tombol hijau
+- [ ] Sprint 2 — Home: filter chip aktif hijau, song card ikon chord bulat + chevron
+- [ ] Sprint 2 — Home: grid dua kolom desktop, bottom navigation mobile
+- [ ] Sprint 2 — Home: empty state & error state sesuai mockup (ikon, teks, tombol aksi)
+- [ ] Sprint 3 — Detail: tombol kembali, ikon artis, hint sentuh chord
+- [ ] Sprint 3 — Detail: ganti emoji kontrol dengan ikon SVG, popup + badge capo
+- [ ] QA — uji desktop/mobile/light/dark di browser, cek console & node --check
+
 ## 🎯 Goal
 
 Meningkatkan kualitas ChordPlayer dari sisi **User Experience**, **Performance**, **Code Quality**, dan **Scalability** tanpa mengubah konsep utama sebagai aplikasi pencarian chord dan lirik lagu.

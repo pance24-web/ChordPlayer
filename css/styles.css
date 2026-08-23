@@ -1,22 +1,35 @@
-/* ─── CSS VARIABLES (Light & Dark Mode) ─── */
+/* ═══════════════════════════════════════════════════════════════
+   ChordPlayer — Design System v1.0
+   Tokens mengikuti handoff (asset 01-design-system-reference):
+   Primary  #0D47A1 · Accent #22C55E
+   Surface  #FFFFFF / #F5F7FA · Dark #0F172A / #111827
+   Text     #111827 / #374151 / #6B7280 · Border #E5E7EB
+   ═══════════════════════════════════════════════════════════════ */
+
 :root {
   /* Light Mode Colors */
-  --bg-primary: #f8fafc;
-  --bg-secondary: #ffffff;
-  --text-primary: #1e293b;
-  --text-secondary: #64748b;
-  --text-muted: #94a3b8;
-  --border-color: #e2e8f0;
-  --accent-color: #2563eb;
-  --accent-hover: #1d4ed8;
-  --green-accent: #16a34a;
-  --badge-bg: #e2e8f0;
-  --badge-color: #475569;
-  --header-bg: #2563eb;
-  --header-text: #e0e7ff;
-  --control-bg: #f1f5f9;
+  --bg-primary: #f5f7fa;            /* Surface Subtle — page bg */
+  --bg-secondary: #ffffff;          /* Surface Base — cards */
+  --text-primary: #111827;
+  --text-secondary: #374151;
+  --text-muted: #6b7280;
+  --border-color: #e5e7eb;
+  --accent-color: #0d47a1;          /* Primary Blue 600 */
+  --accent-hover: #093170;          /* Darker blue — primary hover */
+  --green-accent: #22c55e;          /* Accent Green 500 */
+  --green-hover: #16a34a;
+  --danger: #ef4444;
+  --danger-surface: #fef2f2;
+  --badge-bg: #eef1f5;
+  --badge-color: #374151;
+  --header-bg: #0d47a1;
+  --header-text: rgba(255, 255, 255, 0.85);
+  --control-bg: #f5f7fa;
+  --icon-bg: rgba(34, 197, 94, 0.12);
+  --icon-color: #16a34a;
+  --surface-tint: rgba(13, 71, 161, 0.06);
 
-  /* Spacing Scale — kelipatan 4px, dipakai konsisten di semua komponen */
+  /* Spacing Scale — kelipatan 4px */
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;
@@ -26,128 +39,303 @@
   --space-8: 3rem;
   --space-10: 4rem;
 
-  /* Radius scale */
-  --radius-sm: 6px;
-  --radius-md: 8px;
+  /* Radius scale — 8 input/chip · 12 card · 16 panel */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
   --radius-full: 999px;
+
+  /* Layar container */
+  --container-max: 1180px;
+  --container-pad: var(--space-5);
+
+  /* Header height */
+  --header-height: 64px;
+  --bottom-nav-height: 60px;
 }
 
-/* Dark Mode */
+/* Dark Mode — surface dasar #0F172A, elevated #111827, border #1F2937 */
 body.dark-mode {
   --bg-primary: #0f172a;
-  --bg-secondary: #1e293b;
+  --bg-secondary: #111827;
   --text-primary: #f1f5f9;
-  --text-secondary: #cbd5e1;
-  --text-muted: #64748b;
-  --border-color: #334155;
+  --text-secondary: #d1d5db;
+  --text-muted: #9ca3af;
+  --border-color: #1f2937;
   --accent-color: #3b82f6;
   --accent-hover: #60a5fa;
   --green-accent: #22c55e;
-  --badge-bg: #334155;
-  --badge-color: #cbd5e1;
-  --header-bg: #1e293b;
-  --header-text: #cbd5e1;
-  --control-bg: #334155;
+  --green-hover: #4ade80;
+  --danger: #f87171;
+  --danger-surface: rgba(239, 68, 68, 0.12);
+  --badge-bg: #1f2937;
+  --badge-color: #d1d5db;
+  --header-bg: #111827;
+  --header-text: #e5e7eb;
+  --control-bg: #1f2937;
+  --icon-bg: rgba(34, 197, 94, 0.16);
+  --icon-color: #4ade80;
+  --surface-tint: rgba(59, 130, 246, 0.1);
 }
 
 /* ─── RESET & BASE STYLES ─── */
-* {
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
   background-color: var(--bg-primary);
   color: var(--text-primary);
-  line-height: 1.6;
   transition: background-color 0.3s ease, color 0.3s ease;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Fokus ring yang jelas untuk navigasi keyboard (AA) */
+:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
 }
 
 /* ─── HEADER & NAV ─── */
 header {
-  background-color: var(--header-bg);
-  color: white;
-  padding: 1rem 0;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
   z-index: 100;
+  height: var(--header-height);
+  background-color: var(--header-bg);
+  color: #ffffff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
   transition: background-color 0.3s ease;
 }
 
-header nav {
-  max-width: 800px;
+.header-inner {
+  max-width: var(--container-max);
   margin: 0 auto;
-  padding: 0 var(--space-5);
+  height: 100%;
+  padding: 0 var(--container-pad);
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.logo-mark {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  background: var(--green-accent);
+  color: #ffffff;
+  border-radius: 9px;
+  box-shadow: 0 2px 6px rgba(34, 197, 94, 0.3);
+}
+
+.logo-mark svg {
+  width: 18px;
+  height: 18px;
 }
 
 .logo {
+  color: #ffffff;
   font-size: 1.25rem;
   font-weight: 700;
   letter-spacing: -0.5px;
+  white-space: nowrap;
 }
 
-nav ul {
-  list-style: none;
+.header-center {
   display: flex;
-  gap: var(--space-2);
   align-items: center;
+  gap: var(--space-2);
 }
 
-nav ul li a {
+.nav-link {
+  position: relative;
+  padding: 0.5rem 1rem;
   color: var(--header-text);
   text-decoration: none;
   font-weight: 500;
+  font-size: 0.95rem;
+  border-radius: var(--radius-sm);
   transition: color 0.2s;
 }
 
-nav ul li a:hover,
-nav ul li a.active {
+.nav-link:hover {
   color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.nav-link.active {
+  color: #ffffff;
+}
+
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 28px;
+  height: 3px;
+  border-radius: var(--radius-full);
+  background: var(--green-accent);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.header-tagline {
+  color: var(--header-text);
+  font-size: 0.88rem;
+  white-space: nowrap;
+}
+
+/* Hamburger (mobile) */
+.nav-toggle {
+  display: none;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-sm);
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.nav-toggle:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Menu dropdown mobile */
+.site-menu {
+  display: none;
+  position: fixed;
+  top: var(--header-height);
+  left: 0;
+  right: 0;
+  z-index: 99;
+  padding: var(--space-2);
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.site-menu.is-open {
+  display: block;
+}
+
+.site-menu .nav-link {
+  display: block;
+  color: var(--text-primary);
+  padding: var(--space-3) var(--space-4);
+}
+
+.site-menu .nav-link.active {
+  color: var(--accent-color);
+}
+
+/* Theme toggle (ikon SVG) */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background-color: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.theme-toggle svg {
+  width: 20px;
+  height: 20px;
+}
+
+.theme-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  transform: scale(1.05);
 }
 
 /* ─── LAYOUT CONTAINER ─── */
 .container {
-  max-width: 800px;
+  max-width: var(--container-max);
   margin: var(--space-6) auto;
-  padding: 0 var(--space-5);
+  padding: 0 var(--container-pad);
 }
 
-/* ─── SEARCH SECTION ─── */
+/* ─── HERO / SEARCH SECTION ─── */
 .search-section {
   margin-bottom: var(--space-6);
+  text-align: center;
 }
 
 .search-section h2 {
-  font-size: 1.5rem;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
   color: var(--text-primary);
-  margin-bottom: var(--space-3);
+  margin-bottom: var(--space-2);
 }
 
+.search-subtitle {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-5);
+}
+
+/* Search field */
 .search-box {
   position: relative;
+  max-width: 720px;
+  margin: 0 auto;
 }
 
 .search-box input {
   width: 100%;
-  padding: var(--space-3) var(--space-4);
+  padding: 0.9rem 3.5rem 0.9rem 3rem;
   font-size: 1rem;
-  border: 2px solid var(--border-color);
+  border: 1.5px solid var(--border-color);
   border-radius: var(--radius-md);
   outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.3s ease, color 0.3s ease;
   background-color: var(--bg-secondary);
   color: var(--text-primary);
+  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.3s ease, color 0.3s ease;
+}
+
+.search-box input::placeholder {
+  color: var(--text-muted);
 }
 
 .search-box input:focus {
   border-color: var(--accent-color);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color) 15%, transparent);
 }
 
 .search-box.loading input {
@@ -155,41 +343,98 @@ nav ul li a.active {
   cursor: wait;
 }
 
+.search-icon {
+  position: absolute;
+  left: var(--space-3);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+  display: grid;
+  place-items: center;
+}
+
+.search-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Tombol search hijau (di kanan) */
+.btn-search {
+  position: absolute;
+  right: 0.4rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 10px;
+  background-color: var(--green-accent);
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn-search svg {
+  width: 20px;
+  height: 20px;
+}
+
+.btn-search:hover {
+  background-color: var(--green-hover);
+}
+
+.btn-search:active {
+  transform: translateY(-50%) scale(0.96);
+}
+
 /* Tombol clear search */
 .btn-clear-search {
   position: absolute;
-  right: var(--space-3);
+  right: 3.4rem;
   top: 50%;
   transform: translateY(-50%);
-  background: none;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  background: var(--badge-bg);
   border: none;
-  color: var(--text-secondary);
-  font-size: 1rem;
-  cursor: pointer;
-  padding: var(--space-1) var(--space-2);
   border-radius: 50%;
+  color: var(--text-secondary);
+  cursor: pointer;
   transition: background-color 0.2s, color 0.2s;
 }
 
 .btn-clear-search:hover {
-  background-color: var(--badge-bg);
+  background-color: var(--border-color);
   color: var(--text-primary);
+}
+
+.btn-clear-search svg {
+  width: 16px;
+  height: 16px;
 }
 
 /* Filter chips (Semua/Judul/Artis) */
 .search-filter {
   display: flex;
+  flex-wrap: wrap;
   gap: var(--space-2);
-  margin-top: var(--space-3);
+  margin-top: var(--space-4);
+  justify-content: flex-start;
 }
 
 .filter-chip {
-  padding: var(--space-2) var(--space-4);
-  font-size: 0.85rem;
+  min-height: 40px;
+  padding: 0.4rem 1.25rem;
+  font-size: 0.88rem;
   font-weight: 600;
   border: 1.5px solid var(--border-color);
   border-radius: var(--radius-full);
-  background-color: transparent;
+  background-color: var(--bg-secondary);
   color: var(--text-secondary);
   cursor: pointer;
   transition: background-color 0.18s ease, border-color 0.18s ease,
@@ -197,18 +442,19 @@ nav ul li a.active {
 }
 
 .filter-chip:hover {
-  border-color: var(--accent-color);
-  color: var(--accent-color);
+  border-color: var(--green-accent);
+  color: var(--text-primary);
+  background-color: var(--icon-bg);
 }
 
 .filter-chip:active {
-  transform: scale(0.94);
+  transform: scale(0.95);
 }
 
 .filter-chip.active {
-  background-color: var(--accent-color);
-  border-color: var(--accent-color);
-  color: white;
+  background-color: var(--green-accent);
+  border-color: var(--green-accent);
+  color: #ffffff;
 }
 
 /* ─── SONG LIST ─── */
@@ -219,43 +465,126 @@ nav ul li a.active {
   margin-bottom: var(--space-4);
 }
 
+.section-header h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
 .badge {
   background-color: var(--badge-bg);
   color: var(--badge-color);
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 600;
-  padding: var(--space-1) var(--space-3);
+  padding: 0.25rem 0.8rem;
   border-radius: var(--radius-full);
+  white-space: nowrap;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Grid dua kolom di desktop */
 .song-list {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: var(--space-3);
 }
 
 .song-card {
+  min-height: 72px;
   background-color: var(--bg-secondary);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
-  padding: var(--space-4) var(--space-5);
+  padding: var(--space-4) var(--space-4);
   text-decoration: none;
   color: inherit;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  transition: transform 0.15s, border-color 0.2s, box-shadow 0.2s, background-color 0.3s ease;
+  gap: var(--space-4);
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s, background-color 0.3s ease;
   animation: card-fade-in 0.35s ease backwards;
 }
 
 .song-card:hover {
   transform: translateY(-2px);
-  border-color: var(--accent-color);
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.08);
+  border-color: var(--green-accent);
+  box-shadow: 0 6px 16px rgba(13, 71, 161, 0.08);
 }
 
-/* Stagger fade-in untuk 10 kartu pertama */
+.song-card:active {
+  transform: scale(0.99);
+}
+
+/* Ikon chord bulat hijau */
+.song-icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  background: var(--green-accent);
+  color: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 3px 8px rgba(34, 197, 94, 0.25);
+}
+
+.song-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.song-info {
+  min-width: 0;
+  flex: 1;
+}
+
+.song-info .title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.song-info .artist {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Metadata opsional (genre/tahun) */
+.song-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  margin-top: var(--space-1);
+}
+
+.meta-tag {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: var(--control-bg);
+  padding: 0.1rem 0.5rem;
+  border-radius: var(--radius-full);
+}
+
+/* Chevron kanan */
+.song-chevron {
+  display: grid;
+  place-items: center;
+  color: var(--text-muted);
+  flex: 0 0 auto;
+}
+
+.song-chevron svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Stagger fade-in untuk kartu */
 .song-card:nth-child(1) { animation-delay: 0.02s; }
 .song-card:nth-child(2) { animation-delay: 0.04s; }
 .song-card:nth-child(3) { animation-delay: 0.06s; }
@@ -272,20 +601,10 @@ nav ul li a.active {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-.song-info .title {
-  font-size: 1.05rem;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.song-info .artist {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-}
-
+/* ─── EMPTY STATE ─── */
 .empty-state {
   text-align: center;
-  padding: var(--space-8) var(--space-4);
+  padding: var(--space-8) var(--space-5);
   background-color: var(--bg-secondary);
   border-radius: var(--radius-md);
   border: 1px dashed var(--border-color);
@@ -294,44 +613,124 @@ nav ul li a.active {
 }
 
 .empty-icon {
-  font-size: 2.5rem;
-  margin-bottom: var(--space-2);
-  opacity: 0.5;
-}
-
-.empty-hint {
-  display: block;
-  font-size: 0.85rem;
+  display: grid;
+  place-items: center;
+  width: 88px;
+  height: 88px;
+  margin: 0 auto var(--space-4);
+  background: var(--control-bg);
+  border-radius: 50%;
   color: var(--text-muted);
-  margin-top: var(--space-2);
 }
 
+.empty-icon svg {
+  width: 36px;
+  height: 36px;
+}
+
+.empty-state h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: var(--space-1);
+}
+
+.empty-state p {
+  color: var(--text-secondary);
+  margin-bottom: var(--space-4);
+}
+
+/* ─── ERROR STATE ─── */
 .error-state {
   text-align: center;
+  padding: var(--space-8) var(--space-5);
+  background-color: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
 }
 
-.btn-retry {
-  margin-top: var(--space-4);
-  padding: var(--space-2) var(--space-5);
-  background-color: var(--accent-color);
-  color: white;
-  border: none;
-  border-radius: var(--radius-sm);
+.error-icon {
+  display: grid;
+  place-items: center;
+  width: 88px;
+  height: 88px;
+  margin: 0 auto var(--space-4);
+  background: var(--danger-surface);
+  border-radius: 50%;
+  color: var(--danger);
+}
+
+.error-icon svg {
+  width: 36px;
+  height: 36px;
+}
+
+.error-state h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: var(--space-1);
+}
+
+.error-state p {
+  color: var(--text-secondary);
+  margin-bottom: var(--space-4);
+}
+
+/* ─── BUTTONS ─── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding: 0.6rem 1.5rem;
+  font-size: 0.95rem;
   font-weight: 600;
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: background-color 0.2s;
+  border: 0;
+  transition: background-color 0.2s, color 0.2s, transform 0.1s;
 }
 
-.btn-retry:hover {
+.btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn-primary {
+  background-color: var(--accent-color);
+  color: #ffffff;
+}
+
+.btn-primary:hover {
   background-color: var(--accent-hover);
 }
 
-/* Panah di kartu lagu */
-.arrow {
+.btn-secondary {
+  background-color: transparent;
   color: var(--accent-color);
-  font-weight: bold;
-  font-size: 1.1rem;
-  transition: color 0.3s ease;
+  border: 1.5px solid var(--accent-color);
+}
+
+.btn-secondary:hover {
+  background-color: var(--accent-color);
+  color: #ffffff;
+}
+
+.btn-ghost {
+  background-color: transparent;
+  color: var(--text-secondary);
+  border: 1.5px solid var(--border-color);
+}
+
+.btn-ghost:hover {
+  background-color: var(--control-bg);
+  color: var(--text-primary);
 }
 
 /* ─── FOOTER ─── */
@@ -344,16 +743,78 @@ footer {
   transition: color 0.3s ease;
 }
 
+/* ─── BOTTOM NAVIGATION (mobile) ─── */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 90;
+  display: none;
+  height: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom));
+  padding-bottom: env(safe-area-inset-bottom);
+  background-color: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
+  box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.06);
+}
+
+.bottom-nav-inner {
+  display: flex;
+  height: 100%;
+  align-items: stretch;
+}
+
+.bottom-nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  min-height: 44px;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.7rem;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.bottom-nav-item svg {
+  width: 22px;
+  height: 22px;
+}
+
+.bottom-nav-item:hover {
+  color: var(--text-secondary);
+}
+
+.bottom-nav-item.active {
+  color: var(--green-accent);
+}
+
+.bottom-nav-item.is-disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
 /* ─── DETAIL PAGE ─── */
 
 .btn-back {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
   margin-bottom: var(--space-5);
   color: var(--accent-color);
   text-decoration: none;
   font-weight: 500;
   font-size: 0.95rem;
+  min-height: 44px;
   transition: color 0.2s;
+}
+
+.btn-back svg {
+  width: 18px;
+  height: 18px;
 }
 
 .btn-back:hover {
@@ -362,27 +823,58 @@ footer {
 
 .meta-data {
   margin-bottom: var(--space-5);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+/* Album art placeholder */
+.song-cover {
+  display: grid;
+  place-items: center;
+  width: 88px;
+  height: 88px;
+  flex: 0 0 88px;
+  background: var(--icon-bg);
+  color: var(--icon-color);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.song-cover svg {
+  width: 40px;
+  height: 40px;
 }
 
 .meta-data h2 {
-  font-size: 1.75rem;
+  font-size: clamp(1.5rem, 3vw, 2rem);
   font-weight: 700;
+  letter-spacing: -0.02em;
   color: var(--text-primary);
-  margin-bottom: var(--space-1);
+  line-height: 1.2;
   transition: color 0.3s ease;
 }
 
 .song-artist {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
   font-size: 1rem;
   color: var(--text-secondary);
+  margin-top: var(--space-1);
   transition: color 0.3s ease;
+}
+
+.song-artist svg {
+  width: 16px;
+  height: 16px;
 }
 
 /* Panel kontrol transpose, scroll, copy, share, print */
 .control-panel {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--space-2);
   flex-wrap: wrap;
   margin-bottom: var(--space-5);
   padding: var(--space-4);
@@ -393,15 +885,25 @@ footer {
 }
 
 .btn-control {
-  padding: var(--space-2) var(--space-4);
-  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding: 0.5rem 1rem;
+  font-size: 0.88rem;
   font-weight: 600;
-  border: 2px solid var(--accent-color);
+  border: 1.5px solid var(--accent-color);
   border-radius: var(--radius-sm);
-  background-color: transparent;
+  background-color: var(--bg-secondary);
   color: var(--accent-color);
   cursor: pointer;
   transition: background-color 0.2s, color 0.2s, border-color 0.3s ease, transform 0.1s ease;
+}
+
+.btn-control svg {
+  width: 16px;
+  height: 16px;
 }
 
 .btn-control:hover {
@@ -424,7 +926,8 @@ footer {
   background-color: var(--green-accent);
   color: #ffffff;
 }
-/* Tombol Reset — warna netral, beda dari tombol aksi utama */
+
+/* Tombol Reset — warna netral */
 .btn-reset-transpose {
   border-color: var(--text-secondary);
   color: var(--text-secondary);
@@ -455,7 +958,7 @@ footer {
   position: absolute;
   top: calc(100% + var(--space-2));
   right: 0;
-  min-width: 180px;
+  min-width: 200px;
   background-color: var(--bg-secondary);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
@@ -478,8 +981,11 @@ footer {
 
 .menu-item {
   width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
   text-align: left;
-  padding: var(--space-2) var(--space-3);
+  padding: 0.6rem 0.8rem;
   font-size: 0.9rem;
   font-weight: 500;
   border: none;
@@ -490,6 +996,13 @@ footer {
   transition: background-color 0.15s ease;
 }
 
+.menu-item svg {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  color: var(--text-muted);
+}
+
 .menu-item:hover {
   background-color: var(--control-bg);
 }
@@ -498,7 +1011,7 @@ footer {
   color: var(--green-accent);
 }
 
-/* Mobile: menu jadi full width di bawah tombol, bukan absolute kecil */
+/* Mobile: menu jadi full width */
 @media (max-width: 640px) {
   .more-actions {
     grid-column: 1 / -1;
@@ -511,6 +1024,7 @@ footer {
   }
 }
 
+/* Speed control */
 .scroll-speed-control {
   display: inline-flex;
   align-items: center;
@@ -519,7 +1033,7 @@ footer {
   font-size: 0.82rem;
   white-space: nowrap;
   background: var(--control-bg);
-  border: 2px solid var(--border-color);
+  border: 1.5px solid var(--border-color);
   border-radius: var(--radius-sm);
   padding: 0.3rem 0.6rem;
   transition: border-color 0.2s;
@@ -533,6 +1047,13 @@ footer {
 .scroll-speed-label {
   font-size: 0.85rem;
   line-height: 1;
+  display: inline-grid;
+  place-items: center;
+}
+
+.scroll-speed-label svg {
+  width: 16px;
+  height: 16px;
 }
 
 .scroll-speed-control select {
@@ -552,197 +1073,15 @@ footer {
   min-width: 3.5rem;
 }
 
-/* Tombol copy chord */
-.btn-copy {
-  border-color: var(--text-secondary);
-  color: var(--text-secondary);
-}
-
-.btn-copy:hover {
-  background-color: var(--text-secondary);
-  color: #ffffff;
-}
-
-.btn-copy.copied {
-  border-color: var(--green-accent);
-  color: var(--green-accent);
-  background-color: transparent;
-}
-
-/* Tombol share lagu */
-.btn-share {
-  border-color: var(--accent-color);
-  color: var(--accent-color);
-}
-
-.btn-share:hover {
-  background-color: var(--accent-color);
-  color: #ffffff;
-}
-
-.btn-share.copied {
-  border-color: var(--green-accent);
-  color: var(--green-accent);
-  background-color: transparent;
-}
-
-/* Tombol print chord */
-.btn-print {
-  border-color: var(--green-accent);
-  color: var(--green-accent);
-}
-
-/* Tombol fullscreen */
-.btn-fullscreen {
-  border-color: var(--green-accent);
-  color: var(--green-accent);
-}
-
-.btn-fullscreen:hover,
-.btn-fullscreen[aria-pressed="true"] {
-  color: var(--bg-primary);
-  background-color: var(--green-accent);
-}
-
-.btn-print:hover {
-  background-color: var(--green-accent);
-  color: #ffffff;
-}
-
-/* Print header — disembunyikan di layar, hanya muncul di kertas */
-.print-header {
-  display: none;
-}
-
 /* Tampilan nilai transpose */
 .transpose-display {
   font-size: 0.9rem;
   font-weight: 600;
   color: var(--badge-color);
   background-color: var(--control-bg);
-  padding: var(--space-2) var(--space-3);
+  padding: 0.5rem 0.8rem;
   border-radius: var(--radius-sm);
   transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-/* Panel diagram chord gitar */
-.chord-diagram-panel {
-  margin: var(--space-5) 0;
-  padding: var(--space-5);
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  transition: background-color 0.3s ease, border-color 0.3s ease;
-}
-
-.chord-diagram-heading {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: var(--space-4);
-  margin-bottom: var(--space-4);
-}
-
-.section-kicker {
-  margin: 0 0 0.2rem;
-  color: var(--green-accent);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.chord-diagram-heading h3 {
-  margin: 0;
-  color: var(--text-primary);
-  font-size: 1.25rem;
-}
-
-.chord-diagram-hint,
-.diagram-order {
-  color: var(--text-secondary);
-  font-size: 0.8rem;
-}
-
-.chord-diagram {
-  display: flex;
-  min-height: 220px;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-}
-
-/* SVG lebih besar dan proporsional */
-.guitar-diagram-svg {
-  width: min(100%, 340px);
-  height: auto;
-  overflow: visible;
-  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.07));
-}
-
-.diagram-string,
-.diagram-fret {
-  stroke: var(--text-secondary);
-  stroke-width: 1.5;
-  opacity: 0.6;
-}
-
-.diagram-fret {
-  opacity: 0.4;
-}
-
-.diagram-nut {
-  stroke: var(--text-primary);
-  stroke-width: 5;
-}
-
-.diagram-position-marker {
-  stroke: var(--text-primary);
-  stroke-width: 2;
-}
-
-.diagram-position {
-  fill: var(--text-secondary);
-  font-size: 0.7rem;
-  font-weight: 700;
-}
-
-/* Dot lebih besar dan kontras */
-.diagram-dot {
-  fill: var(--green-accent);
-  stroke: none;
-  filter: drop-shadow(0 1px 3px rgba(22,163,74,0.35));
-}
-
-.diagram-dot-label {
-  fill: #ffffff;
-  font-size: 0.6rem;
-  font-weight: 800;
-}
-
-.diagram-open {
-  fill: none;
-  stroke: var(--text-primary);
-  stroke-width: 2.5;
-}
-
-.diagram-muted {
-  fill: var(--text-secondary);
-  font-size: 1.2rem;
-  font-weight: 700;
-}
-
-.diagram-string-label {
-  fill: var(--text-secondary);
-  font-size: 0.72rem;
-  font-weight: 700;
-}
-
-.diagram-empty {
-  margin: 0;
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-  text-align: center;
 }
 
 /* Panel rekomendasi capo */
@@ -814,7 +1153,32 @@ footer {
   transition: transform 0.2s ease, opacity 0.2s ease, all 0.2s ease;
 }
 
-/* Popup diagram chord gitar */
+/* ─── TOUCH HINT (detail mobile) ─── */
+.touch-hint {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  background: var(--icon-bg);
+  color: var(--text-secondary);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.touch-hint svg {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  color: var(--green-accent);
+}
+
+.touch-hint[hidden] {
+  display: none;
+}
+
+/* ─── CHORD POPUP ─── */
 .chord-popup {
   position: fixed;
   z-index: 1000;
@@ -823,8 +1187,8 @@ footer {
   padding: var(--space-4);
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
-  border-radius: 12px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18), 0 4px 16px rgba(0,0,0,0.1);
+  border-radius: var(--radius-md);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18), 0 4px 16px rgba(0, 0, 0, 0.1);
   transform-origin: top center;
 }
 
@@ -861,8 +1225,6 @@ footer {
   border: 0;
   border-radius: 50%;
   cursor: pointer;
-  font-size: 1rem;
-  line-height: 1;
   transition: background-color 0.15s, color 0.15s;
 }
 
@@ -884,13 +1246,28 @@ footer {
   max-width: 100%;
 }
 
+.chord-popup-capo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: var(--space-2);
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.chord-popup-capo span {
+  color: var(--green-accent);
+}
+
 .chord-popup-footer {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: var(--space-3);
   padding-top: var(--space-3);
-  border-top: 1px solid var(--border-color);
   margin-top: var(--space-2);
   color: var(--text-secondary);
   font-size: 0.8rem;
@@ -907,7 +1284,6 @@ footer {
   border: 1px solid var(--border-color);
   border-radius: 6px;
   cursor: pointer;
-  font-size: 1.1rem;
   transition: background-color 0.15s, color 0.15s, border-color 0.15s;
 }
 
@@ -928,7 +1304,81 @@ footer {
   }
 }
 
-/* Area chord & lirik */
+/* ─── CHORD DIAGRAM SVG ─── */
+.section-kicker {
+  margin: 0 0 0.2rem;
+  color: var(--green-accent);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.guitar-diagram-svg {
+  width: min(100%, 340px);
+  height: auto;
+  overflow: visible;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.07));
+}
+
+.diagram-string,
+.diagram-fret {
+  stroke: var(--text-secondary);
+  stroke-width: 1.5;
+  opacity: 0.6;
+}
+
+.diagram-fret {
+  opacity: 0.4;
+}
+
+.diagram-nut {
+  stroke: var(--text-primary);
+  stroke-width: 5;
+}
+
+.diagram-position-marker {
+  stroke: var(--text-primary);
+  stroke-width: 2;
+}
+
+.diagram-position {
+  fill: var(--text-secondary);
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.diagram-dot {
+  fill: var(--green-accent);
+  stroke: none;
+  filter: drop-shadow(0 1px 3px rgba(22, 163, 74, 0.35));
+}
+
+.diagram-dot-label {
+  fill: #ffffff;
+  font-size: 0.6rem;
+  font-weight: 800;
+}
+
+.diagram-open {
+  fill: none;
+  stroke: var(--text-primary);
+  stroke-width: 2.5;
+}
+
+.diagram-muted {
+  fill: var(--text-secondary);
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.diagram-string-label {
+  fill: var(--text-secondary);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+/* ─── AREA CHORD & LIRIK ─── */
 .lyrics-area {
   background-color: var(--bg-secondary);
   border: 1px solid var(--border-color);
@@ -944,13 +1394,11 @@ footer {
   transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
-/* Class sementara saat transpose — fade halus, bukan kedip instan */
 .lyrics-area.text-transition {
   opacity: 0.4;
   transition: opacity 0.12s ease;
 }
 
-/* Highlight chord yang sedang berada di area baca aktif */
 .lyrics-line {
   min-height: 1.8em;
   border-radius: 0.35rem;
@@ -958,7 +1406,6 @@ footer {
   transition: background-color 0.25s ease;
 }
 
-/* Highlight baris aktif — lebih subtle */
 .lyrics-line.active-chord-line {
   background-color: color-mix(in srgb, var(--green-accent) 5%, transparent);
 }
@@ -991,7 +1438,6 @@ footer {
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--green-accent) 20%, transparent);
 }
 
-/* Chord aktif saat scroll — lebih kontras dan clean */
 .chord-token.active-chord {
   color: var(--bg-primary);
   background-color: var(--green-accent);
@@ -1009,7 +1455,7 @@ footer {
   }
 }
 
-/* Fullscreen mode */
+/* ─── FULLSCREEN MODE ─── */
 body.is-fullscreen {
   min-height: 100vh;
   background: var(--bg-primary);
@@ -1019,8 +1465,9 @@ body.is-fullscreen header,
 body.is-fullscreen footer,
 body.is-fullscreen .btn-back,
 body.is-fullscreen .meta-data,
-body.is-fullscreen .chord-diagram-panel,
-body.is-fullscreen .capo-recommendation {
+body.is-fullscreen .capo-recommendation,
+body.is-fullscreen .bottom-nav,
+body.is-fullscreen .touch-hint {
   display: none !important;
 }
 
@@ -1028,7 +1475,7 @@ body.is-fullscreen main.container {
   width: min(100%, 900px);
   max-width: none;
   margin: 0 auto;
-  padding: var(--space-3) var(--space-5);
+  padding: var(--space-3) var(--container-pad);
 }
 
 body.is-fullscreen .control-panel {
@@ -1042,7 +1489,7 @@ body.is-fullscreen .control-panel {
   -webkit-backdrop-filter: blur(14px);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
 body.is-fullscreen .lyrics-area {
@@ -1056,34 +1503,12 @@ body.is-fullscreen .lyrics-area {
   box-shadow: none;
 }
 
-/* Fade saat masuk/keluar fullscreen */
 body.fullscreen-transition * {
   transition: opacity 0.25s ease !important;
   opacity: 0.5;
 }
 
-/* ─── THEME TOGGLE ─── */
-.theme-toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  background-color: transparent;
-  border: none;
-  border-radius: var(--radius-sm);
-  color: white;
-  cursor: pointer;
-  font-size: 1.1rem;
-  transition: transform 0.2s, background-color 0.2s;
-}
-
-.theme-toggle:hover {
-  background-color: rgba(255, 255, 255, 0.15);
-  transform: scale(1.1);
-}
-
-/* ─── LOADING INDICATOR ─── */
+/* ─── LOADING SPINNER ─── */
 .loading-spinner {
   display: inline-block;
   width: 16px;
@@ -1121,7 +1546,21 @@ body.fullscreen-transition * {
   background-color: var(--bg-secondary);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
-  padding: var(--space-4) var(--space-5);
+  padding: var(--space-4) var(--space-4);
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.skeleton-circle {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  border-radius: 50%;
+}
+
+.skeleton-lines {
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
@@ -1156,13 +1595,13 @@ body.fullscreen-transition * {
 /* ─── TOAST NOTIFICATION ─── */
 .toast-container {
   position: fixed;
-  bottom: var(--space-5);
+  bottom: calc(var(--space-5) + env(safe-area-inset-bottom));
   left: 50%;
   transform: translateX(-50%);
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
-  z-index: 1000;
+  z-index: 2000;
   width: 90%;
   max-width: 360px;
   pointer-events: none;
@@ -1186,8 +1625,14 @@ body.fullscreen-transition * {
 }
 
 .toast-icon {
-  font-size: 1rem;
+  display: grid;
+  place-items: center;
   flex-shrink: 0;
+}
+
+.toast-icon svg {
+  width: 18px;
+  height: 18px;
 }
 
 .toast.toast-success {
@@ -1210,30 +1655,68 @@ body.fullscreen-transition * {
   to   { opacity: 0; transform: translateY(-8px); }
 }
 
-/* ═══════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════════════════════
    RESPONSIVE LAYOUT
-   ═══════════════════════════════════════════════════════ */
-@media (max-width: 640px) {
+   ═══════════════════════════════════════════════════════════ */
 
+/* Tablet & up: grid 2 kolom */
+@media (min-width: 768px) {
+  .song-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Desktop besar */
+@media (min-width: 1024px) {
+  .bottom-nav {
+    display: none !important;
+  }
+
+  .header-tagline {
+    display: inline;
+  }
+}
+
+@media (max-width: 640px) {
   .container {
     margin: var(--space-4) auto;
     padding: 0 var(--space-4);
+    padding-bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom) + var(--space-4));
+  }
+
+  /* Header mobile */
+  .nav-toggle {
+    display: grid;
+  }
+
+  .header-center {
+    display: none;
+  }
+
+  .header-tagline {
+    display: none;
   }
 
   .logo {
     font-size: 1.1rem;
   }
 
-  header nav {
-    padding: 0 var(--space-4);
+  /* Search */
+  .search-section {
+    text-align: left;
   }
 
   .search-section h2 {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
+  }
+
+  .search-box {
+    margin: 0;
   }
 
   .search-box input {
     font-size: 0.95rem;
+    padding: 0.8rem 3.5rem 0.8rem 2.8rem;
   }
 
   .search-filter {
@@ -1247,12 +1730,29 @@ body.fullscreen-transition * {
     flex-shrink: 0;
   }
 
+  /* Song card mobile */
   .song-card {
     padding: var(--space-3) var(--space-4);
   }
 
   .song-info .title {
     font-size: 1rem;
+  }
+
+  /* Bottom nav tampil */
+  .bottom-nav {
+    display: block;
+  }
+
+  /* Detail mobile */
+  .meta-data {
+    gap: var(--space-3);
+  }
+
+  .song-cover {
+    width: 68px;
+    height: 68px;
+    flex-basis: 68px;
   }
 
   .meta-data h2 {
@@ -1291,19 +1791,6 @@ body.fullscreen-transition * {
     max-width: 8rem;
   }
 
-  .chord-diagram-panel {
-    padding: var(--space-4);
-  }
-
-  .chord-diagram-heading {
-    flex-direction: column;
-    gap: var(--space-1);
-  }
-
-  .chord-diagram-hint {
-    font-size: 0.75rem;
-  }
-
   .capo-recommendation {
     align-items: flex-start;
     padding: var(--space-4);
@@ -1320,7 +1807,7 @@ body.fullscreen-transition * {
   }
 
   .toast-container {
-    bottom: var(--space-4);
+    bottom: calc(var(--space-4) + env(safe-area-inset-bottom));
     width: 92%;
   }
 }
@@ -1346,9 +1833,9 @@ body.fullscreen-transition * {
   }
 }
 
-/* ═══════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════════════════════
    PRINT STYLESHEET
-   ═══════════════════════════════════════════════════════ */
+   ═══════════════════════════════════════════════════════════ */
 @media print {
 
   body {
@@ -1361,7 +1848,9 @@ body.fullscreen-transition * {
   .btn-back,
   .control-panel,
   .search-section,
-  .toast-container {
+  .toast-container,
+  .bottom-nav,
+  .touch-hint {
     display: none !important;
   }
 
@@ -1416,4 +1905,9 @@ body.fullscreen-transition * {
   @page {
     margin: 1.5cm;
   }
+}
+
+/* Print header — disembunyikan di layar */
+.print-header {
+  display: none;
 }
