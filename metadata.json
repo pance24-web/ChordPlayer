@@ -1,0 +1,8 @@
+{
+  "name": "ChordPlayer",
+  "description": "Cari chord dan lirik lagu favorit dengan fitur transpose nada, diagram akord gitar interaktif, dan auto scroll.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
