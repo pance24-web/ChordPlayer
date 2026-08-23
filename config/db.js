@@ -20,9 +20,13 @@ if (!isPlaceholderHost) {
       database: process.env.DB_NAME || 'chordplayer',
       port: Number(process.env.DB_PORT) || 3306,
       waitForConnections: true,
-      connectionLimit: 10,
+      // ✅ Turunkan connectionLimit — serverless function tidak perlu pool besar,
+      // karena tiap invocation biasanya cuma butuh 1 koneksi aktif
+      connectionLimit: 3,
       queueLimit: 0,
-      connectTimeout: 3000,
+      // ✅ Naikkan timeout dari 3 detik jadi 10 detik — beri waktu lebih
+      // untuk cold start + SSL handshake ke database cloud
+      connectTimeout: 10000,
       ssl: process.env.DB_SSL === 'true'
         ? { rejectUnauthorized: false }
         : undefined
