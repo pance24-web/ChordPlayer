@@ -1410,6 +1410,24 @@ footer {
   background-color: color-mix(in srgb, var(--green-accent) 5%, transparent);
 }
 
+.section-marker-line {
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-1);
+}
+
+.section-marker {
+  display: inline-block;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  letter-spacing: 0.03em;
+  background: var(--badge-bg);
+  padding: 0.15rem 0.6rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+}
+
 .chord-token {
   display: inline-block;
   margin: 0;
@@ -1911,3 +1929,397 @@ body.fullscreen-transition * {
 .print-header {
   display: none;
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   P1 FEATURES: FAVORITES, METRONOME, & BOTTOM NAV
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Top header button */
+.nav-link.nav-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font: inherit;
+  color: var(--header-text);
+  padding: 0.4rem 0.75rem;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+}
+
+.nav-link.nav-btn:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+}
+
+/* Filter chip icon */
+.chip-icon {
+  width: 14px;
+  height: 14px;
+  margin-right: 0.25rem;
+  display: inline-block;
+  vertical-align: -2px;
+}
+
+/* Favorite Button on Card */
+.btn-favorite-card {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 2;
+}
+
+.btn-favorite-card svg {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.2s ease;
+}
+
+.btn-favorite-card:hover {
+  background-color: var(--danger-surface);
+  color: var(--danger);
+  border-color: var(--danger);
+  transform: scale(1.08);
+}
+
+.btn-favorite-card.is-favorite {
+  background-color: var(--danger-surface);
+  color: var(--danger);
+  border-color: rgba(239, 68, 68, 0.4);
+}
+
+.btn-favorite-card.is-favorite svg {
+  fill: var(--danger);
+}
+
+/* Favorite Button on Detail Page */
+.meta-data {
+  position: relative;
+}
+
+.btn-favorite-detail {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
+  background: var(--bg-primary);
+  border: 1.5px solid var(--border-color);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.btn-favorite-detail svg {
+  width: 22px;
+  height: 22px;
+  transition: transform 0.2s ease;
+}
+
+.btn-favorite-detail:hover {
+  background-color: var(--danger-surface);
+  color: var(--danger);
+  border-color: var(--danger);
+  transform: scale(1.08);
+}
+
+.btn-favorite-detail.is-favorite {
+  background-color: var(--danger-surface);
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+.btn-favorite-detail.is-favorite svg {
+  fill: var(--danger);
+}
+
+/* ─── METRONOME DIALOG MODAL ─── */
+.metronome-dialog {
+  border: none;
+  border-radius: var(--radius-lg);
+  padding: 0;
+  background: transparent;
+  max-width: 420px;
+  width: 90%;
+  margin: auto;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.25), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+}
+
+.metronome-dialog::backdrop {
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(4px);
+}
+
+.metronome-card {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.metronome-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.75rem;
+}
+
+.metronome-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.metro-icon {
+  width: 22px;
+  height: 22px;
+  color: var(--accent-color);
+}
+
+.metronome-header h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.btn-close-metro {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.btn-close-metro:hover {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* Metro Visualizer (Beat Dots) */
+.metro-visualizer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+}
+
+.beat-dot {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-full);
+  background: var(--bg-primary);
+  border: 2px solid var(--border-color);
+  color: var(--text-muted);
+  font-weight: 700;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.1s ease, background-color 0.1s ease, border-color 0.1s ease;
+}
+
+.beat-dot.flash-accent {
+  background-color: var(--danger);
+  border-color: var(--danger);
+  color: #ffffff;
+  transform: scale(1.2);
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.6);
+}
+
+.beat-dot.flash-normal {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+  color: #ffffff;
+  transform: scale(1.15);
+  box-shadow: 0 0 10px rgba(13, 71, 161, 0.5);
+}
+
+/* BPM Display */
+.metro-bpm-display {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.bpm-number {
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--accent-color);
+  font-variant-numeric: tabular-nums;
+}
+
+.bpm-unit {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  margin-top: 0.2rem;
+}
+
+.bpm-tempo-name {
+  display: inline-block;
+  margin-top: 0.35rem;
+  padding: 0.2rem 0.75rem;
+  background: var(--surface-tint);
+  color: var(--accent-color);
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: var(--radius-full);
+}
+
+/* BPM Slider Wrap */
+.metro-slider-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.btn-metro-step {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  font-size: 1.25rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.btn-metro-step:hover {
+  background: var(--accent-color);
+  color: #ffffff;
+  border-color: var(--accent-color);
+}
+
+.metro-range {
+  flex: 1;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--border-color);
+  outline: none;
+  cursor: pointer;
+  accent-color: var(--accent-color);
+}
+
+/* Controls row */
+.metro-controls-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.metro-select-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.metro-select-wrap select {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 0.35rem 0.6rem;
+  font: inherit;
+  font-weight: 600;
+}
+
+.btn-tap-tempo {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 0.4rem 0.85rem;
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-tap-tempo:active {
+  background: var(--accent-color);
+  color: #ffffff;
+  transform: scale(0.96);
+}
+
+/* Action row */
+.metro-action-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+.btn-metro-play {
+  width: 100%;
+  max-width: 220px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  background: var(--accent-color);
+  color: #ffffff;
+  border: none;
+  font-size: 1.05rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(13, 71, 161, 0.3);
+  transition: all 0.2s ease;
+}
+
+.btn-metro-play:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(13, 71, 161, 0.4);
+}
+
+.btn-metro-play.is-playing {
+  background: var(--danger);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+}
+
+.btn-metro-play.is-playing:hover {
+  background: #dc2626;
+}
+

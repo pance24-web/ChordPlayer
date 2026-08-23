@@ -4,15 +4,15 @@
 
 ## 🎨 UI/UX Redesign (Handoff Sprint 1–3)
 
-- [ ] Sprint 1 — Foundation: design tokens (#0D47A1/#22C55E/surface/text), radius, typography, fokus ring
-- [ ] Sprint 1 — Header baru: logo mark hijau + wordmark, tagline desktop, toggle SVG
-- [ ] Sprint 2 — Home: hero heading + subtitle, search field dengan ikon & tombol hijau
-- [ ] Sprint 2 — Home: filter chip aktif hijau, song card ikon chord bulat + chevron
-- [ ] Sprint 2 — Home: grid dua kolom desktop, bottom navigation mobile
-- [ ] Sprint 2 — Home: empty state & error state sesuai mockup (ikon, teks, tombol aksi)
-- [ ] Sprint 3 — Detail: tombol kembali, ikon artis, hint sentuh chord
-- [ ] Sprint 3 — Detail: ganti emoji kontrol dengan ikon SVG, popup + badge capo
-- [ ] QA — uji desktop/mobile/light/dark di browser, cek console & node --check
+- [x] Sprint 1 — Foundation: design tokens (#0D47A1/#22C55E/surface/text), radius, typography, fokus ring completed:2026-08-23
+- [x] Sprint 1 — Header baru: logo mark hijau + wordmark, tagline desktop, toggle SVG completed:2026-08-23
+- [x] Sprint 2 — Home: hero heading + subtitle, search field dengan ikon & tombol hijau completed:2026-08-23
+- [x] Sprint 2 — Home: filter chip aktif hijau, song card ikon chord bulat + chevron completed:2026-08-23
+- [x] Sprint 2 — Home: grid dua kolom desktop, bottom navigation mobile completed:2026-08-23
+- [x] Sprint 2 — Home: empty state & error state sesuai mockup (ikon, teks, tombol aksi) completed:2026-08-23
+- [x] Sprint 3 — Detail: tombol kembali, ikon artis, hint sentuh chord completed:2026-08-23
+- [x] Sprint 3 — Detail: ganti emoji kontrol dengan ikon SVG, popup + badge capo completed:2026-08-23
+- [x] QA — uji desktop/mobile/light/dark di browser, cek console & node --check completed:2026-08-23
 
 ## 🎯 Goal
 
@@ -51,12 +51,12 @@ Meningkatkan kualitas ChordPlayer dari sisi **User Experience**, **Performance**
 
 # 🚀 Version 1.2 — Guitar Features
 
-- [ ] Tingkatkan fitur transpose chord
-- [ ] Pengaturan kecepatan auto scroll
-- [ ] Tambahkan fullscreen mode
-- [ ] Highlight chord aktif
-- [ ] Tambahkan chord diagram gitar
-- [ ] Tambahkan rekomendasi capo
+- [x] Tingkatkan fitur transpose chord completed:2026-08-23
+- [x] Pengaturan kecepatan auto scroll completed:2026-08-23
+- [x] Tambahkan fullscreen mode completed:2026-08-23
+- [x] Highlight chord aktif completed:2026-08-23
+- [x] Tambahkan chord diagram gitar completed:2026-08-23
+- [x] Tambahkan rekomendasi capo completed:2026-08-23
 
 ---
 

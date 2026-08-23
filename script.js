@@ -92,38 +92,38 @@ const CHORD_PATTERN_SOURCE =
 const chordTokenPattern = new RegExp('\\b' + CHORD_PATTERN_SOURCE, 'g');
 
 const guitarChordShapes = {
-  C: { frets: ['x', 3, 2, 0, 1, 0], baseFret: 1 },
-  C7: { frets: ['x', 3, 2, 3, 1, 0], baseFret: 1 },
-  Cmaj7: { frets: ['x', 3, 2, 0, 0, 0], baseFret: 1 },
-  Cadd9: { frets: ['x', 3, 2, 0, 3, 3], baseFret: 1 },
-  D: { frets: ['x', 'x', 0, 2, 3, 2], baseFret: 1 },
-  Dm: { frets: ['x', 'x', 0, 2, 3, 1], baseFret: 1 },
-  D7: { frets: ['x', 'x', 0, 2, 1, 2], baseFret: 1 },
-  Dsus2: { frets: ['x', 'x', 0, 2, 3, 0], baseFret: 1 },
-  Dsus4: { frets: ['x', 'x', 0, 2, 3, 3], baseFret: 1 },
-  E: { frets: [0, 2, 2, 1, 0, 0], baseFret: 1 },
-  Em: { frets: [0, 2, 2, 0, 0, 0], baseFret: 1 },
-  E7: { frets: [0, 2, 0, 1, 0, 0], baseFret: 1 },
-  Emaj7: { frets: [0, 2, 1, 1, 0, 0], baseFret: 1 },
-  Esus4: { frets: [0, 2, 2, 2, 0, 0], baseFret: 1 },
-  F: { frets: [1, 3, 3, 2, 1, 1], baseFret: 1 },
-  Fmaj7: { frets: [1, 3, 3, 2, 1, 0], baseFret: 1 },
-  G: { frets: [3, 2, 0, 0, 0, 3], baseFret: 1 },
-  G7: { frets: [3, 2, 0, 0, 0, 1], baseFret: 1 },
-  Gadd9: { frets: [3, 2, 0, 2, 0, 3], baseFret: 1 },
-  A: { frets: ['x', 0, 2, 2, 2, 0], baseFret: 1 },
-  A7: { frets: ['x', 0, 2, 0, 2, 0], baseFret: 1 },
-  Am: { frets: ['x', 0, 2, 2, 1, 0], baseFret: 1 },
-  Am7: { frets: ['x', 0, 2, 0, 1, 0], baseFret: 1 },
-  Asus2: { frets: ['x', 0, 2, 2, 0, 0], baseFret: 1 },
-  B: { frets: ['x', 2, 4, 4, 4, 2], baseFret: 2 },
-  B7: { frets: ['x', 2, 1, 2, 0, 2], baseFret: 1 },
-  Bm: { frets: ['x', 2, 4, 4, 3, 2], baseFret: 2 },
-  'C#': { frets: ['x', 4, 6, 6, 6, 4], baseFret: 4 },
-  'D#': { frets: ['x', 6, 8, 8, 8, 6], baseFret: 6 },
-  'F#': { frets: [2, 4, 4, 3, 2, 2], baseFret: 2 },
-  'G#': { frets: [4, 6, 6, 5, 4, 4], baseFret: 4 },
-  'A#': { frets: ['x', 1, 3, 3, 3, 1], baseFret: 1 }
+  C: { frets: ['x', 3, 2, 0, 1, 0], fingers: ['x', 3, 2, 'o', 1, 'o'], baseFret: 1 },
+  C7: { frets: ['x', 3, 2, 3, 1, 0], fingers: ['x', 3, 2, 4, 1, 'o'], baseFret: 1 },
+  Cmaj7: { frets: ['x', 3, 2, 0, 0, 0], fingers: ['x', 3, 2, 'o', 'o', 'o'], baseFret: 1 },
+  Cadd9: { frets: ['x', 3, 2, 0, 3, 3], fingers: ['x', 2, 1, 'o', 3, 4], baseFret: 1 },
+  D: { frets: ['x', 'x', 0, 2, 3, 2], fingers: ['x', 'x', 'o', 1, 3, 2], baseFret: 1 },
+  Dm: { frets: ['x', 'x', 0, 2, 3, 1], fingers: ['x', 'x', 'o', 2, 3, 1], baseFret: 1 },
+  D7: { frets: ['x', 'x', 0, 2, 1, 2], fingers: ['x', 'x', 'o', 2, 1, 3], baseFret: 1 },
+  Dsus2: { frets: ['x', 'x', 0, 2, 3, 0], fingers: ['x', 'x', 'o', 1, 3, 'o'], baseFret: 1 },
+  Dsus4: { frets: ['x', 'x', 0, 2, 3, 3], fingers: ['x', 'x', 'o', 1, 3, 4], baseFret: 1 },
+  E: { frets: [0, 2, 2, 1, 0, 0], fingers: ['o', 2, 3, 1, 'o', 'o'], baseFret: 1 },
+  Em: { frets: [0, 2, 2, 0, 0, 0], fingers: ['o', 2, 3, 'o', 'o', 'o'], baseFret: 1 },
+  E7: { frets: [0, 2, 0, 1, 0, 0], fingers: ['o', 2, 'o', 1, 'o', 'o'], baseFret: 1 },
+  Emaj7: { frets: [0, 2, 1, 1, 0, 0], fingers: ['o', 3, 1, 2, 'o', 'o'], baseFret: 1 },
+  Esus4: { frets: [0, 2, 2, 2, 0, 0], fingers: ['o', 2, 3, 4, 'o', 'o'], baseFret: 1 },
+  F: { frets: [1, 3, 3, 2, 1, 1], fingers: [1, 3, 4, 2, 1, 1], baseFret: 1 },
+  Fmaj7: { frets: [1, 3, 3, 2, 1, 0], fingers: ['x', 3, 4, 2, 1, 'o'], baseFret: 1 },
+  G: { frets: [3, 2, 0, 0, 0, 3], fingers: [2, 1, 'o', 'o', 'o', 3], baseFret: 1 },
+  G7: { frets: [3, 2, 0, 0, 0, 1], fingers: [3, 2, 'o', 'o', 'o', 1], baseFret: 1 },
+  Gadd9: { frets: [3, 2, 0, 2, 0, 3], fingers: [2, 1, 'o', 3, 'o', 4], baseFret: 1 },
+  A: { frets: ['x', 0, 2, 2, 2, 0], fingers: ['x', 'o', 1, 2, 3, 'o'], baseFret: 1 },
+  A7: { frets: ['x', 0, 2, 0, 2, 0], fingers: ['x', 'o', 2, 'o', 3, 'o'], baseFret: 1 },
+  Am: { frets: ['x', 0, 2, 2, 1, 0], fingers: ['x', 'o', 2, 3, 1, 'o'], baseFret: 1 },
+  Am7: { frets: ['x', 0, 2, 0, 1, 0], fingers: ['x', 'o', 2, 'o', 1, 'o'], baseFret: 1 },
+  Asus2: { frets: ['x', 0, 2, 2, 0, 0], fingers: ['x', 'o', 1, 2, 'o', 'o'], baseFret: 1 },
+  B: { frets: ['x', 2, 4, 4, 4, 2], fingers: ['x', 1, 2, 3, 4, 1], baseFret: 2 },
+  B7: { frets: ['x', 2, 1, 2, 0, 2], fingers: ['x', 2, 1, 3, 'o', 4], baseFret: 1 },
+  Bm: { frets: ['x', 2, 4, 4, 3, 2], fingers: ['x', 1, 3, 4, 2, 1], baseFret: 2 },
+  'C#': { frets: ['x', 4, 6, 6, 6, 4], fingers: ['x', 1, 2, 3, 4, 1], baseFret: 4 },
+  'D#': { frets: ['x', 6, 8, 8, 8, 6], fingers: ['x', 1, 2, 3, 4, 1], baseFret: 6 },
+  'F#': { frets: [2, 4, 4, 3, 2, 2], fingers: [1, 3, 4, 2, 1, 1], baseFret: 2 },
+  'G#': { frets: [4, 6, 6, 5, 4, 4], fingers: [1, 3, 4, 2, 1, 1], baseFret: 4 },
+  'A#': { frets: ['x', 1, 3, 3, 3, 1], fingers: ['x', 1, 2, 3, 4, 1], baseFret: 1 }
 };
 
 const chordQualityAliases = {
@@ -171,48 +171,77 @@ function renderPopupShape(option) {
   const container = document.getElementById('chordPopupDiagram');
   const title = document.getElementById('chordPopupTitle');
   const count = document.getElementById('chordPopupCount');
+  const capoEl = document.getElementById('chordPopupCapo');
   if (!container || !title || !count || !option) return;
 
   title.textContent = option.name;
   count.textContent = `${activeChordShapeIndex + 1} dari ${getChordShapeOptions(activeChordPopup?.textContent || '').length || 1}`;
+  if (capoEl) {
+    const capoInfo = getCapoRecommendation(transposeValue);
+    capoEl.textContent = capoInfo.fret;
+  }
   container.innerHTML = createGuitarDiagramSvg(option.name, option.shape, 'popup');
 }
 
 function createGuitarDiagramSvg(chordName, shape, variant = 'default') {
-  const width = 260;
+  const width = 240;
   const height = 195;
-  const left = 38;
-  const top = 34;
-  const stringGap = 36;
-  const fretGap = 23;
+  const left = 32;
+  const top = 32;
+  const stringGap = 35;
+  const fretGap = 24;
   const fretCount = 5;
   const baseFret = shape.baseFret || 1;
   const right = left + stringGap * 5;
   const bottom = top + fretGap * fretCount;
+
+  // 6 Garis Senar Vertikal
   const strings = Array.from({ length: 6 }, (_, index) => {
     const x = left + stringGap * index;
-    return `<line x1="${x}" y1="${top}" x2="${x}" y2="${bottom}" class="diagram-string" />`;
+    return `<line x1="${x}" y1="${top}" x2="${x}" y2="${bottom}" class="diagram-string" stroke="currentColor" stroke-width="1.2" stroke-opacity="0.6"/>`;
   }).join('');
+
+  // 5 Fret Horizontal
   const frets = Array.from({ length: fretCount + 1 }, (_, index) => {
     const y = top + fretGap * index;
-    return `<line x1="${left}" y1="${y}" x2="${right}" y2="${y}" class="diagram-fret" />`;
+    return `<line x1="${left}" y1="${y}" x2="${right}" y2="${y}" class="diagram-fret" stroke="currentColor" stroke-width="1.2" stroke-opacity="0.4"/>`;
   }).join('');
+
+  // Open (○) / Muted (×) & Fret Finger Markers
   const markers = shape.frets.map((value, stringIndex) => {
     const x = left + stringGap * stringIndex;
-    if (value === 'x') return `<text x="${x}" y="22" text-anchor="middle" class="diagram-muted">×</text>`;
-    if (value === 0) return `<circle cx="${x}" cy="22" r="5" class="diagram-open" />`;
+    if (value === 'x') {
+      return `<text x="${x}" y="20" text-anchor="middle" font-size="14" font-weight="600" fill="var(--text-muted, #6B7280)" class="diagram-muted">×</text>`;
+    }
+    if (value === 0) {
+      return `<circle cx="${x}" cy="15" r="4.5" fill="none" stroke="currentColor" stroke-width="1.6" class="diagram-open"/>`;
+    }
     const fret = Number(value);
     const relativeFret = fret - baseFret + 1;
     if (relativeFret < 1 || relativeFret > fretCount) return '';
     const y = top + fretGap * (relativeFret - 0.5);
-    return `<circle cx="${x}" cy="${y}" r="8" class="diagram-dot" /><text x="${x}" y="${y + 4}" text-anchor="middle" class="diagram-dot-label">${fret}</text>`;
+    const fingerVal = (shape.fingers && shape.fingers[stringIndex] !== undefined)
+      ? shape.fingers[stringIndex]
+      : fret;
+    const displayLabel = (typeof fingerVal === 'number' || (!isNaN(Number(fingerVal)) && fingerVal !== 'x' && fingerVal !== 'o'))
+      ? fingerVal
+      : fret;
+
+    return `
+      <circle cx="${x}" cy="${y}" r="9" fill="var(--accent-color, #22C55E)" class="diagram-dot"/>
+      <text x="${x}" y="${y + 3.5}" text-anchor="middle" font-size="10.5" font-weight="700" fill="#ffffff" class="diagram-dot-label">${displayLabel}</text>
+    `;
   }).join('');
+
+  // Label Senar di Bawah: E A D G B e
   const labels = ['E', 'A', 'D', 'G', 'B', 'e'].map((label, index) =>
-    `<text x="${left + stringGap * index}" y="${bottom + 21}" text-anchor="middle" class="diagram-string-label">${label}</text>`
+    `<text x="${left + stringGap * index}" y="${bottom + 18}" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text-secondary, #374151)" class="diagram-string-label">${label}</text>`
   ).join('');
+
+  // Nut atau Label Base Fret
   const topMarker = baseFret === 1
-    ? `<line x1="${left}" y1="${top}" x2="${right}" y2="${top}" class="diagram-nut" />`
-    : `<line x1="${left}" y1="${top}" x2="${right}" y2="${top}" class="diagram-position-marker" /><text x="12" y="${top + 5}" class="diagram-position">${baseFret}fr</text>`;
+    ? `<line x1="${left}" y1="${top}" x2="${right}" y2="${top}" class="diagram-nut" stroke="currentColor" stroke-width="4.5" stroke-linecap="round"/>`
+    : `<line x1="${left}" y1="${top}" x2="${right}" y2="${top}" class="diagram-nut" stroke="currentColor" stroke-width="2"/><text x="12" y="${top + 16}" font-size="11" font-weight="700" fill="var(--accent-color, #22C55E)" class="diagram-position">${baseFret}fr</text>`;
 
   return `<svg class="guitar-diagram-svg ${variant === 'popup' ? 'guitar-diagram-popup-svg' : ''}" viewBox="0 0 ${width} ${height}" role="img" aria-label="Diagram chord ${escapeHTML(chordName)}">
     ${topMarker}${strings}${frets}${markers}${labels}
@@ -325,6 +354,10 @@ function setupChordPopup() {
 
 function renderLyrics(text) {
   return String(text).split("\n").map((line, lineIndex) => {
+    const trimmed = line.trim();
+    if (/^\[.+\]$/.test(trimmed)) {
+      return `<div class="lyrics-line section-marker-line" data-line-index="${lineIndex}"><span class="section-marker">${escapeHTML(trimmed)}</span></div>`;
+    }
     const safeLine = escapeHTML(line);
     const renderedLine = safeLine.replace(chordTokenPattern, '<button type="button" class="chord-token" data-line-index="' + lineIndex + '" aria-expanded="false">$&</button>');
     return `<div class="lyrics-line" data-line-index="${lineIndex}">${renderedLine || '&nbsp;'}</div>`;
@@ -496,7 +529,7 @@ async function loadSongs() {
     }
 
     const result = await response.json();
-    allSongs = result.data;
+    allSongs = Array.isArray(result.data) ? result.data : (Array.isArray(result) ? result : []);
     renderSongList(allSongs);
 
   } catch (error) {
@@ -513,6 +546,71 @@ async function loadSongs() {
   }
 }
 
+// ─── FAVORITES MANAGEMENT (Local Storage) ────────────────────
+const FAVORITES_STORAGE_KEY = 'chordplayer_favorites';
+
+function getFavorites() {
+  try {
+    const raw = localStorage.getItem(FAVORITES_STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch (err) {
+    return [];
+  }
+}
+
+function isFavorite(songId) {
+  const favs = getFavorites();
+  return favs.some(item => String(item.id || item) === String(songId));
+}
+
+function toggleFavorite(songId, songTitle = '', songArtist = '') {
+  try {
+    let favs = getFavorites();
+    const idStr = String(songId);
+    const existingIndex = favs.findIndex(item => String(item.id || item) === idStr);
+
+    let isAdded = false;
+    if (existingIndex >= 0) {
+      favs.splice(existingIndex, 1);
+      isAdded = false;
+    } else {
+      favs.push({
+        id: songId,
+        title: songTitle,
+        artist: songArtist,
+        savedAt: new Date().toISOString()
+      });
+      isAdded = true;
+    }
+
+    localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(favs));
+    showToast(isAdded ? 'Ditambahkan ke Favorit ❤️' : 'Dihapus dari Favorit', isAdded ? 'success' : 'default');
+
+    // Update UI card jika ada di halaman
+    document.querySelectorAll(`.btn-favorite-card[data-song-id="${idStr}"]`).forEach(btn => {
+      btn.classList.toggle('is-favorite', isAdded);
+      btn.setAttribute('aria-pressed', String(isAdded));
+    });
+
+    // Update UI detail page jika ada
+    const detailFavBtn = document.getElementById('btnToggleFavoriteDetail');
+    if (detailFavBtn) {
+      detailFavBtn.classList.toggle('is-favorite', isAdded);
+      detailFavBtn.setAttribute('aria-pressed', String(isAdded));
+    }
+
+    // Jika sedang di filter favorit, re-render list
+    if (searchFilter === 'favorite') {
+      handleSearch();
+    }
+
+    return isAdded;
+  } catch (err) {
+    console.error('Error toggle favorite:', err);
+    return false;
+  }
+}
+
 // ─── RENDER DAFTAR LAGU ────────────────────────────────────────
 function renderSongList(songArray) {
   const songListContainer = document.getElementById('songList');
@@ -525,24 +623,59 @@ function renderSongList(songArray) {
   }
 
   if (songArray.length === 0) {
-    songListContainer.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-icon">🔍</div>
-        <p>Lagu yang kamu cari tidak ditemukan.</p>
-        <span class="empty-hint">Coba kata kunci lain</span>
-      </div>
-    `;
+    if (searchFilter === 'favorite') {
+      songListContainer.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">🤍</div>
+          <p>Belum ada lagu favorit yang disimpan.</p>
+          <span class="empty-hint">Klik ikon hati pada lagu untuk menyimpannya di sini.</span>
+        </div>
+      `;
+    } else {
+      songListContainer.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">🔍</div>
+          <p>Lagu yang kamu cari tidak ditemukan.</p>
+          <span class="empty-hint">Coba kata kunci lain</span>
+        </div>
+      `;
+    }
     return;
   }
-  songListContainer.innerHTML = songArray.map(song => `
-    <a href="detail.html?id=${encodeURIComponent(song.id)}" class="song-card">
-      <div class="song-info">
-        <div class="title">${escapeHTML(song.title)}</div>
-        <div class="artist">${escapeHTML(song.artist)}</div>
+  songListContainer.innerHTML = songArray.map(song => {
+    const fav = isFavorite(song.id);
+    return `
+      <div class="song-card-wrapper" style="position: relative;">
+        <a href="detail.html?id=${encodeURIComponent(song.id)}" class="song-card">
+          <div class="song-info">
+            <div class="title">${escapeHTML(song.title)}</div>
+            <div class="artist">${escapeHTML(song.artist)}</div>
+          </div>
+          <span class="arrow">→</span>
+        </a>
+        <button type="button" class="btn-favorite-card ${fav ? 'is-favorite' : ''}" 
+          data-song-id="${escapeHTML(String(song.id))}" 
+          data-song-title="${escapeHTML(song.title)}" 
+          data-song-artist="${escapeHTML(song.artist)}"
+          aria-label="${fav ? 'Hapus dari favorit' : 'Tambah ke favorit'}"
+          aria-pressed="${fav}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
       </div>
-      <span class="arrow">→</span>
-    </a>
-  `).join('');
+    `;
+  }).join('');
+
+  // Pasang listener pada tombol favorite di card
+  songListContainer.querySelectorAll('.btn-favorite-card').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const songId = btn.dataset.songId;
+      const songTitle = btn.dataset.songTitle;
+      const songArtist = btn.dataset.songArtist;
+      toggleFavorite(songId, songTitle, songArtist);
+    });
+  });
 }
 
 // ─── SEARCH ───────────────────────────────────────────────────
@@ -564,7 +697,12 @@ function handleSearch() {
     searchBox?.classList.remove('loading');
   }
 
-  const result = allSongs.filter(song => {
+  let baseList = allSongs;
+  if (searchFilter === 'favorite') {
+    baseList = allSongs.filter(song => isFavorite(song.id));
+  }
+
+  const result = baseList.filter(song => {
     if (searchFilter === 'title') {
       return song.title.toLowerCase().includes(keyword);
     }
@@ -593,10 +731,10 @@ function clearSearch() {
     btnClear.style.display = 'none';
   }
 
-  renderSongList(allSongs);
+  handleSearch();
 }
 
-// ─── FILTER CHIPS (Semua/Judul/Artis) ──────────────────────────
+// ─── FILTER CHIPS (Semua/Judul/Artis/Favorit) ───────────────────
 function setupFilterChips() {
   const chips = document.querySelectorAll('.filter-chip');
 
@@ -671,14 +809,25 @@ async function loadSongDetail() {
     const result = await response.json();
     console.log('[loadSongDetail] Data diterima:', result);
 
-    const song = result.data;
+    const song = (result && result.data) ? result.data : result;
 
-    if (!song) {
-      throw new Error('Response tidak berisi data lagu');
+    if (!song || (!song.title && !song.chord)) {
+      throw new Error('Response tidak berisi data lagu yang valid');
     }
 
     title.textContent = song.title;
     artist.textContent = song.artist;
+
+    // Inisialisasi tombol favorite di detail page
+    const detailFavBtn = document.getElementById('btnToggleFavoriteDetail');
+    if (detailFavBtn) {
+      const fav = isFavorite(song.id);
+      detailFavBtn.classList.toggle('is-favorite', fav);
+      detailFavBtn.setAttribute('aria-pressed', String(fav));
+      detailFavBtn.onclick = () => {
+        toggleFavorite(song.id, song.title, song.artist);
+      };
+    }
 
     currentChord = song.chord;
     transposeValue = 0;
@@ -1107,6 +1256,287 @@ function setupMoreActionsMenu() {
   });
 }
 
+// ─── METRONOME ENGINE (Web Audio API) ─────────────────────────
+let metroAudioCtx = null;
+let metroBpm = 100;
+let metroTimeSignature = 4;
+let metroIsPlaying = false;
+let metroCurrentBeat = 0;
+let metroTimerId = null;
+let tapTimestamps = [];
+
+const TEMPO_NAMES = [
+  { maxBpm: 60, name: 'Largo (Sangat Lambat)' },
+  { maxBpm: 76, name: 'Adagio (Lambat & Tenang)' },
+  { maxBpm: 108, name: 'Andante (Santai / Sedang)' },
+  { maxBpm: 120, name: 'Moderato (Sedang)' },
+  { maxBpm: 168, name: 'Allegro (Cepat & Ceria)' },
+  { maxBpm: 200, name: 'Presto (Sangat Cepat)' },
+  { maxBpm: 240, name: 'Prestissimo (Maksimal)' }
+];
+
+function getTempoName(bpm) {
+  const match = TEMPO_NAMES.find(t => bpm <= t.maxBpm);
+  return match ? match.name : 'Allegro';
+}
+
+function getAudioContext() {
+  if (!metroAudioCtx) {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (AudioContextClass) {
+      metroAudioCtx = new AudioContextClass();
+    }
+  }
+  if (metroAudioCtx && metroAudioCtx.state === 'suspended') {
+    metroAudioCtx.resume();
+  }
+  return metroAudioCtx;
+}
+
+function playSynthesizedClick(isAccent = false) {
+  const ctx = getAudioContext();
+  if (!ctx) return;
+
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+
+  // Pitch tinggi untuk ketukan 1 (accent), pitch standar untuk ketukan lainnya
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(isAccent ? 880 : 440, ctx.currentTime);
+
+  gain.gain.setValueAtTime(isAccent ? 0.9 : 0.6, ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + (isAccent ? 0.08 : 0.05));
+
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+
+  osc.start(ctx.currentTime);
+  osc.stop(ctx.currentTime + (isAccent ? 0.08 : 0.05));
+}
+
+function updateVisualBeatDots(activeBeat) {
+  const dots = document.querySelectorAll('.beat-dot');
+  dots.forEach((dot, index) => {
+    dot.classList.remove('flash-accent', 'flash-normal');
+    if (index + 1 === activeBeat) {
+      dot.classList.add(activeBeat === 1 ? 'flash-accent' : 'flash-normal');
+    }
+  });
+}
+
+function rebuildVisualizerDots(timeSig) {
+  const visualizer = document.getElementById('metroVisualizer');
+  if (!visualizer) return;
+  visualizer.innerHTML = Array.from({ length: timeSig }, (_, i) => `
+    <span class="beat-dot ${i === 0 ? 'active' : ''}" data-beat="${i + 1}">${i + 1}</span>
+  `).join('');
+}
+
+function tickMetronome() {
+  metroCurrentBeat = (metroCurrentBeat % metroTimeSignature) + 1;
+  const isAccent = metroCurrentBeat === 1;
+
+  playSynthesizedClick(isAccent);
+  updateVisualBeatDots(metroCurrentBeat);
+}
+
+function startMetronome() {
+  if (metroIsPlaying) return;
+  getAudioContext();
+  metroIsPlaying = true;
+  metroCurrentBeat = 0;
+
+  const intervalMs = (60 / metroBpm) * 1000;
+  tickMetronome();
+  metroTimerId = setInterval(tickMetronome, intervalMs);
+
+  updateMetronomeUI();
+}
+
+function stopMetronome() {
+  if (!metroIsPlaying) return;
+  metroIsPlaying = false;
+  if (metroTimerId) {
+    clearInterval(metroTimerId);
+    metroTimerId = null;
+  }
+  const dots = document.querySelectorAll('.beat-dot');
+  dots.forEach(dot => dot.classList.remove('flash-accent', 'flash-normal'));
+  updateMetronomeUI();
+}
+
+function toggleMetronome() {
+  if (metroIsPlaying) {
+    stopMetronome();
+  } else {
+    startMetronome();
+  }
+}
+
+function setMetroBpm(newBpm) {
+  metroBpm = Math.max(40, Math.min(240, Math.round(newBpm)));
+  const bpmVal = document.getElementById('metroBpmVal');
+  const slider = document.getElementById('metroBpmSlider');
+  const tempoName = document.getElementById('metroTempoName');
+
+  if (bpmVal) bpmVal.textContent = metroBpm;
+  if (slider) slider.value = metroBpm;
+  if (tempoName) tempoName.textContent = getTempoName(metroBpm);
+
+  if (metroIsPlaying) {
+    stopMetronome();
+    startMetronome();
+  }
+}
+
+function updateMetronomeUI() {
+  const playBtn = document.getElementById('btnToggleMetronome');
+  const playText = document.getElementById('metroPlayText');
+  const playIcon = document.getElementById('metroPlayIcon');
+
+  if (!playBtn) return;
+
+  if (metroIsPlaying) {
+    playBtn.classList.add('is-playing');
+    if (playText) playText.textContent = 'Berhenti';
+    if (playIcon) {
+      playIcon.innerHTML = `<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>`;
+    }
+  } else {
+    playBtn.classList.remove('is-playing');
+    if (playText) playText.textContent = 'Mulai';
+    if (playIcon) {
+      playIcon.innerHTML = `<polygon points="5 3 19 12 5 21 5 3"/>`;
+    }
+  }
+}
+
+function handleTapTempo() {
+  const now = Date.now();
+  // Reset jika tap terakhir lebih dari 2 detik yang lalu
+  if (tapTimestamps.length > 0 && now - tapTimestamps[tapTimestamps.length - 1] > 2000) {
+    tapTimestamps = [];
+  }
+
+  tapTimestamps.push(now);
+  if (tapTimestamps.length > 4) {
+    tapTimestamps.shift();
+  }
+
+  if (tapTimestamps.length >= 2) {
+    const intervals = [];
+    for (let i = 1; i < tapTimestamps.length; i++) {
+      intervals.push(tapTimestamps[i] - tapTimestamps[i - 1]);
+    }
+    const avgInterval = intervals.reduce((a, b) => a + b, 0) / intervals.length;
+    const computedBpm = Math.round(60000 / avgInterval);
+    setMetroBpm(computedBpm);
+    showToast(`Tempo terdeteksi: ${computedBpm} BPM`, 'default');
+  }
+}
+
+function openMetronomeModal() {
+  const dialog = document.getElementById('metronomeDialog');
+  if (!dialog) return;
+
+  if (typeof dialog.showModal === 'function') {
+    dialog.showModal();
+  } else {
+    dialog.setAttribute('open', '');
+  }
+}
+
+function closeMetronomeModal() {
+  const dialog = document.getElementById('metronomeDialog');
+  if (!dialog) return;
+
+  stopMetronome();
+  if (typeof dialog.close === 'function') {
+    dialog.close();
+  } else {
+    dialog.removeAttribute('open');
+  }
+}
+
+function setupMetronomeHandlers() {
+  const dialog = document.getElementById('metronomeDialog');
+  const btnClose = document.getElementById('btnCloseMetronome');
+  const btnToggle = document.getElementById('btnToggleMetronome');
+  const slider = document.getElementById('metroBpmSlider');
+  const btnPlus = document.getElementById('btnBpmPlus');
+  const btnMinus = document.getElementById('btnBpmMinus');
+  const timeSigSelect = document.getElementById('metroTimeSig');
+  const btnTap = document.getElementById('btnTapTempo');
+
+  if (slider) {
+    slider.addEventListener('input', (e) => setMetroBpm(Number(e.target.value)));
+  }
+
+  if (btnPlus) {
+    btnPlus.addEventListener('click', () => setMetroBpm(metroBpm + 1));
+  }
+
+  if (btnMinus) {
+    btnMinus.addEventListener('click', () => setMetroBpm(metroBpm - 1));
+  }
+
+  if (btnToggle) {
+    btnToggle.addEventListener('click', toggleMetronome);
+  }
+
+  if (btnClose) {
+    btnClose.addEventListener('click', closeMetronomeModal);
+  }
+
+  if (timeSigSelect) {
+    timeSigSelect.addEventListener('change', (e) => {
+      metroTimeSignature = Number(e.target.value);
+      rebuildVisualizerDots(metroTimeSignature);
+      if (metroIsPlaying) {
+        stopMetronome();
+        startMetronome();
+      }
+    });
+  }
+
+  if (btnTap) {
+    btnTap.addEventListener('click', handleTapTempo);
+  }
+
+  if (dialog) {
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog) {
+        closeMetronomeModal();
+      }
+    });
+    dialog.addEventListener('cancel', () => {
+      stopMetronome();
+    });
+  }
+
+  // Hook up external triggers to open metronome
+  document.querySelectorAll('#btnOpenMetronomeTop, #btnOpenMetronome, #bnavMetronome').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      openMetronomeModal();
+    });
+  });
+
+  // Hook up bottom navigation Favorite button
+  const bnavFav = document.getElementById('bnavFavorites');
+  if (bnavFav && window.location.pathname.endsWith('index.html') || window.location.pathname === '/') {
+    bnavFav.addEventListener('click', (e) => {
+      e.preventDefault();
+      const chipFav = document.getElementById('chipFavorite');
+      if (chipFav) {
+        chipFav.click();
+        const section = document.getElementById('daftar-lagu');
+        if (section) section.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  }
+}
+
 // ─── START ────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   initDarkMode();
@@ -1133,6 +1563,16 @@ document.addEventListener('DOMContentLoaded', () => {
   loadSongDetail();
   setupDetailControls();
   setupChordPopup();
+  setupMetronomeHandlers();
+
+  // Handle URL param ?filter=favorite
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('filter') === 'favorite') {
+    const chipFav = document.getElementById('chipFavorite');
+    if (chipFav) {
+      setTimeout(() => chipFav.click(), 100);
+    }
+  }
 
   document.addEventListener('fullscreenchange', updateFullscreenUI);
   document.addEventListener('webkitfullscreenchange', updateFullscreenUI);
