@@ -1,5 +1,17 @@
 const db = require('../config/db');
 
+class DatabaseUnavailableError extends Error {
+  constructor(message, cause) {
+    super(message, { cause });
+    this.name = 'DatabaseUnavailableError';
+    this.code = 'DB_UNAVAILABLE';
+  }
+}
+
+function isFallbackAllowed() {
+  return process.env.NODE_ENV !== 'production';
+}
+
 // Data fallback saat database offline atau belum terhubung
 const fallbackSongs = [
   {
@@ -244,41 +256,145 @@ C`
   }
 ];
 
-// Ambil semua lagu (untuk halaman utama — index.html)
-async function getAllSongs() {
-  try {
-    const [rows] = await db.query('SELECT id, title, artist FROM songs ORDER BY title ASC');
-    if (rows && rows.length > 0) {
-      return rows;
-    }
-    // Query berhasil tapi tabel kosong — ini juga perlu dicatat
-    console.warn('[songService] getAllSongs: Query database berhasil tapi hasilnya kosong. Menggunakan fallback.');
-  } catch (err) {
-    // ✅ Sekarang error dicatat, tidak lagi ditelan diam-diam
-    console.error('[songService] getAllSongs: Gagal query database, menggunakan fallback data:', err.message);
+const SONG_PAGE_DEFAULT = 20;
+const SONG_PAGE_MAX = 50;
+const SEARCH_FIELDS = {
+  all: ['title', 'artist'],
+  title: ['title'],
+  artist: ['artist']
+};
+
+function normalizeSongSearchOptions(options = {}) {
+  const search = typeof options.search === 'string' ? options.search.trim().slice(0, 100) : '';
+  const field = Object.prototype.hasOwnProperty.call(SEARCH_FIELDS, options.field)
+    ? options.field
+    : 'all';
+  const page = Number.isInteger(options.page) && options.page > 0 ? options.page : 1;
+  const limit = Number.isInteger(options.limit) && options.limit > 0
+    ? Math.min(options.limit, SONG_PAGE_MAX)
+    : SONG_PAGE_DEFAULT;
+  const ids = Array.isArray(options.ids)
+    ? [...new Set(options.ids.filter(id => Number.isInteger(id) && id > 0))].slice(0, 100)
+    : [];
+
+  return {
+    search,
+    field,
+    page,
+    limit,
+    ids
+  };
+}
+
+function filterFallbackSongs({ search, field, ids }) {
+  const normalizedSearch = search.toLowerCase();
+  return fallbackSongs
+    .filter(song => {
+      if (ids.length > 0 && !ids.includes(Number(song.id))) return false;
+      if (!normalizedSearch) return true;
+      return SEARCH_FIELDS[field].some(column => song[column].toLowerCase().includes(normalizedSearch));
+    })
+    .map(({ id, title, artist }) => ({ id, title, artist }));
+}
+
+function paginateSongs(rows, page, limit) {
+  const total = rows.length;
+  const offset = (page - 1) * limit;
+  return {
+    rows: rows.slice(offset, offset + limit),
+    total
+  };
+}
+
+async function searchSongs(options = {}) {
+  const normalized = normalizeSongSearchOptions(options);
+  const { search, field, page, limit, ids } = normalized;
+  const whereParts = [];
+  const queryParams = [];
+
+  if (ids.length > 0) {
+    whereParts.push(`id IN (${ids.map(() => '?').join(', ')})`);
+    queryParams.push(...ids);
   }
-  return fallbackSongs.map(({ id, title, artist }) => ({ id, title, artist }));
+
+  if (search) {
+    const searchValue = `%${search}%`;
+    const searchColumns = SEARCH_FIELDS[field];
+    whereParts.push(searchColumns.length === 1
+      ? `${searchColumns[0]} LIKE ?`
+      : `(${searchColumns.map(column => `${column} LIKE ?`).join(' OR ')})`);
+    queryParams.push(...searchColumns.map(() => searchValue));
+  }
+
+  const whereClause = whereParts.length > 0 ? ` WHERE ${whereParts.join(' AND ')}` : '';
+  const countQuery = `SELECT COUNT(*) AS total FROM songs${whereClause}`;
+  const songsQuery = `SELECT id, title, artist FROM songs${whereClause} ORDER BY title ASC, id ASC LIMIT ? OFFSET ?`;
+
+  try {
+    const [countRows] = await db.query(countQuery, queryParams);
+    const total = Number(countRows[0]?.total || 0);
+
+    if (total === 0 && !search && ids.length === 0 && field === 'all' && isFallbackAllowed()) {
+      const fallbackPage = paginateSongs(
+        fallbackSongs.map(({ id, title, artist }) => ({ id, title, artist })),
+        page,
+        limit
+      );
+      console.warn('[songService] searchSongs: Database kosong. Menggunakan fallback development.');
+      return fallbackPage;
+    }
+
+    const [rows] = await db.query(songsQuery, [...queryParams, limit, (page - 1) * limit]);
+    return { rows, total };
+  } catch (err) {
+    if (isFallbackAllowed()) {
+      const fallbackPage = paginateSongs(filterFallbackSongs(normalized), page, limit);
+      console.warn('[songService] searchSongs: Database tidak tersedia. Menggunakan fallback development:', err.message);
+      return fallbackPage;
+    }
+
+    throw new DatabaseUnavailableError('Database tidak tersedia', err);
+  }
+}
+
+// Kompatibilitas untuk consumer lama yang hanya membutuhkan array lagu.
+async function getAllSongs(options = {}) {
+  const result = await searchSongs(options);
+  return result.rows;
 }
 
 // Ambil satu lagu berdasarkan ID (untuk halaman detail — termasuk chord lengkap)
 async function getSongById(id) {
   try {
-    const [rows] = await db.query('SELECT * FROM songs WHERE id = ?', [id]);
+    const [rows] = await db.query('SELECT id, title, artist, chord FROM songs WHERE id = ?', [id]);
     if (rows && rows[0]) {
       return rows[0];
     }
-    // Query berhasil tapi id tidak ketemu di database asli
-    console.warn(`[songService] getSongById(${id}): Tidak ditemukan di database. Mengecek fallback.`);
+
+    if (isFallbackAllowed()) {
+      console.warn(`[songService] getSongById(${id}): Tidak ditemukan di database. Mengecek fallback development.`);
+      const fallbackSong = fallbackSongs.find(song => String(song.id) === String(id));
+      return fallbackSong || null;
+    }
+
+    return null;
   } catch (err) {
-    // ✅ Sekarang error dicatat, tidak lagi ditelan diam-diam
-    console.error(`[songService] getSongById(${id}): Gagal query database, mengecek fallback data:`, err.message);
+    if (isFallbackAllowed()) {
+      console.warn(`[songService] getSongById(${id}): Database tidak tersedia. Mengecek fallback development:`, err.message);
+      const fallbackSong = fallbackSongs.find(song => String(song.id) === String(id));
+      return fallbackSong || null;
+    }
+
+    throw new DatabaseUnavailableError('Database tidak tersedia', err);
   }
-  const song = fallbackSongs.find(s => String(s.id) === String(id));
-  return song || null;
 }
 
 module.exports = {
   getAllSongs,
-  getSongById
+  getSongById,
+  searchSongs,
+  normalizeSongSearchOptions,
+  SONG_PAGE_DEFAULT,
+  SONG_PAGE_MAX
 };
 

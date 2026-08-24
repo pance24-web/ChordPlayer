@@ -136,10 +136,12 @@ DB_USER=your-db-user
 DB_PASSWORD=your-db-password
 DB_NAME=your-db-name
 DB_SSL=false
+# Opsional: PEM CA certificate; gunakan literal \n untuk line break jika secret provider tidak mendukung multiline.
+DB_SSL_CA=
 ```
 
 > **Menggunakan database cloud (contoh: Aiven, PlanetScale, dll)?**
-> Sesuaikan `DB_HOST` dan `DB_PORT` dengan connection info dari provider kamu, lalu set `DB_SSL=true` — kebanyakan provider cloud MySQL mewajibkan koneksi SSL.
+> Sesuaikan `DB_HOST` dan `DB_PORT` dengan connection info dari provider, lalu set `DB_SSL=true`. Koneksi TLS selalu memverifikasi sertifikat server. Jika provider memakai CA khusus, isi `DB_SSL_CA` dengan PEM CA certificate; jika secret provider tidak mendukung multiline, gunakan literal `\n` sebagai line break.
 
 ## Buat tabel `songs` dengan menjalankan query di `docs/schema.sql` lewat client MySQL pilihanmu (TablePlus, MySQL Workbench, VS Code Database Client, dll).
 

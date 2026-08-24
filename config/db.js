@@ -2,6 +2,9 @@ const mysql = require('mysql2/promise');
 require('dotenv').config();
 
 const host = process.env.DB_HOST ? process.env.DB_HOST.trim() : '';
+const sslCa = process.env.DB_SSL_CA
+  ? process.env.DB_SSL_CA.replace(/\\n/g, '\n')
+  : undefined;
 const isPlaceholderHost = !host || 
   host.toLowerCase() === 'your-db-host' || 
   host.toLowerCase() === 'your_db_host' || 
@@ -28,7 +31,10 @@ if (!isPlaceholderHost) {
       // untuk cold start + SSL handshake ke database cloud
       connectTimeout: 10000,
       ssl: process.env.DB_SSL === 'true'
-        ? { rejectUnauthorized: false }
+        ? {
+            rejectUnauthorized: true,
+            ...(sslCa ? { ca: sslCa } : {})
+          }
         : undefined
     });
 

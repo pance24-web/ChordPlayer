@@ -16,9 +16,12 @@ module.exports = async (req, res) => {
     res.status(200).json({ success: true, data: song });
   } catch (error) {
     console.error('Error di api/song-detail.js:', error);
-    res.status(500).json({
+    const statusCode = error.code === 'DB_UNAVAILABLE' ? 503 : 500;
+    res.status(statusCode).json({
       success: false,
-      message: 'Gagal mengambil data lagu'
+      message: statusCode === 503
+        ? 'Database sedang tidak tersedia'
+        : 'Gagal mengambil data lagu'
     });
   }
 };

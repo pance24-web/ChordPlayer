@@ -47,7 +47,10 @@ function debounce(func, delay = 300) {
 // ─── STATE APLIKASI ───────────────────────────────────────────
 let allSongs = [];
 const API_BASE_URL = '/api/songs';
-let searchFilter = 'all'; // 'all', 'title', atau 'artist'
+let searchFilter = 'all'; // 'all', 'title', 'artist', atau 'favorite'
+let currentSongPage = 1;
+const SONG_PAGE_SIZE = 20;
+let totalSongCount = 0;
 
 const debouncedSearch = debounce(handleSearch, 300);
 
@@ -515,23 +518,46 @@ function renderLyricsSkeleton() {
 }
 
 // ─── LOAD DATA LAGU ───────────────────────────────────────────
-async function loadSongs() {
+async function loadSongs(page = currentSongPage) {
   const songListContainer = document.getElementById('songList');
   if (!songListContainer) return;
 
+  const searchInput = document.getElementById('searchInput');
+  const keyword = searchInput?.value.trim() || '';
+  const params = new URLSearchParams({
+    search: keyword,
+    field: searchFilter === 'favorite' ? 'all' : searchFilter,
+    page: String(page),
+    limit: String(SONG_PAGE_SIZE)
+  });
+
+  if (searchFilter === 'favorite') {
+    const favoriteIds = getFavorites()
+      .map(item => Number(item.id || item))
+      .filter(id => Number.isSafeInteger(id) && id > 0);
+    if (favoriteIds.length === 0) {
+      allSongs = [];
+      totalSongCount = 0;
+      currentSongPage = 1;
+      renderSongList([]);
+      return;
+    }
+    params.set('ids', favoriteIds.join(','));
+  }
+
   try {
     songListContainer.innerHTML = renderSongSkeletons(4);
-
-    const response = await fetch(API_BASE_URL);
+    const response = await fetch(`${API_BASE_URL}?${params.toString()}`);
 
     if (!response.ok) {
-      throw new Error("Gagal membaca data lagu");
+      throw new Error(`Gagal membaca data lagu (${response.status})`);
     }
 
     const result = await response.json();
-    allSongs = Array.isArray(result.data) ? result.data : (Array.isArray(result) ? result : []);
+    allSongs = Array.isArray(result.data) ? result.data : [];
+    totalSongCount = Number(result.pagination?.total) || allSongs.length;
+    currentSongPage = Number(result.pagination?.page) || page;
     renderSongList(allSongs);
-
   } catch (error) {
     console.error(error);
     songListContainer.innerHTML = `
@@ -539,9 +565,10 @@ async function loadSongs() {
         <div class="empty-icon">⚠️</div>
         <p>Gagal memuat daftar lagu.</p>
         <span class="empty-hint">Periksa koneksi internet kamu</span>
-        <button class="btn-retry" onclick="loadSongs()">🔄 Coba Lagi</button>
+        <button class="btn-retry" onclick="loadSongs(currentSongPage)">🔄 Coba Lagi</button>
       </div>
     `;
+    renderSongPagination();
     showToast('Gagal memuat daftar lagu', 'error');
   }
 }
@@ -619,10 +646,11 @@ function renderSongList(songArray) {
   if (!songListContainer) return;
 
   if (songCountContainer) {
-    songCountContainer.textContent = `${songArray.length} lagu`;
+    songCountContainer.textContent = `${totalSongCount} lagu`;
   }
 
   if (songArray.length === 0) {
+    renderSongPagination();
     if (searchFilter === 'favorite') {
       songListContainer.innerHTML = `
         <div class="empty-state">
@@ -676,6 +704,29 @@ function renderSongList(songArray) {
       toggleFavorite(songId, songTitle, songArtist);
     });
   });
+
+  renderSongPagination();
+}
+
+function renderSongPagination() {
+  const pagination = document.getElementById('songPagination');
+  if (!pagination) return;
+
+  const totalPages = Math.ceil(totalSongCount / SONG_PAGE_SIZE);
+  if (totalPages <= 1) {
+    pagination.innerHTML = '';
+    return;
+  }
+
+  pagination.innerHTML = `
+    <button type="button" class="pagination-button" data-page="${currentSongPage - 1}" ${currentSongPage <= 1 ? 'disabled' : ''}>Sebelumnya</button>
+    <span class="pagination-status">Halaman ${currentSongPage} dari ${totalPages}</span>
+    <button type="button" class="pagination-button" data-page="${currentSongPage + 1}" ${currentSongPage >= totalPages ? 'disabled' : ''}>Berikutnya</button>
+  `;
+
+  pagination.querySelectorAll('.pagination-button:not([disabled])').forEach(button => {
+    button.addEventListener('click', () => loadSongs(Number(button.dataset.page)));
+  });
 }
 
 // ─── SEARCH ───────────────────────────────────────────────────
@@ -685,36 +736,11 @@ function handleSearch() {
   const btnClear = document.getElementById('btnClearSearch');
   if (!searchInput) return;
 
-  const keyword = searchInput.value.toLowerCase().trim();
-
-  if (btnClear) {
-    btnClear.style.display = keyword.length > 0 ? 'block' : 'none';
-  }
-
-  if (keyword.length > 0) {
-    searchBox?.classList.add('loading');
-  } else {
-    searchBox?.classList.remove('loading');
-  }
-
-  let baseList = allSongs;
-  if (searchFilter === 'favorite') {
-    baseList = allSongs.filter(song => isFavorite(song.id));
-  }
-
-  const result = baseList.filter(song => {
-    if (searchFilter === 'title') {
-      return song.title.toLowerCase().includes(keyword);
-    }
-    if (searchFilter === 'artist') {
-      return song.artist.toLowerCase().includes(keyword);
-    }
-    return song.title.toLowerCase().includes(keyword) ||
-           song.artist.toLowerCase().includes(keyword);
-  });
-
-  renderSongList(result);
-  searchBox?.classList.remove('loading');
+  const keyword = searchInput.value.trim();
+  if (btnClear) btnClear.style.display = keyword.length > 0 ? 'block' : 'none';
+  searchBox?.classList.add('loading');
+  currentSongPage = 1;
+  loadSongs(currentSongPage).finally(() => searchBox?.classList.remove('loading'));
 }
 
 // ─── CLEAR SEARCH ──────────────────────────────────────────────
