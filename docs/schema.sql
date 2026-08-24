@@ -44,4 +44,14 @@ VALUES (
         'Risalah Hati',
         'Dewa 19',
         'Am      Em\nLirik lagu kelima'
+    ),
+    (
+        'Untuk Perempuan yang Sedang Dalam Pelukan',
+        'Payung Teduh',
+        'C       G\nLirik lagu keenam'
+    ),
+    (
+        'Mungkin Hari Ini Esok atau Nanti',
+        'Anneth',
+        'C       G\nLirik lagu ketujuh'
     );

@@ -241,6 +241,50 @@ Mencintaiku lebih dulu
 [Outro]
 Am  Em  F  G
 C`
+  },
+  {
+    id: 6,
+    title: 'Untuk Perempuan yang Sedang Dalam Pelukan',
+    artist: 'Payung Teduh',
+    chord: `[Intro]
+C  G  Am  F
+
+[Verse]
+C              G
+Tak terasa gelap pun jatuh
+Am             F
+Diujung malam menuju pagi
+
+[Chorus]
+C              G
+Untuk perempuan yang sedang dalam pelukan
+Am             F
+Untuk perempuan yang sedang dalam pelukan
+
+[Outro]
+C  G  Am  F`
+  },
+  {
+    id: 7,
+    title: 'Mungkin Hari Ini Esok atau Nanti',
+    artist: 'Anneth',
+    chord: `[Intro]
+C  G  Am  F
+
+[Verse]
+C              G
+Ku hampiri jalan yang berliku
+Am             F
+Mencari arti dalam hidupku
+
+[Chorus]
+C              G
+Mungkin hari ini esok atau nanti
+Am             F
+Takdir kan mempertemukan kita lagi
+
+[Outro]
+C  G  Am  F`
   }
 ];
 

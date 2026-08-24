@@ -1,4 +1,4 @@
-# 🎸 ChordPlayer
+# ChordPlayer
 
 ![ChordPlayer Banner](docs/assets/banner.png)
 
@@ -8,27 +8,27 @@ Dengan tampilan sederhana dan cepat, pengguna dapat mencari lagu, melihat chord,
 
 ---
 
-## 🚀 Demo
+## Demo
 
-🌐 **Live Demo:**
+**Live Demo:**
 https://chord-player-phi.vercel.app
 
 ---
 
-## 📌 Features
+## Features
 
-| Fitur              | Deskripsi                                      |
-| ------------------ | ---------------------------------------------- |
-| 🔎 Song Search     | Mencari lagu berdasarkan judul atau nama artis |
-| 🎵 Chord & Lyrics  | Menampilkan chord dan lirik lagu               |
-| 🔄 Transpose Chord | Mengubah nada chord sesuai kebutuhan pemain    |
-| 📜 Auto Scroll     | Membantu mengikuti lirik saat bermain gitar    |
-| 🌙 Dark Mode       | Mode tampilan gelap untuk kenyamanan           |
-| 📱 Responsive UI   | Mendukung berbagai ukuran layar                |
+| Fitur | Deskripsi |
+| --- | --- |
+| Song Search | Mencari lagu berdasarkan judul atau nama artis |
+| Chord & Lyrics | Menampilkan chord dan lirik lagu |
+| Transpose Chord | Mengubah nada chord sesuai kebutuhan pemain |
+| Auto Scroll | Membantu mengikuti lirik saat bermain gitar |
+| Dark Mode | Mode tampilan gelap untuk kenyamanan |
+| Responsive UI | Mendukung berbagai ukuran layar |
 
 ---
 
-## 🖼️ Screenshot
+## Screenshot
 
 ### Homepage
 
@@ -42,24 +42,24 @@ https://chord-player-phi.vercel.app
 
 ---
 
-# 🛠️ Tech Stack
+## Tech Stack
 
-## Frontend
+### Frontend
 
 - HTML5
 - CSS3
 - JavaScript
 
-## Backend
+### Backend
 
 - JavaScript API
-- Vercel Serverless Function
+- Express.js
 
-## Database
+### Database
 
 - MySQL
 
-## Tools
+### Tools
 
 - Git
 - GitHub
@@ -67,43 +67,35 @@ https://chord-player-phi.vercel.app
 
 ---
 
-# 📂 Project Structure
+## Project Structure
 
 ```text
 ChordPlayer/
-│
 ├── index.html
 ├── detail.html
 ├── script.js
-│
 ├── css/
 │   └── styles.css
-│
 ├── api/
 │   ├── songs.js
 │   └── song-detail.js
-│
 ├── services/
 │   └── songService.js
-│
 ├── config/
 │   └── db.js
-│
 ├── docs/
 │   ├── Changelog.md
 │   ├── schema.sql
 │   └── dark-mode-guide.md
-│
 ├── asset/
 │   └── favicon.svg
-│
 ├── package.json
 └── vercel.json
 ```
 
 ---
 
-# ⚙️ Installation
+## Installation
 
 Clone repository:
 
@@ -125,7 +117,7 @@ npm install
 
 ---
 
-# 🔐 Environment Setup
+## Environment Setup
 
 Buat file `.env` di root project:
 
@@ -138,32 +130,42 @@ DB_NAME=your-db-name
 DB_SSL=false
 ```
 
-> **Menggunakan database cloud (contoh: Aiven, PlanetScale, dll)?**
-> Sesuaikan `DB_HOST` dan `DB_PORT` dengan connection info dari provider kamu, lalu set `DB_SSL=true` — kebanyakan provider cloud MySQL mewajibkan koneksi SSL.
+> Menggunakan database cloud seperti Aiven, PlanetScale, atau provider MySQL lain?
+> Sesuaikan `DB_HOST` dan `DB_PORT` dengan connection info dari provider kamu, lalu set `DB_SSL=true` jika provider mewajibkan koneksi SSL.
 
-## Buat tabel `songs` dengan menjalankan query di `docs/schema.sql` lewat client MySQL pilihanmu (TablePlus, MySQL Workbench, VS Code Database Client, dll).
+Jalankan query pada `docs/schema.sql` untuk membuat tabel `songs`.
 
-# ▶️ Running Locally
+---
 
-Project ini menggunakan **Vercel Serverless Functions**, sehingga cara termudah menjalankannya secara lokal adalah dengan Vercel CLI.
+## Running Locally
 
-Install Vercel CLI (sekali saja, secara global):
-
-```bash
-npm install -g vercel
-```
+Project ini menggunakan Express untuk server lokal, dengan route API yang juga kompatibel dengan deploy di Vercel.
 
 Jalankan aplikasi:
 
 ```bash
-vercel dev
+npm run dev
 ```
 
-## Ikuti instruksi di terminal (biasanya akan meminta login/link project untuk pertama kali). Setelah berjalan, buka URL yang ditampilkan di terminal (biasanya `http://localhost:3000`).
+Lalu buka `http://localhost:5000` jika memakai `.env` bawaan, atau `http://localhost:3000` jika variabel `PORT` belum diatur.
 
-# 🗺️ Roadmap
+Di PowerShell Windows, jika `npm run dev` ditolak karena execution policy, gunakan:
 
-## ✅ Completed
+```bash
+npm.cmd run dev
+```
+
+Jika ingin menjalankan preview seperti environment Vercel, kamu juga bisa memakai:
+
+```bash
+npx vercel dev
+```
+
+---
+
+## Roadmap
+
+### Completed
 
 - [x] Basic chord search
 - [x] Song detail page
@@ -171,14 +173,14 @@ vercel dev
 - [x] Dark mode
 - [x] Responsive layout
 
-## 🚧 In Progress
+### In Progress
 
 - [ ] User favorites
 - [ ] User authentication
 - [ ] Improved chord editor
 - [ ] Better mobile experience
 
-## 🔮 Future Plans
+### Future Plans
 
 - [ ] Export chord ke PDF
 - [ ] Audio preview
@@ -188,36 +190,36 @@ vercel dev
 
 ---
 
-# 🤝 Contributing
+## Contributing
 
 Kontribusi sangat terbuka.
 
 Jika ingin membantu pengembangan:
 
-1. Fork repository ini
-2. Buat branch baru
+1. Fork repository ini.
+2. Buat branch baru.
 
 ```bash
 git checkout -b feature/nama-fitur
 ```
 
-3. Commit perubahan
+3. Commit perubahan.
 
 ```bash
 git commit -m "Add new feature"
 ```
 
-4. Push branch
+4. Push branch.
 
 ```bash
 git push origin feature/nama-fitur
 ```
 
-5. Buat Pull Request
+5. Buat Pull Request.
 
 ---
 
-# 🐛 Reporting Issues
+## Reporting Issues
 
 Jika menemukan bug atau memiliki ide fitur baru:
 
@@ -227,16 +229,16 @@ Jika menemukan bug atau memiliki ide fitur baru:
 
 ---
 
-# 📜 License
+## License
 
 Project ini dibuat sebagai proyek pembelajaran dan portofolio.
 
 ---
 
-# 👨‍💻 Author
+## Author
 
 **pance24-web**
 
-Made with ❤️ for guitar players and music enthusiasts.
+Made with love for guitar players and music enthusiasts.
 
-⭐ Jika proyek ini membantu, jangan lupa memberikan star pada repository!
+Jika proyek ini membantu, jangan lupa memberikan star pada repository.
