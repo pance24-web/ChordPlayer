@@ -84,9 +84,14 @@ ChordPlayer/
 ├── config/
 │   └── db.js
 ├── docs/
+│   ├── README.md
 │   ├── Changelog.md
-│   ├── schema.sql
-│   └── dark-mode-guide.md
+│   ├── dark-mode-guide.md
+│   └── schema.sql
+├── CP handoff/
+│   ├── START_HERE.md
+│   └── CHORDPLAYER_HANDOFF.md
+├── todo.md
 ├── asset/
 │   └── favicon.svg
 ├── package.json
