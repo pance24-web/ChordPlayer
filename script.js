@@ -51,6 +51,10 @@ let searchFilter = 'all'; // 'all', 'title', 'artist', atau 'favorite'
 let currentSongPage = 1;
 const SONG_PAGE_SIZE = 20;
 let totalSongCount = 0;
+const isDevelopment = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+function debugLog(...args) {
+  if (isDevelopment) console.debug(...args);
+}
 
 const debouncedSearch = debounce(handleSearch, 300);
 
@@ -251,9 +255,33 @@ function createGuitarDiagramSvg(chordName, shape, variant = 'default') {
   </svg>`;
 }
 
+const TOUCH_HINT_DISMISSED_KEY = 'chordplayer_touch_hint_dismissed';
+
+function dismissTouchHint() {
+  const hint = document.getElementById('popupTouchHint');
+  if (!hint || hint.hidden) return;
+  hint.hidden = true;
+  try {
+    localStorage.setItem(TOUCH_HINT_DISMISSED_KEY, '1');
+  } catch (error) {
+    // localStorage dapat diblokir oleh browser privacy mode.
+  }
+}
+
+function restoreTouchHintState() {
+  const hint = document.getElementById('popupTouchHint');
+  if (!hint) return;
+  try {
+    hint.hidden = localStorage.getItem(TOUCH_HINT_DISMISSED_KEY) === '1';
+  } catch (error) {
+    hint.hidden = false;
+  }
+}
+
 function openChordPopup(token) {
   const popup = document.getElementById('chordPopup');
   if (!popup || !token) return;
+  dismissTouchHint();
 
   const options = getChordShapeOptions(token.textContent);
   if (!options.length) {
@@ -579,7 +607,13 @@ const FAVORITES_STORAGE_KEY = 'chordplayer_favorites';
 function getFavorites() {
   try {
     const raw = localStorage.getItem(FAVORITES_STORAGE_KEY);
-    return raw ? JSON.parse(raw) : [];
+    const parsed = raw ? JSON.parse(raw) : [];
+    if (!Array.isArray(parsed)) return [];
+
+    return parsed.filter(item => {
+      const id = Number(item?.id || item);
+      return Number.isSafeInteger(id) && id > 0;
+    });
   } catch (err) {
     return [];
   }
@@ -781,7 +815,7 @@ async function loadSongDetail() {
   const lyrics = document.getElementById('lyricsArea');
 
   // Log diagnostik — bantu kita lihat apakah fungsi ini benar-benar jalan
-  console.log('[loadSongDetail] dipanggil. Elemen ditemukan:', {
+  debugLog('[loadSongDetail] dipanggil. Elemen ditemukan:', {
     title: Boolean(title),
     artist: Boolean(artist),
     lyrics: Boolean(lyrics)
@@ -795,7 +829,7 @@ async function loadSongDetail() {
   const params = new URLSearchParams(window.location.search);
   const id = params.get('id');
 
-  console.log('[loadSongDetail] id dari URL:', id);
+  debugLog('[loadSongDetail] id dari URL:', id);
 
   if (!id) {
     title.textContent = "-";
@@ -814,12 +848,12 @@ async function loadSongDetail() {
 
     // Endpoint detail menggunakan query parameter: /api/song-detail?id=...
     const fetchUrl = `/api/song-detail?id=${encodeURIComponent(id)}`;
-    console.log('[loadSongDetail] Fetching:', fetchUrl);
+    debugLog('[loadSongDetail] Fetching:', fetchUrl);
 
     const response = await fetch(fetchUrl, { signal: controller.signal });
     clearTimeout(timeoutId);
 
-    console.log('[loadSongDetail] Response status:', response.status);
+    debugLog('[loadSongDetail] Response status:', response.status);
 
     if (response.status === 404) {
       title.textContent = "-";
@@ -833,7 +867,7 @@ async function loadSongDetail() {
     }
 
     const result = await response.json();
-    console.log('[loadSongDetail] Data diterima:', result);
+    debugLog('[loadSongDetail] Data diterima:', result);
 
     const song = (result && result.data) ? result.data : result;
 
@@ -843,6 +877,11 @@ async function loadSongDetail() {
 
     title.textContent = song.title;
     artist.textContent = song.artist;
+    document.title = `${song.title} — ChordPlayer`;
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.content = `Chord dan lirik lagu ${song.title} oleh ${song.artist} di ChordPlayer.`;
+    }
 
     // Inisialisasi tombol favorite di detail page
     const detailFavBtn = document.getElementById('btnToggleFavoriteDetail');
@@ -870,9 +909,9 @@ async function loadSongDetail() {
       scrollInterval = null;
     }
     const btn = document.getElementById('btnAutoScroll');
-    if (btn) btn.textContent = '▶ Auto Scroll';
+    setButtonLabel(btn, 'Auto Scroll');
 
-    console.log('[loadSongDetail] Selesai, lagu berhasil ditampilkan.');
+    debugLog('[loadSongDetail] Selesai, lagu berhasil ditampilkan.');
 
   } catch (error) {
     clearTimeout(timeoutId);
@@ -983,7 +1022,7 @@ function startAutoScroll() {
   }, 100);
 
   const btn = document.getElementById('btnAutoScroll');
-  if (btn) btn.textContent = '⏸ Stop Scroll';
+  setButtonLabel(btn, 'Stop Scroll');
 }
 
 function autoScroll() {
@@ -991,7 +1030,7 @@ function autoScroll() {
     clearInterval(scrollInterval);
     scrollInterval = null;
     const btn = document.getElementById('btnAutoScroll');
-    if (btn) btn.textContent = '▶ Auto Scroll';
+    setButtonLabel(btn, 'Auto Scroll');
     return;
   }
 
@@ -1101,7 +1140,7 @@ function updateFullscreenUI() {
 
   if (!btn) return;
   btn.setAttribute('aria-pressed', String(isFullscreen));
-  btn.textContent = isFullscreen ? '⛶ Keluar Fullscreen' : '⛶ Fullscreen';
+  setButtonLabel(btn, isFullscreen ? 'Keluar Fullscreen' : 'Fullscreen');
   btn.setAttribute('aria-label', isFullscreen ? 'Keluar dari mode fullscreen' : 'Masuk ke mode fullscreen');
 }
 
@@ -1169,13 +1208,20 @@ const debouncedSaveScroll = debounce((songId) => {
 }, 500);
 
 // ─── FEEDBACK HELPERS ──────────────────────────────────────────
+function setButtonLabel(button, label) {
+  if (!button) return;
+  const labelElement = button.querySelector('.button-label');
+  if (labelElement) labelElement.textContent = label;
+}
+
 function showShareFeedback(btn) {
-  const originalText = btn.textContent;
-  btn.textContent = '✅ Link tersalin!';
+  const labelElement = btn.querySelector('.button-label');
+  const originalLabel = labelElement?.textContent || btn.textContent;
+  setButtonLabel(btn, 'Link tersalin!');
   btn.classList.add('copied');
 
   setTimeout(() => {
-    btn.textContent = originalText;
+    setButtonLabel(btn, originalLabel);
     btn.classList.remove('copied');
   }, 1500);
 }
@@ -1192,12 +1238,13 @@ function fallbackCopy(text) {
 }
 
 function showCopyFeedback(btn) {
-  const originalText = btn.textContent;
-  btn.textContent = '✅ Tersalin!';
+  const labelElement = btn.querySelector('.button-label');
+  const originalLabel = labelElement?.textContent || btn.textContent;
+  setButtonLabel(btn, 'Tersalin!');
   btn.classList.add('copied');
 
   setTimeout(() => {
-    btn.textContent = originalText;
+    setButtonLabel(btn, originalLabel);
     btn.classList.remove('copied');
   }, 1500);
 }
@@ -1550,7 +1597,7 @@ function setupMetronomeHandlers() {
 
   // Hook up bottom navigation Favorite button
   const bnavFav = document.getElementById('bnavFavorites');
-  if (bnavFav && window.location.pathname.endsWith('index.html') || window.location.pathname === '/') {
+  if (bnavFav && (window.location.pathname.endsWith('index.html') || window.location.pathname === '/')) {
     bnavFav.addEventListener('click', (e) => {
       e.preventDefault();
       const chipFav = document.getElementById('chipFavorite');
@@ -1561,6 +1608,38 @@ function setupMetronomeHandlers() {
       }
     });
   }
+}
+
+function setupSearchForm() {
+  const form = document.getElementById('searchForm');
+  if (!form) return;
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    handleSearch();
+  });
+}
+
+function setupMobileNavigation() {
+  const navToggle = document.getElementById('navToggle');
+  const siteMenu = document.getElementById('siteMenu');
+  if (!navToggle || !siteMenu) return;
+
+  const closeMenu = () => {
+    siteMenu.classList.remove('is-open');
+    navToggle.setAttribute('aria-expanded', 'false');
+    navToggle.setAttribute('aria-label', 'Buka menu navigasi');
+  };
+
+  navToggle.addEventListener('click', () => {
+    const isOpen = siteMenu.classList.toggle('is-open');
+    navToggle.setAttribute('aria-expanded', String(isOpen));
+    navToggle.setAttribute('aria-label', isOpen ? 'Tutup menu navigasi' : 'Buka menu navigasi');
+  });
+
+  siteMenu.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') closeMenu();
+  });
 }
 
 // ─── START ────────────────────────────────────────────────────
@@ -1576,6 +1655,8 @@ document.addEventListener('DOMContentLoaded', () => {
   if (searchInput) {
     searchInput.addEventListener('input', debouncedSearch);
   }
+  setupSearchForm();
+  setupMobileNavigation();
 
   const btnClearSearch = document.getElementById('btnClearSearch');
   if (btnClearSearch) {
@@ -1589,6 +1670,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadSongDetail();
   setupDetailControls();
   setupChordPopup();
+  restoreTouchHintState();
   setupMetronomeHandlers();
 
   // Handle URL param ?filter=favorite

@@ -1,8 +1,15 @@
 const { getSongById } = require('../services/songService');
+const { parsePositiveSongId } = require('../utils/requestValidation');
 
 module.exports = async (req, res) => {
   try {
-    const { id } = req.query;
+    const id = parsePositiveSongId(req.query.id);
+    if (id === null) {
+      return res.status(400).json({
+        success: false,
+        message: 'Parameter ID harus berupa bilangan bulat positif'
+      });
+    }
 
     const song = await getSongById(id);
 

@@ -5,7 +5,8 @@
     "dev": "node server.js",
     "start": "node server.js",
     "build": "echo 'No build step required'",
-    "lint": "echo 'No lint errors'"
+    "lint": "node --check api/songs.js && node --check api/song-detail.js && node --check config/db.js && node --check script.js && node --check server.js && node --check services/songService.js && node --check utils/requestValidation.js",
+    "test": "node tests/smoke.test.js"
   },
   "dependencies": {
     "dotenv": "^16.4.5",

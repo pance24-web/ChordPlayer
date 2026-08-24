@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const { getSongById, searchSongs } = require('./services/songService');
+const { parsePositiveSongId } = require('./utils/requestValidation');
 
 const app = express();
 const PORT = 3000;
@@ -25,6 +26,14 @@ function parseSongIds(value) {
   const ids = [...new Set(parts.map(Number))];
   return ids.every(id => Number.isSafeInteger(id) && id > 0) ? ids : null;
 }
+
+app.use((req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+  next();
+});
 
 app.use(express.json());
 
@@ -97,11 +106,11 @@ app.get('/api/songs', async (req, res) => {
 // Endpoint untuk mengambil detail lagu berdasarkan query parameter (?id=...)
 app.get('/api/song-detail', async (req, res) => {
   try {
-    const { id } = req.query;
-    if (!id) {
+    const id = parsePositiveSongId(req.query.id);
+    if (id === null) {
       return res.status(400).json({
         success: false,
-        message: 'Parameter ID diperlukan'
+        message: 'Parameter ID harus berupa bilangan bulat positif'
       });
     }
 
@@ -129,7 +138,14 @@ app.get('/api/song-detail', async (req, res) => {
 // Endpoint untuk mengambil detail lagu berdasarkan route parameter (/:id)
 app.get('/api/songs/:id', async (req, res) => {
   try {
-    const { id } = req.params;
+    const id = parsePositiveSongId(req.params.id);
+    if (id === null) {
+      return res.status(400).json({
+        success: false,
+        message: 'Parameter ID harus berupa bilangan bulat positif'
+      });
+    }
+
     const song = await getSongById(id);
     if (!song) {
       return res.status(404).json({
