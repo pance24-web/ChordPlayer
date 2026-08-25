@@ -9,6 +9,13 @@ const isPlaceholderHost = !host ||
   host.toLowerCase() === 'host' ||
   host.includes('your-');
 
+const sslConfig = process.env.DB_SSL === 'true'
+  ? {
+      rejectUnauthorized: true,
+      ...(process.env.DB_SSL_CA ? { ca: process.env.DB_SSL_CA } : {})
+    }
+  : undefined;
+
 let pool = null;
 
 if (!isPlaceholderHost) {
@@ -27,9 +34,7 @@ if (!isPlaceholderHost) {
       // ✅ Naikkan timeout dari 3 detik jadi 10 detik — beri waktu lebih
       // untuk cold start + SSL handshake ke database cloud
       connectTimeout: 10000,
-      ssl: process.env.DB_SSL === 'true'
-        ? { rejectUnauthorized: false }
-        : undefined
+      ssl: sslConfig
     });
 
     pool.getConnection()

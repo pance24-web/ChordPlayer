@@ -1,4 +1,5 @@
 // ─── DARK MODE MANAGEMENT ─────────────────────────────────────
+const DEBUG_LOGGING = ['localhost', '127.0.0.1'].includes(window.location.hostname);
 const DARK_MODE_KEY = 'chordplayer-dark-mode';
 const SCROLL_POSITION_PREFIX = 'chordplayer-scroll-';
 const AUTO_SCROLL_SPEED_KEY = 'chordplayer-auto-scroll-speed';
@@ -153,12 +154,6 @@ function resolveChordShape(chordName) {
   return guitarChordShapes[fallbackKey] || guitarChordShapes[root] || null;
 }
 
-// Diagram dirender melalui createGuitarDiagramSvg() di dalam popup chord.
-function updateChordDiagramFromLine(line) {
-  // Diagram kini dibuka hanya ketika gitaris mengklik chord.
-  return line?.querySelector('.chord-token') || null;
-}
-
 function getChordShapeOptions(chordText) {
   const chordName = parseChordName(chordText);
   if (!chordName) return [];
@@ -172,10 +167,19 @@ function renderPopupShape(option) {
   const title = document.getElementById('chordPopupTitle');
   const count = document.getElementById('chordPopupCount');
   const capoEl = document.getElementById('chordPopupCapo');
+  const previous = document.getElementById('previousChordShape');
+  const next = document.getElementById('nextChordShape');
   if (!container || !title || !count || !option) return;
 
+  const shapeCount = getChordShapeOptions(activeChordPopup?.textContent || '').length || 1;
+  const hasMultipleShapes = shapeCount > 1;
   title.textContent = option.name;
-  count.textContent = `${activeChordShapeIndex + 1} dari ${getChordShapeOptions(activeChordPopup?.textContent || '').length || 1}`;
+  count.textContent = `${activeChordShapeIndex + 1} dari ${shapeCount}`;
+  [previous, next].forEach(button => {
+    if (!button) return;
+    button.disabled = !hasMultipleShapes;
+    button.setAttribute('aria-disabled', String(!hasMultipleShapes));
+  });
   if (capoEl) {
     const capoInfo = getCapoRecommendation(transposeValue);
     capoEl.textContent = capoInfo.fret;
@@ -409,7 +413,6 @@ function updateActiveChord() {
   });
 
   activeLineIndex = newIndex;
-  updateChordDiagramFromLine(closestLine);
 }
 
 function scheduleActiveChordUpdate() {
@@ -552,7 +555,24 @@ const FAVORITES_STORAGE_KEY = 'chordplayer_favorites';
 function getFavorites() {
   try {
     const raw = localStorage.getItem(FAVORITES_STORAGE_KEY);
-    return raw ? JSON.parse(raw) : [];
+    const parsed = raw ? JSON.parse(raw) : [];
+    if (!Array.isArray(parsed)) return [];
+
+    return parsed
+      .map(item => {
+        const isObject = item && typeof item === 'object';
+        const id = isObject ? item.id : item;
+        if (id === undefined || id === null || String(id).trim() === '') return null;
+
+        return {
+          id: String(id),
+          title: isObject && typeof item.title === 'string' ? item.title : '',
+          artist: isObject && typeof item.artist === 'string' ? item.artist : '',
+          savedAt: isObject && typeof item.savedAt === 'string' ? item.savedAt : ''
+        };
+      })
+      .filter(Boolean)
+      .slice(0, 100);
   } catch (err) {
     return [];
   }
@@ -755,11 +775,13 @@ async function loadSongDetail() {
   const lyrics = document.getElementById('lyricsArea');
 
   // Log diagnostik — bantu kita lihat apakah fungsi ini benar-benar jalan
-  console.log('[loadSongDetail] dipanggil. Elemen ditemukan:', {
-    title: Boolean(title),
-    artist: Boolean(artist),
-    lyrics: Boolean(lyrics)
-  });
+  if (DEBUG_LOGGING) {
+    console.log('[loadSongDetail] dipanggil. Elemen ditemukan:', {
+      title: Boolean(title),
+      artist: Boolean(artist),
+      lyrics: Boolean(lyrics)
+    });
+  }
 
   if (!title || !artist || !lyrics) {
     console.warn('[loadSongDetail] Berhenti: elemen DOM tidak ditemukan (bukan halaman detail?)');
@@ -769,7 +791,7 @@ async function loadSongDetail() {
   const params = new URLSearchParams(window.location.search);
   const id = params.get('id');
 
-  console.log('[loadSongDetail] id dari URL:', id);
+  if (DEBUG_LOGGING) console.log('[loadSongDetail] id dari URL:', id);
 
   if (!id) {
     title.textContent = "-";
@@ -788,12 +810,12 @@ async function loadSongDetail() {
 
     // Endpoint detail menggunakan query parameter: /api/song-detail?id=...
     const fetchUrl = `/api/song-detail?id=${encodeURIComponent(id)}`;
-    console.log('[loadSongDetail] Fetching:', fetchUrl);
+    if (DEBUG_LOGGING) console.log('[loadSongDetail] Fetching:', fetchUrl);
 
     const response = await fetch(fetchUrl, { signal: controller.signal });
     clearTimeout(timeoutId);
 
-    console.log('[loadSongDetail] Response status:', response.status);
+    if (DEBUG_LOGGING) console.log('[loadSongDetail] Response status:', response.status);
 
     if (response.status === 404) {
       title.textContent = "-";
@@ -807,7 +829,7 @@ async function loadSongDetail() {
     }
 
     const result = await response.json();
-    console.log('[loadSongDetail] Data diterima:', result);
+    if (DEBUG_LOGGING) console.log('[loadSongDetail] Data diterima:', result);
 
     const song = (result && result.data) ? result.data : result;
 
@@ -846,7 +868,7 @@ async function loadSongDetail() {
     const btn = document.getElementById('btnAutoScroll');
     if (btn) btn.textContent = '▶ Auto Scroll';
 
-    console.log('[loadSongDetail] Selesai, lagu berhasil ditampilkan.');
+    if (DEBUG_LOGGING) console.log('[loadSongDetail] Selesai, lagu berhasil ditampilkan.');
 
   } catch (error) {
     clearTimeout(timeoutId);
@@ -1524,7 +1546,7 @@ function setupMetronomeHandlers() {
 
   // Hook up bottom navigation Favorite button
   const bnavFav = document.getElementById('bnavFavorites');
-  if (bnavFav && window.location.pathname.endsWith('index.html') || window.location.pathname === '/') {
+  if (bnavFav && (window.location.pathname.endsWith('index.html') || window.location.pathname === '/')) {
     bnavFav.addEventListener('click', (e) => {
       e.preventDefault();
       const chipFav = document.getElementById('chipFavorite');
@@ -1549,6 +1571,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const searchInput = document.getElementById('searchInput');
   if (searchInput) {
     searchInput.addEventListener('input', debouncedSearch);
+  }
+
+  const searchForm = document.getElementById('searchForm');
+  if (searchForm) {
+    searchForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      handleSearch();
+    });
   }
 
   const btnClearSearch = document.getElementById('btnClearSearch');
