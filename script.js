@@ -153,12 +153,6 @@ function resolveChordShape(chordName) {
   return guitarChordShapes[fallbackKey] || guitarChordShapes[root] || null;
 }
 
-// Diagram dirender melalui createGuitarDiagramSvg() di dalam popup chord.
-function updateChordDiagramFromLine(line) {
-  // Diagram kini dibuka hanya ketika gitaris mengklik chord.
-  return line?.querySelector('.chord-token') || null;
-}
-
 function getChordShapeOptions(chordText) {
   const chordName = parseChordName(chordText);
   if (!chordName) return [];
@@ -409,7 +403,6 @@ function updateActiveChord() {
   });
 
   activeLineIndex = newIndex;
-  updateChordDiagramFromLine(closestLine);
 }
 
 function scheduleActiveChordUpdate() {
