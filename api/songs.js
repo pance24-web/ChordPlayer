@@ -6,9 +6,10 @@ module.exports = async (req, res) => {
     res.status(200).json({ success: true, data: songs });
   } catch (error) {
     console.error('Error di api/songs.js:', error);
-    res.status(500).json({
+    const statusCode = process.env.NODE_ENV === 'production' ? 503 : 500;
+    res.status(statusCode).json({
       success: false,
-      message: 'Gagal mengambil data lagu'
+      message: statusCode === 503 ? 'Database tidak tersedia' : 'Gagal mengambil data lagu'
     });
   }
 };
