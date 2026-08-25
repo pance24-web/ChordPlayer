@@ -1554,6 +1554,14 @@ document.addEventListener('DOMContentLoaded', () => {
     searchInput.addEventListener('input', debouncedSearch);
   }
 
+  const searchForm = document.getElementById('searchForm');
+  if (searchForm) {
+    searchForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      handleSearch();
+    });
+  }
+
   const btnClearSearch = document.getElementById('btnClearSearch');
   if (btnClearSearch) {
     btnClearSearch.addEventListener('click', clearSearch);
