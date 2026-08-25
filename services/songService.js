@@ -290,6 +290,16 @@ C  G  Am  F`
 
 const isProduction = process.env.NODE_ENV === 'production';
 
+function parseSongId(value) {
+  const rawValue = Array.isArray(value) ? value[0] : value;
+  if (rawValue === undefined || rawValue === null || !/^\d+$/.test(String(rawValue))) {
+    return null;
+  }
+
+  const id = Number(rawValue);
+  return Number.isSafeInteger(id) && id > 0 ? id : null;
+}
+
 // Ambil semua lagu (untuk halaman utama — index.html)
 async function getAllSongs() {
   try {
@@ -329,6 +339,7 @@ async function getSongById(id) {
 
 module.exports = {
   getAllSongs,
-  getSongById
+  getSongById,
+  parseSongId
 };
 
