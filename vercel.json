@@ -2,6 +2,6 @@
   "outputDirectory": ".",
   "rewrites": [
     { "source": "/api/songs", "destination": "/api/songs.js" },
-    { "source": "/api/songs/:id", "destination": "/api/song-detail.js" }
+    { "source": "/api/songs/:id", "destination": "/api/song-detail.js?id=:id"}
   ]
 }

@@ -13,7 +13,9 @@
         "prod"
       ],
       "requested": "^16.4.5",
-      "resolved": "16.6.1"
+      "resolved": "16.6.1",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "express",
@@ -22,7 +24,9 @@
         "prod"
       ],
       "requested": "^5.2.1",
-      "resolved": "5.2.1"
+      "resolved": "5.2.1",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "mysql2",
@@ -31,15 +35,19 @@
         "prod"
       ],
       "requested": "^3.11.0",
-      "resolved": "3.23.4"
+      "resolved": "3.23.2",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "@types/node",
       "type": "transitive",
       "scopes": [
-        "prod"
+        "peer"
       ],
-      "resolved": "26.2.0"
+      "resolved": "26.1.2",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "accepts",
@@ -47,7 +55,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "2.0.0"
+      "resolved": "2.0.0",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "aws-ssl-profiles",
@@ -55,7 +65,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "1.1.2"
+      "resolved": "1.1.2",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "body-parser",
@@ -63,15 +75,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "2.3.0"
-    },
-    {
-      "name": "body-parser/content-type",
-      "type": "transitive",
-      "scopes": [
-        "prod"
-      ],
-      "resolved": "2.1.0"
+      "resolved": "2.3.0",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "bytes",
@@ -79,7 +85,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "3.1.2"
+      "resolved": "3.1.2",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "call-bind-apply-helpers",
@@ -87,7 +95,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "1.0.2"
+      "resolved": "1.0.2",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "call-bound",
@@ -95,7 +105,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "1.0.4"
+      "resolved": "1.0.4",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "content-disposition",
@@ -103,7 +115,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "1.1.0"
+      "resolved": "1.1.0",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "content-type",
@@ -111,7 +125,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "1.0.5"
+      "resolved": "1.0.5",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "cookie",
@@ -119,7 +135,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "0.7.2"
+      "resolved": "0.7.2",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "cookie-signature",
@@ -127,7 +145,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "1.2.2"
+      "resolved": "1.2.2",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "debug",
@@ -135,7 +155,19 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "4.4.3"
+      "resolved": "4.4.3",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
+    },
+    {
+      "name": "denque",
+      "type": "transitive",
+      "scopes": [
+        "prod"
+      ],
+      "resolved": "2.1.0",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "depd",
@@ -143,7 +175,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "2.0.0"
+      "resolved": "2.0.0",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "dunder-proto",
@@ -151,7 +185,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "1.0.1"
+      "resolved": "1.0.1",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "ee-first",
@@ -159,7 +195,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "1.1.1"
+      "resolved": "1.1.1",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "encodeurl",
@@ -167,7 +205,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "2.0.0"
+      "resolved": "2.0.0",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "es-define-property",
@@ -175,7 +215,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "1.0.1"
+      "resolved": "1.0.1",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "es-errors",
@@ -183,7 +225,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "1.3.0"
+      "resolved": "1.3.0",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "es-object-atoms",
@@ -191,7 +235,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "1.1.2"
+      "resolved": "1.1.2",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "escape-html",
@@ -199,7 +245,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "1.0.3"
+      "resolved": "1.0.3",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "etag",
@@ -207,7 +255,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "1.8.1"
+      "resolved": "1.8.1",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "finalhandler",
@@ -215,7 +265,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "2.1.1"
+      "resolved": "2.1.1",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "forwarded",
@@ -223,7 +275,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "0.2.0"
+      "resolved": "0.2.0",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "fresh",
@@ -231,7 +285,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "2.0.0"
+      "resolved": "2.0.0",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "function-bind",
@@ -239,7 +295,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "1.1.2"
+      "resolved": "1.1.2",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "generate-function",
@@ -247,7 +305,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "2.3.1"
+      "resolved": "2.3.1",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "get-intrinsic",
@@ -255,7 +315,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "1.3.0"
+      "resolved": "1.3.0",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "get-proto",
@@ -263,7 +325,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "1.0.1"
+      "resolved": "1.0.1",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "gopd",
@@ -271,7 +335,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "1.2.0"
+      "resolved": "1.2.0",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "has-symbols",
@@ -279,7 +345,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "1.1.0"
+      "resolved": "1.1.0",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "hasown",
@@ -287,7 +355,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "2.0.4"
+      "resolved": "2.0.4",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "http-errors",
@@ -295,7 +365,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "2.0.1"
+      "resolved": "2.0.1",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "iconv-lite",
@@ -303,7 +375,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "0.7.3"
+      "resolved": "0.7.3",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "inherits",
@@ -311,7 +385,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "2.0.4"
+      "resolved": "2.0.4",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "ipaddr.js",
@@ -319,7 +395,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "1.9.1"
+      "resolved": "1.9.1",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "is-promise",
@@ -327,7 +405,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "4.0.0"
+      "resolved": "4.0.0",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "is-property",
@@ -335,7 +415,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "1.0.2"
+      "resolved": "1.0.2",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "long",
@@ -343,7 +425,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "5.3.2"
+      "resolved": "5.3.2",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "lru.min",
@@ -351,7 +435,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "1.1.4"
+      "resolved": "1.1.4",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "math-intrinsics",
@@ -359,7 +445,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "1.1.0"
+      "resolved": "1.1.0",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "media-typer",
@@ -367,7 +455,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "1.1.1"
+      "resolved": "1.1.1",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "merge-descriptors",
@@ -375,7 +465,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "2.0.0"
+      "resolved": "2.0.0",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "mime-db",
@@ -383,7 +475,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "1.54.0"
+      "resolved": "1.54.0",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "mime-types",
@@ -391,7 +485,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "3.0.2"
+      "resolved": "3.0.2",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "ms",
@@ -399,7 +495,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "2.1.3"
+      "resolved": "2.1.3",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "named-placeholders",
@@ -407,7 +505,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "1.1.6"
+      "resolved": "1.1.6",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "negotiator",
@@ -415,15 +515,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "1.1.0"
-    },
-    {
-      "name": "negotiator/content-type",
-      "type": "transitive",
-      "scopes": [
-        "prod"
-      ],
-      "resolved": "2.1.0"
+      "resolved": "1.1.0",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "object-inspect",
@@ -431,7 +525,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "1.13.4"
+      "resolved": "1.13.4",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "on-finished",
@@ -439,7 +535,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "2.4.1"
+      "resolved": "2.4.1",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "once",
@@ -447,7 +545,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "1.4.0"
+      "resolved": "1.4.0",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "parseurl",
@@ -455,7 +555,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "1.3.3"
+      "resolved": "1.3.3",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "path-to-regexp",
@@ -463,7 +565,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "8.4.2"
+      "resolved": "8.4.2",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "proxy-addr",
@@ -471,7 +575,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "2.0.7"
+      "resolved": "2.0.7",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "qs",
@@ -479,7 +585,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "6.15.3"
+      "resolved": "6.15.3",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "range-parser",
@@ -487,7 +595,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "1.3.0"
+      "resolved": "1.3.0",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "raw-body",
@@ -495,7 +605,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "3.0.2"
+      "resolved": "3.0.2",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "router",
@@ -503,7 +615,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "2.2.0"
+      "resolved": "2.2.0",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "safer-buffer",
@@ -511,7 +625,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "2.1.2"
+      "resolved": "2.1.2",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "send",
@@ -519,7 +635,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "1.2.1"
+      "resolved": "1.2.1",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "serve-static",
@@ -527,7 +645,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "2.2.1"
+      "resolved": "2.2.1",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "setprototypeof",
@@ -535,7 +655,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "1.2.0"
+      "resolved": "1.2.0",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "side-channel",
@@ -543,7 +665,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "1.1.1"
+      "resolved": "1.1.1",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "side-channel-list",
@@ -551,7 +675,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "1.0.1"
+      "resolved": "1.0.1",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "side-channel-map",
@@ -559,7 +685,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "1.0.1"
+      "resolved": "1.0.1",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "side-channel-weakmap",
@@ -567,7 +695,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "1.0.2"
+      "resolved": "1.0.2",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "sql-escaper",
@@ -575,7 +705,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "1.5.1"
+      "resolved": "1.5.1",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "statuses",
@@ -583,7 +715,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "2.0.2"
+      "resolved": "2.0.2",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "toidentifier",
@@ -591,7 +725,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "1.0.1"
+      "resolved": "1.0.1",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "type-is",
@@ -599,23 +735,19 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "2.1.0"
-    },
-    {
-      "name": "type-is/content-type",
-      "type": "transitive",
-      "scopes": [
-        "prod"
-      ],
-      "resolved": "2.1.0"
+      "resolved": "2.1.0",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "undici-types",
       "type": "transitive",
       "scopes": [
-        "prod"
+        "peer"
       ],
-      "resolved": "8.3.0"
+      "resolved": "8.3.0",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "unpipe",
@@ -623,7 +755,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "1.0.0"
+      "resolved": "1.0.0",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "vary",
@@ -631,7 +765,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "1.1.2"
+      "resolved": "1.1.2",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     },
     {
       "name": "wrappy",
@@ -639,7 +775,9 @@
       "scopes": [
         "prod"
       ],
-      "resolved": "1.0.2"
+      "resolved": "1.0.2",
+      "source": "registry",
+      "sourceUrl": "https://registry.npmjs.org"
     }
   ]
 }
