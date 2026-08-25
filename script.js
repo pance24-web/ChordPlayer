@@ -1524,7 +1524,7 @@ function setupMetronomeHandlers() {
 
   // Hook up bottom navigation Favorite button
   const bnavFav = document.getElementById('bnavFavorites');
-  if (bnavFav && window.location.pathname.endsWith('index.html') || window.location.pathname === '/') {
+  if (bnavFav && (window.location.pathname.endsWith('index.html') || window.location.pathname === '/')) {
     bnavFav.addEventListener('click', (e) => {
       e.preventDefault();
       const chipFav = document.getElementById('chipFavorite');
