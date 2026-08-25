@@ -167,10 +167,19 @@ function renderPopupShape(option) {
   const title = document.getElementById('chordPopupTitle');
   const count = document.getElementById('chordPopupCount');
   const capoEl = document.getElementById('chordPopupCapo');
+  const previous = document.getElementById('previousChordShape');
+  const next = document.getElementById('nextChordShape');
   if (!container || !title || !count || !option) return;
 
+  const shapeCount = getChordShapeOptions(activeChordPopup?.textContent || '').length || 1;
+  const hasMultipleShapes = shapeCount > 1;
   title.textContent = option.name;
-  count.textContent = `${activeChordShapeIndex + 1} dari ${getChordShapeOptions(activeChordPopup?.textContent || '').length || 1}`;
+  count.textContent = `${activeChordShapeIndex + 1} dari ${shapeCount}`;
+  [previous, next].forEach(button => {
+    if (!button) return;
+    button.disabled = !hasMultipleShapes;
+    button.setAttribute('aria-disabled', String(!hasMultipleShapes));
+  });
   if (capoEl) {
     const capoInfo = getCapoRecommendation(transposeValue);
     capoEl.textContent = capoInfo.fret;
