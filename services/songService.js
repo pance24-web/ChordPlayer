@@ -288,6 +288,8 @@ C  G  Am  F`
   }
 ];
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 // Ambil semua lagu (untuk halaman utama — index.html)
 async function getAllSongs() {
   try {
@@ -295,11 +297,13 @@ async function getAllSongs() {
     if (rows && rows.length > 0) {
       return rows;
     }
-    // Query berhasil tapi tabel kosong — ini juga perlu dicatat
-    console.warn('[songService] getAllSongs: Query database berhasil tapi hasilnya kosong. Menggunakan fallback.');
+    // Database tersedia tetapi belum berisi lagu.
+    return isProduction
+      ? []
+      : fallbackSongs.map(({ id, title, artist }) => ({ id, title, artist }));
   } catch (err) {
-    // ✅ Sekarang error dicatat, tidak lagi ditelan diam-diam
-    console.error('[songService] getAllSongs: Gagal query database, menggunakan fallback data:', err.message);
+    console.error('[songService] getAllSongs: Query database gagal:', err.message);
+    if (isProduction) throw err;
   }
   return fallbackSongs.map(({ id, title, artist }) => ({ id, title, artist }));
 }
@@ -311,11 +315,13 @@ async function getSongById(id) {
     if (rows && rows[0]) {
       return rows[0];
     }
-    // Query berhasil tapi id tidak ketemu di database asli
-    console.warn(`[songService] getSongById(${id}): Tidak ditemukan di database. Mengecek fallback.`);
+    // ID tidak ditemukan di database utama.
+    return isProduction
+      ? null
+      : fallbackSongs.find(s => String(s.id) === String(id)) || null;
   } catch (err) {
-    // ✅ Sekarang error dicatat, tidak lagi ditelan diam-diam
-    console.error(`[songService] getSongById(${id}): Gagal query database, mengecek fallback data:`, err.message);
+    console.error(`[songService] getSongById(${id}): Query database gagal:`, err.message);
+    if (isProduction) throw err;
   }
   const song = fallbackSongs.find(s => String(s.id) === String(id));
   return song || null;
