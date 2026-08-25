@@ -1590,10 +1590,16 @@ document.addEventListener('DOMContentLoaded', () => {
   initAutoScrollSpeed();
 
   loadSongs();
-  loadSongDetail();
-  setupDetailControls();
-  setupChordPopup();
-  setupMetronomeHandlers();
+
+  // Kontrol dan data detail hanya diperlukan di detail.html.
+  // Hindari menjalankan loader detail di index.html karena elemen target memang tidak ada.
+  const isDetailPage = document.body.classList.contains('page-detail');
+  if (isDetailPage) {
+    loadSongDetail();
+    setupDetailControls();
+    setupChordPopup();
+    setupMetronomeHandlers();
+  }
 
   // Handle URL param ?filter=favorite
   const urlParams = new URLSearchParams(window.location.search);

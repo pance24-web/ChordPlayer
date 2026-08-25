@@ -313,7 +313,7 @@ async function getAllSongs() {
       : fallbackSongs.map(({ id, title, artist }) => ({ id, title, artist }));
   } catch (err) {
     console.error('[songService] getAllSongs: Query database gagal:', err.message);
-    if (isProduction) throw err;
+    // Tetap layani aplikasi dengan data bawaan ketika DB sedang offline.
   }
   return fallbackSongs.map(({ id, title, artist }) => ({ id, title, artist }));
 }
@@ -331,7 +331,7 @@ async function getSongById(id) {
       : fallbackSongs.find(s => String(s.id) === String(id)) || null;
   } catch (err) {
     console.error(`[songService] getSongById(${id}): Query database gagal:`, err.message);
-    if (isProduction) throw err;
+    // Detail lagu juga menggunakan fallback agar halaman tetap dapat dibuka.
   }
   const song = fallbackSongs.find(s => String(s.id) === String(id));
   return song || null;
