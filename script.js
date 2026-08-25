@@ -552,7 +552,24 @@ const FAVORITES_STORAGE_KEY = 'chordplayer_favorites';
 function getFavorites() {
   try {
     const raw = localStorage.getItem(FAVORITES_STORAGE_KEY);
-    return raw ? JSON.parse(raw) : [];
+    const parsed = raw ? JSON.parse(raw) : [];
+    if (!Array.isArray(parsed)) return [];
+
+    return parsed
+      .map(item => {
+        const isObject = item && typeof item === 'object';
+        const id = isObject ? item.id : item;
+        if (id === undefined || id === null || String(id).trim() === '') return null;
+
+        return {
+          id: String(id),
+          title: isObject && typeof item.title === 'string' ? item.title : '',
+          artist: isObject && typeof item.artist === 'string' ? item.artist : '',
+          savedAt: isObject && typeof item.savedAt === 'string' ? item.savedAt : ''
+        };
+      })
+      .filter(Boolean)
+      .slice(0, 100);
   } catch (err) {
     return [];
   }
