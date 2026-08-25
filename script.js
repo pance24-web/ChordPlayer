@@ -1,4 +1,5 @@
 // ─── DARK MODE MANAGEMENT ─────────────────────────────────────
+const DEBUG_LOGGING = ['localhost', '127.0.0.1'].includes(window.location.hostname);
 const DARK_MODE_KEY = 'chordplayer-dark-mode';
 const SCROLL_POSITION_PREFIX = 'chordplayer-scroll-';
 const AUTO_SCROLL_SPEED_KEY = 'chordplayer-auto-scroll-speed';
@@ -755,11 +756,13 @@ async function loadSongDetail() {
   const lyrics = document.getElementById('lyricsArea');
 
   // Log diagnostik — bantu kita lihat apakah fungsi ini benar-benar jalan
-  console.log('[loadSongDetail] dipanggil. Elemen ditemukan:', {
-    title: Boolean(title),
-    artist: Boolean(artist),
-    lyrics: Boolean(lyrics)
-  });
+  if (DEBUG_LOGGING) {
+    console.log('[loadSongDetail] dipanggil. Elemen ditemukan:', {
+      title: Boolean(title),
+      artist: Boolean(artist),
+      lyrics: Boolean(lyrics)
+    });
+  }
 
   if (!title || !artist || !lyrics) {
     console.warn('[loadSongDetail] Berhenti: elemen DOM tidak ditemukan (bukan halaman detail?)');
@@ -769,7 +772,7 @@ async function loadSongDetail() {
   const params = new URLSearchParams(window.location.search);
   const id = params.get('id');
 
-  console.log('[loadSongDetail] id dari URL:', id);
+  if (DEBUG_LOGGING) console.log('[loadSongDetail] id dari URL:', id);
 
   if (!id) {
     title.textContent = "-";
@@ -788,12 +791,12 @@ async function loadSongDetail() {
 
     // Endpoint detail menggunakan query parameter: /api/song-detail?id=...
     const fetchUrl = `/api/song-detail?id=${encodeURIComponent(id)}`;
-    console.log('[loadSongDetail] Fetching:', fetchUrl);
+    if (DEBUG_LOGGING) console.log('[loadSongDetail] Fetching:', fetchUrl);
 
     const response = await fetch(fetchUrl, { signal: controller.signal });
     clearTimeout(timeoutId);
 
-    console.log('[loadSongDetail] Response status:', response.status);
+    if (DEBUG_LOGGING) console.log('[loadSongDetail] Response status:', response.status);
 
     if (response.status === 404) {
       title.textContent = "-";
@@ -807,7 +810,7 @@ async function loadSongDetail() {
     }
 
     const result = await response.json();
-    console.log('[loadSongDetail] Data diterima:', result);
+    if (DEBUG_LOGGING) console.log('[loadSongDetail] Data diterima:', result);
 
     const song = (result && result.data) ? result.data : result;
 
@@ -846,7 +849,7 @@ async function loadSongDetail() {
     const btn = document.getElementById('btnAutoScroll');
     if (btn) btn.textContent = '▶ Auto Scroll';
 
-    console.log('[loadSongDetail] Selesai, lagu berhasil ditampilkan.');
+    if (DEBUG_LOGGING) console.log('[loadSongDetail] Selesai, lagu berhasil ditampilkan.');
 
   } catch (error) {
     clearTimeout(timeoutId);
